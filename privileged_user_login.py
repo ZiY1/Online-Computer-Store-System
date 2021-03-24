@@ -4,9 +4,9 @@ import tkinter.ttk as ttk
 import pandas as pd 
 import numpy as np 
 
-# python scrypts
+# python files
 import main as home
-
+import computer_management_page
 
 class privilaged_user_login(tk.Frame):
 
@@ -28,8 +28,16 @@ class privilaged_user_login(tk.Frame):
         self.style.configure("LabelTitle.TLabel", font=("Helvetica", 26),background = '#49A')
         self.LabelTitle = tk.ttk.Label(self.top, text="Login As: ", 
                                         style="LabelTitle.TLabel", anchor = "center")
-        self.LabelTitle.place(relx=0.08, rely=0.225, relwidth=0.250, relheight=0.125)
-        #------------------------------------------------------------------
+        self.LabelTitle.place(relx=0.01, rely=0.024, relwidth=0.632, relheight=0.17)
+    
+        self.LabelTitle2 = tk.ttk.Label(self.top, text = "Manager", style = "LabelTitle.TLabel")
+        self.LabelTitle2.place( relx = 0.38, rely = 0.024, relwidth = 0.632, relheight = 0.17)
+        #-------------------------------------------------------------------------------------
+
+
+
+
+
 
 
         #---------------------Radio Buttons------------------------------------------------
@@ -56,7 +64,6 @@ class privilaged_user_login(tk.Frame):
         self.RadioButton3.place(relx=0.70, rely=0.290, relwidth=0.350, relheight= 0.08)
 
         #-------------------------------------------------------------------------------------------
-
 
         
 		#-------------------------------User name----------------------------------------------
@@ -106,12 +113,12 @@ class privilaged_user_login(tk.Frame):
             self.iden = "Delivery Computer"
         elif value == 2:
             self.iden = "Store Clerk"
-        else:
+        elif value == 3:
             self.id = "Manager"
 
         self.style.configure("LabelTitle.TLabel", font=("Helvetica", 26))
-        self.LabelTitle = tk.ttk.Label(self.top, text=self.iden, style="LabelTitle.TLabel")
-        self.LabelTitle.place(relx=0.38, rely=0.024, relwidth=0.632, relheight=0.195)
+        self.LabelTitle = tk.ttk.Label(self.top, text = self.iden, style="LabelTitle.TLabel")
+        self.LabelTitle.place(relx=0.38, rely=0.024, relwidth=0.632, relheight= 0.17)
 
 		
     def command_login(self, event = None):
@@ -128,9 +135,11 @@ class privilaged_user_login(tk.Frame):
             flag_user_valid, flag_pass_valid= self.verify_access(df_computer_companies, 
                                                         UserName, Password) 
             #------------------------------------------------------
+            
 
             if flag_user_valid and flag_pass_valid: 
-                pass
+                self.top.destroy()
+                computer_management_page.computer_management_page()
             else:
                 tk.messagebox.showerror( "Error", "Invalid username and password" )
 
@@ -188,18 +197,13 @@ class privilaged_user_login(tk.Frame):
         else:
             flag_valid_username = False 
 
-        if username in list(df['Password']):
+        if password in list(df['Password']):
             flag_valid_password = True 
         else:
             flag_valid_password = False
 
         return flag_valid_username, flag_valid_password
 
-
-
-
-    def command_login(self):
-        self.top.destroy()
 
 
     def command_back(self):
