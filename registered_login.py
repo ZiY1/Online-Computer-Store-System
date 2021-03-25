@@ -60,7 +60,8 @@ class registered_login(tk.Frame):
 
         #-------------------------------Log In Button---------------------------------
         	
-        self.style.configure("CommandLogin.TButton", anchor="center",font=("Helvetica", 16))
+        self.style.configure("CommandLogin.TButton", anchor="center",font=("Helvetica", 16),  
+                              background = "green", foreground= "black")
         self.CommandLogin = tk.ttk.Button(self.top, text="Login", command=self.command_login,
                                          style="CommandLogin.TButton")
         self.CommandLogin.place(relx=0.180, rely=0.700, relwidth=0.200, relheight=0.095)
@@ -68,7 +69,8 @@ class registered_login(tk.Frame):
 
         #--------------------------------Sign Up Button----------------------------------
         # sign_up_page
-        self.style.configure("CommandSignUp.TButton", anchor="center",font=("Helvetica", 16))
+        self.style.configure("CommandSignUp.TButton", anchor="center",font=("Helvetica", 16),
+                                background = "green", foreground = "black" )
         self.CommandSignUp = tk.ttk.Button(self.top, text="Sign Up", 
                                 command=self.command_sign_up, style="CommandSignUp.TButton")
         self.CommandSignUp.place(relx=0.550, rely=0.700, relwidth=0.200, relheight=0.095)
@@ -80,7 +82,8 @@ class registered_login(tk.Frame):
         #--------------------------------------------------------------------------------
 
         #-------------------------------Back button------------------------------------------
-        self.style.configure("CommandBack.TButton", anchor="center", font=("Helvetica", 16) )
+        self.style.configure("CommandBack.TButton", anchor="center", font=("Helvetica", 16),
+                                    background = "green", foreground= "black" )
         self.CommandBack = tk.ttk.Button(self.top, text="Go Back", 
                                 command=self.command_back, style="CommandBack.TButton")
 		
@@ -92,7 +95,7 @@ class registered_login(tk.Frame):
         Username = self.TextUserName.get()
         Password = self.TextPassword.get()
 
-        Username = Username.lower()
+        Username = Username.lower() # it's not usercase sensitive
 
         df = pd.read_excel( "csv_files/registered_customers.xlsx" )
         
@@ -108,6 +111,7 @@ class registered_login(tk.Frame):
         #-----------check if the password provided matches the username-----
         user_info_df = df[df['Username'] == Username ] # dataframe containing the customer info 
 
+        
         if user_info_df['Password'].iloc[-1] == Password:
             flag_correct_password = True
         else:
