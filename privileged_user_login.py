@@ -94,14 +94,16 @@ class privilaged_user_login(tk.Frame):
         
         
 		#------------------------------Login Button-------------------------------------------
-        self.style.configure("CommandLogin.TButton", anchor="center",font=("Helvetica", 16))
+        self.style.configure("CommandLogin.TButton", anchor="center",font=("Helvetica", 16),
+                                     background = "green", foreground = "black")
         self.CommandLogin = tk.ttk.Button(self.top, text="Login", 
                                     command=self.command_login, style="CommandLogin.TButton")
         self.CommandLogin.place(relx=0.450, rely=0.700, relwidth=0.200, relheight=0.095)
         #--------------------------------------------------------------------------------------
 
 		#---------------------------------Back-------------------------------------------------
-        self.style.configure("CommandBack.TButton", font=('Helvetica',16))
+        self.style.configure("CommandBack.TButton", font=('Helvetica',16), 
+                                  background = "green", foreground = "black")
         self.CommandBack = tk.ttk.Button(self.top, text="Back", command=self.command_back, 
                                     style="CommandBack.TButton")
         self.CommandBack.place(relx=0.796, rely=0.90, relwidth=0.190, relheight=0.083)
