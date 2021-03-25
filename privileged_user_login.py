@@ -41,6 +41,7 @@ class privilaged_user_login(tk.Frame):
 
 
         #---------------------Radio Buttons------------------------------------------------
+        
         self.RadioVar = tk.IntVar()
         self.RadioVar.set(3)
         self.RadioButton0 = tk.Radiobutton(self.top, variable=self.RadioVar, value=0, 
@@ -106,21 +107,27 @@ class privilaged_user_login(tk.Frame):
         self.CommandBack.place(relx=0.796, rely=0.90, relwidth=0.190, relheight=0.083)
         #--------------------------------------------------------------------------------------
 
-    def radio_clicked(self,value):
+
+    def radio_clicked(self, value):
         if value == 0:
             self.iden = "Computer Company"
         elif value == 1:
-            self.iden = "Delivery Computer"
+            self.iden = "Delivery Company"
         elif value == 2:
             self.iden = "Store Clerk"
-        elif value == 3:
-            self.id = "Manager"
+        else:
+            self.iden = "Manager"
 
         self.style.configure("LabelTitle.TLabel", font=("Helvetica", 26))
-        self.LabelTitle = tk.ttk.Label(self.top, text = self.iden, style="LabelTitle.TLabel")
-        self.LabelTitle.place(relx=0.38, rely=0.024, relwidth=0.632, relheight= 0.17)
+        self.LabelTitle = tk.ttk.Label(self.top, text=self.iden, style="LabelTitle.TLabel")
+        self.LabelTitle.place(relx=0.38, rely=0.024, relwidth=0.632, relheight=0.17)
+
+
 
 		
+
+
+
     def command_login(self, event = None):
 
         df = pd.read_excel( "csv_files/privileged_users.xlsx" )
