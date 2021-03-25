@@ -23,7 +23,8 @@ class guest_welcome_page(tk.Frame):
         # Title 
         self.style.configure( "LabelTitle.TLabel", 
                                anchor = "center", 
-                               font = ("Helvetica", 26)    
+                               font = ("Helvetica", 26),
+                               background = "#49A"    
                             )
         self.LabelTitle = tk.ttk.Label( self.top, 
                                         text = "Welcome to Lenovo Online Store Guest!\n\tHow can we help you?", 
@@ -36,8 +37,9 @@ class guest_welcome_page(tk.Frame):
         # Continue as guest button 
         self.style.configure(   "CommandContinue.TButton", 
                                 anchor="center",
-                                font=("Helvetica", 18)
-                        
+                                font=("Helvetica", 18),
+                                background = "green",
+                                foreground = "black"
                             )
 
         self.CommandContinue = tk.ttk.Button(self.top, 
@@ -53,7 +55,9 @@ class guest_welcome_page(tk.Frame):
         # Sign Up Button 
         self.style.configure(   "GuestSignUp.TButton", 
                                 anchor="center",
-                                font=("Helvetica", 18)
+                                font=("Helvetica", 18),
+                                background = "green", 
+                                foreground = "black"
                             )
         self.GuestSignUp = tk.ttk.Button(   self.top, 
                                             text="Sign up today", 
