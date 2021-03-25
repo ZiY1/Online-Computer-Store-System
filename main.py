@@ -9,7 +9,6 @@ import guess_welcome
 import registered_login 
 import privileged_user_login
 
-
 class HomePage(tk.Frame):
     
     def __init__( self, master = None ):
@@ -24,7 +23,7 @@ class HomePage(tk.Frame):
         self.top = self.winfo_toplevel()
         self.style = tk.ttk.Style()    # Style
         
-        # Title 
+        #---------------------------------Title----------------------------------------
         self.style.configure( 
                             "LabelTitle.TLabel", 
                             anchor = "center", 
@@ -37,7 +36,8 @@ class HomePage(tk.Frame):
                                       style = "LabelTitle.TLabel"        
                                     )   
         self.LabelTitle.place( relx = 0.25, rely = 0.500, relwidth = 0.572, relheight = 0.095 )
-        
+        #----------------------------------------------------------------------------------
+
         #--------------------------IMAGE---------------------------------------------
 
         self.my_image = ImageTk.PhotoImage( Image.open( "images/lenovo_icon.jpg" )  )
@@ -47,7 +47,7 @@ class HomePage(tk.Frame):
         self.label_image.place( x = 250, y = 0 )
         #-----------------------------------------------------------------------------
 
-        # Visitor/Browser's Section Button
+        #-------------------------Visitor/Browser's Section Button--------------------
         self.style.configure( "CommandGuest.TButton",  
                               anchor = "center", 
                               font = ( "Helvetica", 18 ),
@@ -61,8 +61,9 @@ class HomePage(tk.Frame):
                                         style = "CommandGuest.TButton"  
                                       )
         self.CommandGuest.place( relx = 0.37, rely = 0.600, relwidth = 0.300, relheight = 0.071 )
+        #---------------------------------------------------------------------------------------
 
-        # Registered Customer's Section Button
+        #-------------------Registered Customer's Section Button--------------------------------
         self.style.configure( "CommandCustomer.TButton", 
                                anchor = "center",  
                                font = ("Helvetica", 18 ),
@@ -75,9 +76,9 @@ class HomePage(tk.Frame):
                                            style = "CommandCustomer.TButton"
                                         )
         self.CommandCustomer.place( relx = 0.37, rely = 0.700, relwidth = 0.300, relheight = 0.071)
-        
+        #-----------------------------------------------------------------------------------
 
-        # Privileged User's Section Button
+        #-----------------------Privileged User's Section Button----------------------------
         self.style.configure( "CommandVIP.TButton", 
                                anchor = "center", 
                                font = ( "Helvetica", 18 ), 
@@ -90,17 +91,18 @@ class HomePage(tk.Frame):
                                      style = "CommandVIP.TButton"
                                    )
         self.CommandVIP.place( relx = 0.37, rely = 0.800, relwidth = 0.300, relheight = 0.071 )
+        #-------------------------------------------------------------------------------
 
-
-        # Exit Button
-        self.style.configure( "CommandExit.TButton", font = ("Helvetica", 16) )
+        #----------------------------Exit Button---------------------------------------
+        self.style.configure( "CommandExit.TButton", font = ("Helvetica", 16),
+                                background = "green",   foreground = "black" )
         self.CommandExit = tk.ttk.Button(  self.top, 
                                        text = "Exit",
                                        command = self.command_exit,
                                        style = "CommandExit.TButton" 
         )
         self.CommandExit.place( relx = 0.873, rely = 0.917, relwidth = 0.119, relheight = 0.065)
-
+        #---------------------------------------------------------------------------------
 
     def command_guest(self, event = None):
         self.top.destroy() 
