@@ -20,7 +20,7 @@ class guest_welcome_page(tk.Frame):
         self.top = self.winfo_toplevel() 
         self.style = tk.ttk.Style()
 
-        # Title 
+        #---------------------Title--------------------------------------------------- 
         self.style.configure( "LabelTitle.TLabel", 
                                anchor = "center", 
                                font = ("Helvetica", 26),
@@ -33,8 +33,9 @@ class guest_welcome_page(tk.Frame):
         self.LabelTitle.place( relx = 0.205, rely = 0.100, 
                                relwidth = 0.632, relheight = 0.195 
                             )
+        #---------------------------------------------------------------------------
 
-        # Continue as guest button 
+        #-----------------------Continue as guest button------------------------------------- 
         self.style.configure(   "CommandContinue.TButton", 
                                 anchor="center",
                                 font=("Helvetica", 18),
@@ -51,8 +52,11 @@ class guest_welcome_page(tk.Frame):
         self.CommandContinue.place( relx=0.180, rely=0.430, 
                                     relwidth=0.680, relheight=0.120
                                   )
+        #-----------------------------------------------------------------------------
 
-        # Sign Up Button 
+
+
+        #------------------------------Sign Up Button--------------------------------- 
         self.style.configure(   "GuestSignUp.TButton", 
                                 anchor="center",
                                 font=("Helvetica", 18),
@@ -67,10 +71,14 @@ class guest_welcome_page(tk.Frame):
         self.GuestSignUp.place(  relx=0.180, rely=0.580,
                                  relwidth=0.680, relheight=0.120
                               )
+        #------------------------------------------------------------------------------
 
-		# Back
+
+		#----------------------------Back----------------------------------------------
         self.style.configure(   "CommandBack.TButton", 
-                                font=('Helvetica',16)
+                                font=('Helvetica',16),
+                                background = "green", 
+                                foreground = "black"
                             )
         self.CommandBack = tk.ttk.Button(   self.top, 
                                             text="Back",
@@ -78,7 +86,7 @@ class guest_welcome_page(tk.Frame):
                                             style="CommandBack.TButton"
                                         )
         self.CommandBack.place(relx=0.796, rely=0.886, relwidth=0.190, relheight=0.093)
-
+        #-------------------------------------------------------------------------------
         
     def command_continue(self, event=None):
         self.top.destroy()
