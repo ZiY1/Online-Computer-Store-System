@@ -4,12 +4,13 @@ import numpy as np
 import pandas as pd
 import re
 
-# tk.messagebox.showerror()
 
 # python files
 #import guess_welcome
 import customer_page
 import main as home
+import registered_login
+
 
 
 class sign_up_page(tk.Frame):
@@ -79,14 +80,16 @@ class sign_up_page(tk.Frame):
         self.LabelTitle.place(  relx=0.08, rely = 0.652, relwidth=0.250, relheight=0.125)
 
         # Sign up button
-        self.style.configure("CommandSignUp.TButton", anchor="center", font=("Helvetica", 16) )
+        self.style.configure("CommandSignUp.TButton", anchor="center", font=("Helvetica", 16),
+                               background = "green", foreground = "black" )
         self.CommandSignUp = tk.ttk.Button(self.top, text="Sign Up", 
                                 command=self.command_sign_up, style="CommandSignUp.TButton")
 		
         self.CommandSignUp.place(relx=0.420, rely=0.8, relwidth=0.200, relheight=0.095)
 
         #------------------------- Go Back Home Page Button---------------------------------
-        self.style.configure("CommandBack.TButton", anchor="center", font=("Helvetica", 16) )
+        self.style.configure("CommandBack.TButton", anchor="center", font=("Helvetica", 16),
+                                    background = "green", foreground= "black" )
         self.CommandBack = tk.ttk.Button(self.top, text="Go Back to Home Page", 
                                 command=self.command_back, style="CommandBack.TButton")
 		
@@ -150,27 +153,33 @@ class sign_up_page(tk.Frame):
                             columns = ['ID', 'Name', 'Username', 'Password', 'Credit card account'] 
                             )
             df = df.append(tempo)
-            flag_duplicates =  True 
+             
         else:
             if Username.lower() in list( df['Username']):
                 # we have duplicate accounts
+                flag_duplicates = True
                 tk.messagebox.showerror( "Error","username is taken" )
             else:
                 Id = int( df['ID'].iloc[-1] )
                 Id += 1 
-                tempo = pd.DataFrame( [[ str(Id) , Name, Username.lower(), Password, "NaN"]],
+                tempo = pd.DataFrame( [[ str(Id) , Name, Username.lower(), Password, "NaN"] ],
                               columns = ['ID', 'Name', 'Username', 'Password', 'Credit card account'] 
                             )
                 df = df.append(tempo)
-                flag_duplicates = True
+                
 
     #-----------------------------------------------------------------------
 
-        if flag_duplicates and flag_valid_email and flag_password_valid and flag_valid_name: 
+        if (not flag_duplicates) and flag_valid_email and flag_password_valid and flag_valid_name: 
             df.to_excel( "csv_files/registered_customers.xlsx", index = False)            
-            self.top.destroy()       
-            customer_page.customer_page(Name, Username, Id ) 
+                    
+            tk.messagebox.showinfo("Success", 
+                            f"Congratulation {Name}, you have created a new account" )
 
+            self.top.destroy()
+            registered_login.registered_login()
+
+            
 
     def command_back(self):
         self.top.destroy()
