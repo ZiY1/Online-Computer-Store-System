@@ -24,7 +24,6 @@ class guess_page(tk.Frame):
 
         #--------------------Lenovo Icon Image---------------------
         image_tempo = Image.open( "images/lenovo_icon_2.png" )
-        #image_tempo = image_tempo.resize(  (500,100), Image.ANTIALIAS )
         self.my_image = ImageTk.PhotoImage( image_tempo  )
         
         self.label_image = tk.Label( image = self.my_image )
@@ -51,7 +50,7 @@ class guess_page(tk.Frame):
         
         #--------------------Computer System Label-----------------------
         self.style.configure( "Computer_System_Label.TLabel", 
-                               anchor = "left", 
+                               anchor = "center", 
                                font = ("Helvetica", 16),
                                background = '#49A'  
                             )
@@ -60,7 +59,7 @@ class guess_page(tk.Frame):
                                         style =  "Computer_System_Label.TLabel" 
                                       )
         self.Computer_System_Label.place( relx = 0, rely = 0.2, 
-                               relwidth = 0.305 , relheight = 0.1 
+                               relwidth = 0.410 , relheight = 0.1 
                             )
         #-----------------------------------------------------------------
 
@@ -70,9 +69,9 @@ class guess_page(tk.Frame):
         
 
             #---------- Computer System # 1 ----------------$
-        system_name_1 = "personal computers"  # store manager input 
+        system_name_1 = "laptops"  # store manager input 
         image_tempo = Image.open( f"images/computer_systems/{system_name_1}.png" )
-        image_tempo = image_tempo.resize(  (385,140), Image.ANTIALIAS )
+        image_tempo = image_tempo.resize(  (160,160), Image.ANTIALIAS )
         self.system1 = ImageTk.PhotoImage(  image_tempo )
         
         self.label_system1 = tk.Label( image = self.system1 )
@@ -92,7 +91,7 @@ class guess_page(tk.Frame):
                                         command = self.command_button_system_1, 
                                         style = "Computer_system_bt1.TButton"  
                                       )
-        self.button_system_1.place( relx = 0.2, rely = 0.45, relwidth = 0.1, relheight = 0.051 )
+        self.button_system_1.place( relx = 0, rely = 0.54, relwidth = 0.1285, relheight = 0.051 )
 
 
 
@@ -101,12 +100,12 @@ class guess_page(tk.Frame):
     #---------- Computer System # 2 ----------------%
         system_name_2 = "workstations"  # store manager input 
         image_tempo = Image.open( f"images/computer_systems/{system_name_2}.png" )
-        image_tempo = image_tempo.resize(  (385,140), Image.ANTIALIAS )
+        image_tempo = image_tempo.resize(  (160,160), Image.ANTIALIAS )
         self.system2 = ImageTk.PhotoImage(  image_tempo )
         
         self.label_system2 = tk.Label( image = self.system2 )
         self.label_system2.image = self.system2 
-        self.label_system2.place( x = 0, y = 342 )
+        self.label_system2.place( x = 179.5, y = 204 )
 
         # Buttton Computer System # 2
         self.style.configure( "Computer_system_bt2.TButton",  
@@ -121,7 +120,7 @@ class guess_page(tk.Frame):
                                         command = self.command_button_system_2, 
                                         style = "Computer_system_bt2.TButton"  
                                       )
-        self.button_system_2.place( relx = 0.2, rely = 0.652, relwidth = 0.1, relheight = 0.051 )
+        self.button_system_2.place( relx = 0.14, rely = 0.54, relwidth = 0.1285, relheight = 0.051 )
 
 
 
@@ -134,12 +133,12 @@ class guess_page(tk.Frame):
        
         system_name_3 = "mainframes"  # store manager input 
         image_tempo = Image.open( f"images/computer_systems/{system_name_3}.png" )
-        image_tempo = image_tempo.resize(  (385,140), Image.ANTIALIAS )
+        image_tempo = image_tempo.resize(  (160,160), Image.ANTIALIAS )
         self.system3 = ImageTk.PhotoImage(  image_tempo )
         
         self.label_system3 = tk.Label( image = self.system3 )
         self.label_system3.image = self.system3 
-        self.label_system3.place( x = 0, y = 475 )
+        self.label_system3.place( x = 361, y = 204 )
 
         # Buttton Computer System # 3
         self.style.configure( "Computer_system_bt3.TButton",  
@@ -154,7 +153,7 @@ class guess_page(tk.Frame):
                                         command = self.command_button_system_3, 
                                         style = "Computer_system_bt3.TButton"  
                                       )
-        self.button_system_3.place( relx = 0.2, rely = 0.869, relwidth = 0.1, relheight = 0.051 )
+        self.button_system_3.place( relx = 0.28, rely = 0.54, relwidth = 0.1285, relheight = 0.051 )
 
 
 
@@ -164,16 +163,16 @@ class guess_page(tk.Frame):
 
     #-----------------3 Most popular computers LABEL----------------
         self.style.configure( "Popular_Computers_Label.TLabel", 
-                               anchor = "middle", 
+                               anchor = "left", 
                                font = ("Helvetica", 16),
                                background = '#49A'  
                             )
         self.Popular_Computers_Label = tk.ttk.Label( self.top, 
-                                        text = "     Top 3 Best Selling Computers", 
+                                        text = "Top 3 Best Selling Computers", 
                                         style =  "Popular_Computers_Label.TLabel" 
                                       )
-        self.Popular_Computers_Label.place( relx = 0.33, rely = 0.2, 
-                               relwidth = 0.305 , relheight = 0.1 
+        self.Popular_Computers_Label.place( relx = 0.43, rely = 0.2, 
+                               relwidth = 0.580 , relheight = 0.1 
                             )
          
     #-------------------------------------------------------------
@@ -186,12 +185,12 @@ class guess_page(tk.Frame):
         #-------------------Most popular computer #1------------------$
         computer_name_1 = "Lenovo ThinkPad X390 Yoga Laptop"  # read it from the csv file  
         image_tempo = Image.open( f"images/Lenovo_computers/{computer_name_1}.png" )
-        image_tempo = image_tempo.resize(  (385,105), Image.ANTIALIAS )
+        image_tempo = image_tempo.resize(  (190,160), Image.ANTIALIAS )
         self.computer1 = ImageTk.PhotoImage(  image_tempo )
         
         self.label_computer1 = tk.Label( image = self.computer1 )
         self.label_computer1.image = self.computer1 
-        self.label_computer1.place( x = 424, y = 204 )
+        self.label_computer1.place( x = 553, y = 204 )
 
         # Buttton Computer # 1
         self.style.configure( "Popular_Computer_bt1.TButton",  
@@ -206,7 +205,7 @@ class guess_page(tk.Frame):
                                         command = self.command_button_computer_1, 
                                         style = "Popular_Computer_bt1.TButton"  
                                       )
-        self.button_computer_1.place( relx = 0.3325, rely = 0.475, relwidth = 0.3, relheight = 0.051 )
+        self.button_computer_1.place( relx = 0.4315, rely = 0.54, relwidth = 0.15, relheight = 0.051 )
 
 
 
@@ -217,12 +216,12 @@ class guess_page(tk.Frame):
      #-------------------Most popular computer #2------------------%
         computer_name_2 = "Lenovo Legion 7i"  # read it from the csv file  
         image_tempo = Image.open( f"images/Lenovo_computers/{computer_name_2}.png" )
-        image_tempo = image_tempo.resize(  (385,105), Image.ANTIALIAS )
+        image_tempo = image_tempo.resize(  (190,160), Image.ANTIALIAS )
         self.computer2 = ImageTk.PhotoImage(  image_tempo )
         
         self.label_computer2 = tk.Label( image = self.computer2 )
         self.label_computer2.image = self.computer2 
-        self.label_computer2.place( x = 424, y = 360 )
+        self.label_computer2.place( x = 818, y = 204 )
 
         # Buttton Computer # 2
         self.style.configure( "Popular_Computer_bt2.TButton",  
@@ -237,7 +236,7 @@ class guess_page(tk.Frame):
                                         command = self.command_button_computer_2, 
                                         style = "Popular_Computer_bt2.TButton"  
                                       )
-        self.button_computer_2.place( relx = 0.3325, rely = 0.712, relwidth = 0.3, relheight = 0.051 )
+        self.button_computer_2.place( relx = 0.637, rely = 0.54, relwidth = 0.15, relheight = 0.051 )
 
 
 
@@ -249,12 +248,12 @@ class guess_page(tk.Frame):
      #-------------------Most popular computer #3------------------=
         computer_name_3 = "Lenovo Chromebook S330"  # read it from the csv file  
         image_tempo = Image.open( f"images/Lenovo_computers/{computer_name_3}.png" )
-        image_tempo = image_tempo.resize(  (385,105), Image.ANTIALIAS )
+        image_tempo = image_tempo.resize(  (190,160), Image.ANTIALIAS )
         self.computer3 = ImageTk.PhotoImage(  image_tempo )
         
         self.label_computer3 = tk.Label( image = self.computer3 )
         self.label_computer3.image = self.computer3 
-        self.label_computer3.place( x = 424, y = 510 )
+        self.label_computer3.place( x = 1080, y = 204 )
 
         # Buttton Computer # 3
         self.style.configure( "Popular_Computer_bt3.TButton",  
@@ -269,7 +268,7 @@ class guess_page(tk.Frame):
                                         command = self.command_button_computer_3, 
                                         style = "Popular_Computer_bt3.TButton"  
                                       )
-        self.button_computer_3.place( relx = 0.3325, rely = 0.932, relwidth = 0.3, relheight = 0.051 )
+        self.button_computer_3.place( relx = 0.8425, rely = 0.54, relwidth = 0.15, relheight = 0.051 )
 
 
 
@@ -297,7 +296,9 @@ class guess_page(tk.Frame):
     #-------------------------Back Button----------------------------
 
         self.style.configure(   "CommandBack.TButton", 
-                                font=('Helvetica',16)
+                                font=('Helvetica',16),
+                                background = "green",
+                                foreground = "black"
                             )
         self.CommandBack = tk.ttk.Button(   self.top, 
                                             text="Back",
