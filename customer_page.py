@@ -1,12 +1,13 @@
 import tkinter as tk 
 import tkinter.ttk as ttk 
 from PIL import ImageTk, Image
-
+from tkinter.messagebox import askyesno
 
 
 # python script 
 import main as home 
-
+import laptops_page
+import setting_account
 
 class customer_page(tk.Frame):
 
@@ -52,10 +53,12 @@ class customer_page(tk.Frame):
                                relwidth = 0.3 , relheight = 0.15 
                             )
         #------------------------------------------------------------
-        
+
+
+
         #--------------------Computer System Label-----------------------
         self.style.configure( "Computer_System_Label.TLabel", 
-                               anchor = "left", 
+                               anchor = "center", 
                                font = ("Helvetica", 16),
                                background = '#49A'  
                             )
@@ -74,7 +77,10 @@ class customer_page(tk.Frame):
         
 
             #---------- Computer System # 1 ----------------$
-        system_name_1 = "laptops"  # store manager input 
+
+
+        self.computer_systems = self.manager_system_inputs()
+        system_name_1 = self.computer_systems[0]  # store manager input 
         image_tempo = Image.open( f"images/computer_systems/{system_name_1}.png" )
         image_tempo = image_tempo.resize(  (160,160), Image.ANTIALIAS )
         self.system1 = ImageTk.PhotoImage(  image_tempo )
@@ -103,7 +109,7 @@ class customer_page(tk.Frame):
             #---------------$$$$$$$$$$$$$--------------------------
 
     #---------- Computer System # 2 ----------------%
-        system_name_2 = "workstations"  # store manager input 
+        system_name_2 = self.computer_systems[1]  # store manager input 
         image_tempo = Image.open( f"images/computer_systems/{system_name_2}.png" )
         image_tempo = image_tempo.resize(  (160,160), Image.ANTIALIAS )
         self.system2 = ImageTk.PhotoImage(  image_tempo )
@@ -136,7 +142,7 @@ class customer_page(tk.Frame):
 
     #---------- Computer System # 3 ----------------=
        
-        system_name_3 = "mainframes"  # store manager input 
+        system_name_3 = self.computer_systems[2]  # store manager input 
         image_tempo = Image.open( f"images/computer_systems/{system_name_3}.png" )
         image_tempo = image_tempo.resize(  (160,160), Image.ANTIALIAS )
         self.system3 = ImageTk.PhotoImage(  image_tempo )
@@ -168,12 +174,12 @@ class customer_page(tk.Frame):
 
     #-----------------3 Most popular computers LABEL----------------
         self.style.configure( "Popular_Computers_Label.TLabel", 
-                               anchor = "middle", 
+                               anchor = "left", 
                                font = ("Helvetica", 16),
                                background = '#49A'  
                             )
         self.Popular_Computers_Label = tk.ttk.Label( self.top, 
-                                        text = "     Top 3 Best Selling Computers", 
+                                        text = "Top 3 Best Selling Computers", 
                                         style =  "Popular_Computers_Label.TLabel" 
                                       )
         self.Popular_Computers_Label.place( relx = 0.43, rely = 0.2, 
@@ -282,15 +288,290 @@ class customer_page(tk.Frame):
 
 
 
+
+
+
+
+
+
+
+
+
     #---------------------------------------------------------------------------------
 
 
 
+    #------------------------Operating System Section--------------------------------
+
+        # Label for operating system: Mac, Windows, Linux
+        self.style.configure( "Popular_Computers_Label.TLabel", 
+                               anchor = "left", 
+                               font = ("Helvetica", 16),
+                               background = '#49A'  
+                            )
+        self.Popular_Computers_Label = tk.ttk.Label( self.top, 
+                                        text = "Operating\nSystems:", 
+                                        style =  "Popular_Computers_Label.TLabel" 
+                                      )
+        self.Popular_Computers_Label.place( relx = 0, rely = 0.6, 
+                               relwidth = 0.09 , relheight = 0.175 
+                            )
+        #-------------------
+
+        # Picture windows-mac-linux
+        image_tempo = Image.open( f"images/operating_systems/mac_linux_windows_banner.png" )
+        image_tempo = image_tempo.resize(  (400,115), Image.ANTIALIAS )
+        self.operating_systems = ImageTk.PhotoImage(  image_tempo )
+        
+        self.label_operating_systems = tk.Label( image = self.operating_systems )
+        self.label_operating_systems.image = self.operating_systems 
+        self.label_operating_systems.place( x = 120, y = 404 )
+        #-----------
+
+        # Button Windows 
+        self.style.configure( "Windows_Computer_bt.TButton",  
+                              anchor = "center", 
+                              font = ( "Helvetica", 8 ),
+                              background = "green",
+                              foreground = "black"                                
+                            )
+                            
+        self.button_windows_computers = tk.ttk.Button(  self.top, 
+                                        text = "Windows" ,
+                                        command = self.command_windows , 
+                                        style = "Windows_Computer_bt.TButton"  
+                                      )
+        self.button_windows_computers.place( relx = 0.3, rely = 0.72,
+                                     relwidth = 0.08, relheight = 0.04)
+
+        # Button Mac
+        self.style.configure( "Mac_Computer_bt.TButton",  
+                              anchor = "center", 
+                              font = ( "Helvetica", 8 ),
+                              background = "green",
+                              foreground = "black"                                
+                            )
+                            
+        self.button_mac_computers = tk.ttk.Button(  self.top, 
+                                        text = "Mac" ,
+                                        command = self.command_mac , 
+                                        style = "Mac_Computer_bt.TButton"  
+                                      )
+        self.button_mac_computers.place( relx = 0.1225, rely = 0.72,
+                                     relwidth = 0.07, relheight = 0.04 )
 
 
 
-    #-------------------------Log out ----------------------------
 
+        # Button Linux
+        self.style.configure( "Linux_Computer_bt.TButton",  
+                              anchor = "center", 
+                              font = ( "Helvetica", 8 ),
+                              background = "green",
+                              foreground = "black"                                
+                            )
+                            
+        self.button_linux_computers = tk.ttk.Button(  self.top, 
+                                        text = "Linux" ,
+                                        command = self.command_linux , 
+                                        style = "Linux_Computer_bt.TButton"  
+                                      )
+        self.button_linux_computers.place( relx = 0.2125, rely = 0.72,
+                                     relwidth = 0.07, relheight = 0.04)
+        
+
+    #-------------------------------------------------------------------------------
+
+
+
+    #------------------Architecture Section------------------------------
+
+
+        # Label for architecture
+        self.style.configure( "Architecture_Label.TLabel", 
+                               anchor = "left", 
+                               font = ("Helvetica", 15),
+                               background = '#49A'  
+                            )
+        self.Architecture_Label = tk.ttk.Label( self.top, 
+                                        text = "Architecture:", 
+                                        style =  "Architecture_Label.TLabel" 
+                                      )
+        self.Architecture_Label.place( relx = 0, rely = 0.77, 
+                               relwidth = 0.09 , relheight = 0.2 
+                            )
+        #-------------------
+
+
+
+
+    # Picture Intell Arm logo
+        image_tempo = Image.open( f"images/architecture/intel_arm.png" )
+        image_tempo = image_tempo.resize(  (400,115), Image.ANTIALIAS )
+        self.architecture = ImageTk.PhotoImage(  image_tempo )
+        
+        self.label_architecture = tk.Label( image = self.architecture )
+        self.label_architecture.image = self.architecture 
+        self.label_architecture.place( x = 120, y = 524 )
+    #-----------
+
+    # Intell Button
+        self.style.configure( "Intel_bt.TButton",  
+                              anchor = "center", 
+                              font = ( "Helvetica", 8 ),
+                              background = "green",
+                              foreground = "black"                                
+                            )
+                            
+        self.button_intel = tk.ttk.Button(  self.top, 
+                                        text = "Intel" ,
+                                        command = self.command_intel , 
+                                        style = "Intel_bt.TButton"  
+                                      )
+        self.button_intel.place( relx = 0.142, rely = 0.9,
+                                     relwidth = 0.07, relheight = 0.04 )
+    #----------------
+
+    # Arm Button
+        self.style.configure( "Arm_bt.TButton",  
+                              anchor = "center", 
+                              font = ( "Helvetica", 8 ),
+                              background = "green",
+                              foreground = "black"                                
+                            )
+                            
+        self.button_arm = tk.ttk.Button(  self.top, 
+                                        text = "Arm" ,
+                                        command = self.command_arm , 
+                                        style = "Arm_bt.TButton"  
+                                      )
+        self.button_arm.place( relx = 0.285, rely = 0.9,
+                                     relwidth = 0.07, relheight = 0.04 )
+    #----------------
+
+
+
+
+
+    #--------------------------------------------------------------------
+
+
+    #---------------------Computer Parts Section-------------------------------------
+        image_tempo = Image.open( f"images/computer_parts/cpu_gpu.png" )
+        image_tempo = image_tempo.resize(  (290,220), Image.ANTIALIAS )
+        self.gpu_cpu = ImageTk.PhotoImage(  image_tempo )
+        
+        self.label_gpu_cpu = tk.Label( image = self.gpu_cpu )
+        self.label_gpu_cpu.image = self.gpu_cpu
+        self.label_gpu_cpu.place( x = 976, y = 411 )
+
+
+    # Computer Parts Button
+        self.style.configure( "computer_parts_bt.TButton",  
+                              anchor = "center", 
+                              font = ( "Helvetica", 8 ),
+                              background = "green",
+                              foreground = "black"                                
+                            )
+                            
+        self.button_computer_parts = tk.ttk.Button(  self.top, 
+                                        text = "Computer Parts" ,
+                                        command = self.command_computer_parts , 
+                                        style = "computer_parts_bt.TButton"  
+                                      )
+        self.button_computer_parts.place( relx = 0.92, rely = 0.88,
+                                     relwidth = 0.07, relheight = 0.051 )
+    #----------------
+
+
+
+
+    #-----------------------------------------------------------------------
+
+
+
+    #---------------------Main Purpose Section------------------------------
+
+
+        # Image for main purpose
+        image_tempo = Image.open( f"images/main_purpose/main_purpose.png" )
+        image_tempo = image_tempo.resize(  (400,240), Image.ANTIALIAS )
+        self.gpu_cpu = ImageTk.PhotoImage(  image_tempo )
+        
+        self.label_gpu_cpu = tk.Label( image = self.gpu_cpu )
+        self.label_gpu_cpu.image = self.gpu_cpu
+        self.label_gpu_cpu.place( x = 553, y = 411 )
+        #--------------------------
+
+
+
+        # Gaming Computers Button
+        self.style.configure( "gaming_computers_bt.TButton",  
+                              anchor = "center", 
+                              font = ( "Helvetica", 8 ),
+                              background = "green",
+                              foreground = "black"                                
+                            )
+                            
+        self.button_gaming_computers = tk.ttk.Button(  self.top, 
+                                        text = "Gaming Computers" ,
+                                        command = self.command_gaming_computers , 
+                                        style = "gaming_computers_bt.TButton"  
+                                      )
+        self.button_gaming_computers.place( relx = 0.5, rely = 0.735,
+                                     relwidth = 0.08, relheight = 0.051 )
+    #----------------
+
+
+    # Business Computers Button
+        self.style.configure( "business_computers_bt.TButton",  
+                              anchor = "center", 
+                              font = ( "Helvetica", 8 ),
+                              background = "green",
+                              foreground = "black"                                
+                            )
+                            
+        self.button_business_computers = tk.ttk.Button(  self.top, 
+                                        text = "Business Computers" ,
+                                        command = self.command_business_computers , 
+                                        style = "business_computers_bt.TButton"  
+                                      )
+        self.button_business_computers.place( relx = 0.6475, rely = 0.9,
+                                     relwidth = 0.1, relheight = 0.051 )
+    #----------------
+
+
+
+    # Scientific Computers Button
+        self.style.configure( "scientific_computers_bt.TButton",  
+                              anchor = "center", 
+                              font = ( "Helvetica", 8 ),
+                              background = "green",
+                              foreground = "black"                                
+                            )
+                            
+        self.button_scientific_computers = tk.ttk.Button(  self.top, 
+                                        text = "Scientific Computers" ,
+                                        command = self.command_scientific_computers , 
+                                        style = "scientific_computers_bt.TButton"  
+                                      )
+        self.button_scientific_computers.place( relx = 0.64, rely = 0.735,
+                                     relwidth = 0.1, relheight = 0.051 )
+    #----------------
+
+
+
+    #-----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+    #-------------------------Log out----------------------------
         self.style.configure(   "Log_out.TButton", 
                                 font=('Helvetica',16),
                                 background = "green",
@@ -301,29 +582,94 @@ class customer_page(tk.Frame):
                                             command = self.log_out,
                                             style = "Log_out.TButton"
                                         )
-        self.log_out.place(relx=0.796, rely=0.886, relwidth=0.190, relheight=0.093)
 
 
+        self.log_out.place(relx=0.870, rely=0.15, relwidth= 0.13, relheight=0.05)
 
-        #-----------------------------------------------------------
+    #-----------------------------------------------------------
 
+
+    #-------------------------Settings Button----------------------------
+        self.style.configure(   "Settings.TButton", 
+                                font=('Helvetica',16),
+                                background = "green",
+                                foreground = "black"
+                            )
+        self.Command_Settings = tk.ttk.Button(   self.top, 
+                                            text = "Settings",
+                                            command = self.command_Settings,
+                                            style = "Settings.TButton"
+                                        )
+        self.Command_Settings.place(relx=0.870, rely=0.095, relwidth= 0.13, relheight=0.05)
+    #-----------------------------------------------------------
 
 
 
     def log_out(self, event=None):
-        self.top.destroy()
-        home.HomePage()        
+        if askyesno("Exit", f"{self.customer_name}, are you sure you want to log out?"):
+            self.top.destroy()
+            home.HomePage()        
 
+    
+    def command_Settings(self):
+        self.top.destroy()
+        setting_account.setting_account(customer_name = self.customer_name , 
+        customer_Id = self.customer_Id, customer_username = self.customer_username  )
+        
 
     #------------ Commands for the 3 systems chosen by the manager--------------
     def command_button_system_1(self):
-        self.top.destroy()
+        system_1 = self.computer_systems[0].lower()
+
+        if system_1 == "laptops": 
+            self.top.destroy()      
+            laptops_page.laptops_page(customer_name= self.customer_name, 
+                        customer_Id = self.customer_Id, customer_username = self.customer_username)
+        elif system_1 == "mainframes":
+            self.top.destroy()
+        elif system_1 == "workstations":
+            self.top.destroy()
+        elif system_1 == "servers":
+            self.top.destroy()
+        elif system_1 == "supercomputers":
+            self.top.destroy()
+
+        
 
     def command_button_system_2(self):
-        self.top.destroy()
+        system_2 = self.computer_systems[1].lower()
+        
+        if system_2 == "laptops": 
+            self.top.destroy()      
+            laptops_page.laptops_page(customer_name= self.customer_name, 
+                        customer_Id = self.customer_Id, customer_username = self.customer_username)
+        elif system_2 == "mainframes":
+            self.top.destroy()
+        elif system_2 == "workstations":
+            self.top.destroy()
+        elif system_2 == "servers":
+            self.top.destroy()
+        elif system_2 == "supercomputers":
+            self.top.destroy()
 
     def command_button_system_3(self):
-        self.top.destroy()
+        system_3 = self.computer_systems[2]
+        
+        if system_3 == "laptops": 
+            self.top.destroy()      
+            laptops_page.laptops_page(customer_name= self.customer_name, 
+                        customer_Id = self.customer_Id, customer_username = self.customer_username)
+        elif system_3 == "mainframes":
+            self.top.destroy()
+        elif system_3 == "workstations":
+            self.top.destroy()
+        elif system_3 == "servers":
+            self.top.destroy()
+        elif system_3 == "supercomputers":
+            self.top.destroy()
+       
+
+
     #-------------------------------------------------------------------------
 
     #----------------- Commands for the most popular computers---------
@@ -337,3 +683,60 @@ class customer_page(tk.Frame):
         self.top.destroy()
 
     #-------------------------------------------------------------------
+
+
+    #-------------Commands for the OS: Windows, Mac, Linux-----------
+    def command_windows(self):
+        self.top.destroy()
+
+    def command_mac(self):
+        self.top.destroy()
+
+    def command_linux(self):
+        self.top.destroy()
+    #------------------------------------------------------------------
+
+    #-----------------Commands for architectures: Intel and Arm--------
+    def command_intel(self):
+        self.top.destroy()
+    
+    def command_arm(self):
+        self.top.destroy()
+    #------------------------------------------------------------------ 
+
+
+    #-----------------Command for Computer Parts-----------------
+    def command_computer_parts(self):
+        self.top.destroy()
+
+    #---------------------------------------------------------------
+
+    #--------------------Command Main Purpose-----------------------
+    def command_gaming_computers(self):
+        self.top.destroy()
+
+    def command_business_computers(self):
+        self.top.destroy()
+
+    def command_scientific_computers(self):
+        self.top.destroy()
+    #---------------------------------------------------------------
+
+
+
+    #------------Manager deciding what system should be on the homepage-------
+    def manager_system_inputs(self, system1 = None, system2 = None,
+                              system3 = None, default = True):
+        if default:
+            system_1 = "laptops"
+            system_2 = "workstations"
+            system_3 = "mainframes"
+        else:
+            system_1 = system1
+            system_2 = system2
+            system_3 = system3 
+
+
+        return (system_1, system_2, system_3)  
+
+    #--------------------------------------------------------------------------  

@@ -7,6 +7,11 @@ from PIL import ImageTk, Image
 # python script 
 import guess_welcome 
 import sign_up_page
+import registered_login
+#----computer systems Pages--
+import laptops_page
+
+
 
 class guess_page(tk.Frame):
 
@@ -71,8 +76,8 @@ class guess_page(tk.Frame):
             #---------- Computer System # 1 ----------------$
 
 
-
-        system_name_1 = "laptops"  # store manager input 
+        self.computer_systems = self.manager_system_inputs()
+        system_name_1 = self.computer_systems[0]  # store manager input 
         image_tempo = Image.open( f"images/computer_systems/{system_name_1}.png" )
         image_tempo = image_tempo.resize(  (160,160), Image.ANTIALIAS )
         self.system1 = ImageTk.PhotoImage(  image_tempo )
@@ -101,7 +106,7 @@ class guess_page(tk.Frame):
             #---------------$$$$$$$$$$$$$--------------------------
 
     #---------- Computer System # 2 ----------------%
-        system_name_2 = "workstations"  # store manager input 
+        system_name_2 = self.computer_systems[1]  # store manager input 
         image_tempo = Image.open( f"images/computer_systems/{system_name_2}.png" )
         image_tempo = image_tempo.resize(  (160,160), Image.ANTIALIAS )
         self.system2 = ImageTk.PhotoImage(  image_tempo )
@@ -134,7 +139,7 @@ class guess_page(tk.Frame):
 
     #---------- Computer System # 3 ----------------=
        
-        system_name_3 = "mainframes"  # store manager input 
+        system_name_3 = self.computer_systems[2]  # store manager input 
         image_tempo = Image.open( f"images/computer_systems/{system_name_3}.png" )
         image_tempo = image_tempo.resize(  (160,160), Image.ANTIALIAS )
         self.system3 = ImageTk.PhotoImage(  image_tempo )
@@ -595,6 +600,21 @@ class guess_page(tk.Frame):
     #-----------------------------------------------------------
 
 
+    #-------------------------Log In Button----------------------------
+        self.style.configure(   "Command_Log_In.TButton", 
+                                font=('Helvetica',16),
+                                background = "green",
+                                foreground = "black"
+                            )
+        self.Command_Log_In = tk.ttk.Button(   self.top, 
+                                            text = "Log In",
+                                            command = self.Command_Log_In,
+                                            style = "Command_Log_In.TButton"
+                                        )
+        self.Command_Log_In.place(relx=0.734, rely=0.15, relwidth= 0.13, relheight=0.05)
+    #-----------------------------------------------------------
+
+
 
 
 
@@ -608,16 +628,56 @@ class guess_page(tk.Frame):
         self.top.destroy()
         sign_up_page.sign_up_page()
 
+    def Command_Log_In(self):
+        self.top.destroy()
+        registered_login.registered_login()
+
 
     #------------ Commands for the 3 systems chosen by the manager--------------
     def command_button_system_1(self):
-        self.top.destroy()
+        system_1 = self.computer_systems[0].lower()
+        if system_1 == "laptops": 
+            self.top.destroy()
+            laptops_page.laptops_page()
+        elif system_1 == "mainframes":
+            self.top.destroy()
+        elif system_1 == "workstations":
+            self.top.destroy()
+        elif system_1 == "servers":
+            self.top.destroy()
+        elif system_1 == "supercomputers":
+            self.top.destroy()
 
     def command_button_system_2(self):
-        self.top.destroy()
+        system_2 = self.computer_systems[1].lower()
+        
+        if system_2 == "laptops": 
+            self.top.destroy()
+            laptops_page.laptops_page()
+        elif system_2 == "mainframes":
+            self.top.destroy()
+        elif system_2 == "workstations":
+            self.top.destroy()
+        elif system_2 == "servers":
+            self.top.destroy()
+        elif system_2 == "supercomputers":
+            self.top.destroy()
+
 
     def command_button_system_3(self):
-        self.top.destroy()
+        system_3 = self.computer_systems[2].lower()
+
+        if system_3 == "laptops": 
+            self.top.destroy()
+            laptops_page.laptops_page()
+        elif system_3 == "mainframes":
+            self.top.destroy()
+        elif system_3 == "workstations":
+            self.top.destroy()
+        elif system_3 == "servers":
+            self.top.destroy()
+        elif system_3 == "supercomputers":
+            self.top.destroy()
 
 
 
@@ -673,3 +733,22 @@ class guess_page(tk.Frame):
     def command_scientific_computers(self):
         self.top.destroy()
     #---------------------------------------------------------------
+
+
+
+    #------------Manager deciding what system should be on the homepage-------
+    def manager_system_inputs(self, system1 = None, system2 = None,
+                              system3 = None, default = True):
+        if default:
+            system_1 = "laptops"
+            system_2 = "workstations"
+            system_3 = "mainframes"
+        else:
+            system_1 = system1
+            system_2 = system2
+            system_3 = system3 
+
+
+        return (system_1, system_2, system_3)  
+
+    #--------------------------------------------------------------------------  
