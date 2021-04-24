@@ -149,9 +149,9 @@ class sign_up_page(tk.Frame):
         flag_duplicates = False 
         if (len(df) == 0 ):
             Id = 0
-            tempo = pd.DataFrame( [["0", Name, Username.lower(), Password, "empty","0", "","0.00",""]],
+            tempo = pd.DataFrame( [["0", Name, Username.lower(), Password, "empty","0", "","0.00","","active"]],
                             columns = ['ID', 'Name', 'Username', 'Password', 'Credit card account',
-                            'Warnings', 'Home Address', 'Balance', 'Phone number'] 
+                            'Warnings', 'Home Address', 'Balance', 'Phone number', "Status"] 
                             )
             df = df.append(tempo)
              
@@ -163,9 +163,9 @@ class sign_up_page(tk.Frame):
             else:
                 Id = int( df['ID'].iloc[-1] )
                 Id += 1 
-                tempo = pd.DataFrame( [[ str(Id) , Name, Username.lower(), Password, "empty","0","","0.00",""] ],
+                tempo = pd.DataFrame( [[ str(Id) , Name, Username.lower(), Password, "empty","0","","0.00","", "active"] ],
                               columns = ['ID', 'Name', 'Username', 'Password', 'Credit card account',
-                              'Warnings', 'Home Address','Balance', 'Phone number'] 
+                              'Warnings', 'Home Address','Balance', 'Phone number', "Status"] 
                             )
                 df = df.append(tempo)
                 

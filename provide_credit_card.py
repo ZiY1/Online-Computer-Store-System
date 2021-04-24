@@ -134,6 +134,7 @@ class provide_credit_card(tk.Frame):
     def command_add_card(self):
         
         Card_No = self.Cardnumber.get()
+        Card_No = str( Card_No)
         Name = self.TextName.get()
         Exp_Month = self.Exp_MonthVar.get() 
         Exp_Year = self.Exp_YearVar.get() 
@@ -186,7 +187,7 @@ class provide_credit_card(tk.Frame):
             flag_duplicate_credit_card = False
             flag_already_linked = False
             for i in range( len(df)):
-                card_checked = df['Credit card account'].iloc[i].replace( " ", "" )
+                card_checked = str(df['Credit card account'].iloc[i]).replace( " ", "" )
                 if df['Username'].iloc[i] != self.customer_username and Card == card_checked:
                     flag_duplicate_credit_card = True
 

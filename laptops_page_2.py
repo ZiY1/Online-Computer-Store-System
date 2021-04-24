@@ -90,15 +90,38 @@ class laptops_page_2(tk.Frame):
 
         plus_x = 0
         plus_y = 0 
+
         plus_relx = 0 
         plus_rely = 0 
     
+        self.lenovo_images = []
         self.Buttons = []
 
         for i in range( len(df_laptop)):
             laptop_name = df_laptop.iloc[i]['Name']
             image_tempo = Image.open( f"images/Lenovo_Laptops/{laptop_name}.png" )
             image_tempo = image_tempo.resize(  (190,160), Image.ANTIALIAS )
+            
+            self.lenovo_images.append(None)
+
+            self.lenovo_images[i] = ImageTk.PhotoImage(  image_tempo )
+            self.Buttons.append(None)
+            
+            self.Buttons[i] = tk.Button( self.top, 
+             command = lambda computer_name = laptop_name: self.command_laptop(computer_name), 
+             text = laptop_name, fg = "black", image = self.lenovo_images[i],
+             activebackground = "light blue", compound = "top")
+
+            self.Buttons[i].place( relx = 0 + plus_relx, rely = 0.2 + plus_rely, 
+                                    relwidth = 0.1495, relheight = 0.27)
+            plus_relx += 0.1635 
+
+            if plus_relx > 0.9: 
+                plus_relx = 0  
+                plus_rely += 0.35
+            
+
+            '''
             self.lenovo_laptop = ImageTk.PhotoImage(  image_tempo )
             self.Lenovo_laptop_1 = tk.Label( image = self.lenovo_laptop )
             self.Lenovo_laptop_1.image = self.lenovo_laptop 
@@ -125,7 +148,7 @@ class laptops_page_2(tk.Frame):
                 plus_relx = 0 
                 plus_y += 240 
                 plus_rely += 0.35 
-        
+            '''
 
 
 

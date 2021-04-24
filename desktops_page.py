@@ -91,15 +91,37 @@ class desktops_page(tk.Frame):
         
         plus_x = 0
         plus_y = 0 
+    
         plus_relx = 0 
         plus_rely = 0 
-        flag_row = True 
-
+    
+        self.lenovo_images = []
         self.Buttons = []
         for i in range( len(df_desktop) -1  ):
             desktop_name = df_desktop.iloc[i]['Name']
             image_tempo = Image.open( f"images/Lenovo_Desktops/{desktop_name}.png" )
-            image_tempo = image_tempo.resize(  (190,160), Image.ANTIALIAS )
+            image_tempo = image_tempo.resize(  (195,160), Image.ANTIALIAS )
+            
+            self.lenovo_images.append(None)
+            self.lenovo_images[i] = ImageTk.PhotoImage(  image_tempo )
+            self.Buttons.append(None)
+            
+            self.Buttons[i] = tk.Button( self.top, 
+             command = lambda computer_name = desktop_name: self.command_desktop(computer_name), 
+             text = desktop_name, fg = "black", image = self.lenovo_images[i],
+             activebackground = "light blue", compound = "top")
+
+            self.Buttons[i].place( relx = 0 + plus_relx, rely = 0.2 + plus_rely, 
+                                    relwidth = 0.1575, relheight = 0.27)
+            plus_relx += 0.1635 
+
+            if plus_relx > 0.9: 
+                plus_relx = 0  
+                plus_rely += 0.35
+            
+            
+            
+            '''
             self.lenovo_desktop = ImageTk.PhotoImage(  image_tempo )
             self.Lenovo_desktop_1 = tk.Label( image = self.lenovo_desktop )
             self.Lenovo_desktop_1.image = self.lenovo_desktop 
@@ -121,12 +143,11 @@ class desktops_page(tk.Frame):
             plus_relx += 0.1635 
 
             if plus_x > 1100: 
-                flag_row = False
                 plus_x = 0 
                 plus_relx = 0 
                 plus_y += 240
                 plus_rely += 0.35
-        
+            '''
     #----------------------------------------------------------------------------------------------
 
 

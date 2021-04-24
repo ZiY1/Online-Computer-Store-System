@@ -103,11 +103,30 @@ class guess_page(tk.Frame):
         
         plus_x = 0 
         plus_relx = 0 
+        
+        self.system_images = []
         self.System_Buttons = []
+        
         for i in range( len(self.computer_systems) ):
             system_name = self.computer_systems[i]
          
             image_tempo = Image.open( f"images/computer_systems/{system_name}.png" )
+            image_tempo = image_tempo.resize( (160,160), Image.ANTIALIAS)
+            
+            self.system_images.append(None)
+            self.system_images[i] = ImageTk.PhotoImage(  image_tempo )
+            
+            self.System_Buttons.append(None)
+
+            self.System_Buttons[i] = tk.Button( self.top, text = f"{system_name}", fg = "black",
+                command = lambda name_system = system_name: self.command_button_system(name_system),
+                image = self.system_images[i], activebackground = "light blue", compound = "top")
+            
+            self.System_Buttons[i].place( relx = 0 + plus_relx, rely = 0.32, 
+                                    relwidth = 0.13, relheight = 0.26 )
+            plus_relx += 0.14
+
+            '''
             image_tempo = image_tempo.resize(  (160,160), Image.ANTIALIAS )
             self.system = ImageTk.PhotoImage(  image_tempo )
             
@@ -133,7 +152,7 @@ class guess_page(tk.Frame):
             self.System_Buttons[i].place( relx = 0 + plus_relx, rely = 0.54, relwidth = 0.1285, 
                                           relheight = 0.051 )
             plus_relx += 0.14
-
+            '''
 
     #--------------------------------------------------------------------------------------------------
     
@@ -169,6 +188,7 @@ class guess_page(tk.Frame):
         plus_y = 0 
         plus_relx = 0 
 
+        self.lenovo_images = []
         self.Computer_Buttons = []
         for i in range(len(popular_computers)):
             computer_name = popular_computers.iloc[i]['Name']
@@ -185,7 +205,22 @@ class guess_page(tk.Frame):
             elif computer_type == "mainframe":
                 image_tempo = Image.open( f"images/mainframes/{computer_name}.png" )
 
-            image_tempo = image_tempo.resize(  (190,160), Image.ANTIALIAS )
+            image_tempo = image_tempo.resize(  (220,160), Image.ANTIALIAS )
+            self.lenovo_images.append(None)
+
+            self.lenovo_images[i] = ImageTk.PhotoImage(  image_tempo )
+            self.Computer_Buttons.append(None)
+            
+            self.Computer_Buttons[i] = tk.Button( self.top, 
+             command = lambda name = computer_name, type_ = computer_type : self.command_computers(name,type_), 
+             text = f"{computer_name}", fg = "black", image = self.lenovo_images[i],
+             activebackground = "light blue", compound = "top")
+
+            self.Computer_Buttons[i].place( relx = 0.4315 + plus_relx, rely = 0.32, 
+                                    relwidth = 0.175, relheight = 0.26)
+            plus_relx += 0.19 
+
+            '''
             self.computer1 = ImageTk.PhotoImage(  image_tempo )    
             self.label_computer1 = tk.Label( image = self.computer1 )
             self.label_computer1.image = self.computer1 
@@ -209,7 +244,7 @@ class guess_page(tk.Frame):
             self.Computer_Buttons[i].place( relx = 0.4315 + plus_relx, rely = 0.54, relwidth = 0.15, relheight = 0.051 )
 
             plus_relx += 0.2027 
-
+            '''
     #---------------------------------------------------------------------------------
 
 

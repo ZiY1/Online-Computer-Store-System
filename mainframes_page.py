@@ -87,16 +87,39 @@ class mainframes_page(tk.Frame):
         df_mainframe = df[ df['Type'] == 'mainframe']
 
         plus_x = 0 
-        plus_y = 0 
+        plus_y = 0
+
         plus_relx = 0 
         plus_rely = 0 
-         
+
+        self.lenovo_images = []
         self.Buttons = []
         for i in range(len(df_mainframe)):
             mainframe_name = df_mainframe.iloc[i]['Name']
         
             image_tempo = Image.open( f"images/mainframes/{mainframe_name}.png" )
             image_tempo = image_tempo.resize(  (400,200), Image.ANTIALIAS )
+            
+            self.lenovo_images.append(None)
+
+            self.lenovo_images[i] = ImageTk.PhotoImage(  image_tempo )
+            self.Buttons.append(None)
+            
+            self.Buttons[i] = tk.Button( self.top, 
+             command = lambda computer_name = mainframe_name: self.command_mainframe(computer_name), 
+             text = mainframe_name, fg = "black", image = self.lenovo_images[i],
+             activebackground = "light blue", compound = "top")
+
+            self.Buttons[i].place( relx = 0 + plus_relx, rely = 0.2 + plus_rely, 
+                                    relwidth = 0.31, relheight = 0.33)
+            plus_relx += 0.67 
+
+            if plus_relx > 0.9: 
+                plus_relx = 0  
+                plus_rely += 0.388
+            
+            
+            '''
             self.mainframe = ImageTk.PhotoImage(  image_tempo )
             
             self.mainframe_1 = tk.Label( image = self.mainframe )
@@ -129,7 +152,7 @@ class mainframes_page(tk.Frame):
                 plus_relx = 0
                 plus_y += 260 
                 plus_rely += 0.388  
-            
+            '''
 
         #-------------------------Back Button----------------------------
 

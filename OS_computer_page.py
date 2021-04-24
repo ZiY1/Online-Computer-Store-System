@@ -90,6 +90,7 @@ class OS_computers_page(tk.Frame):
         plus_relx = 0
         plus_rely = 0   
 
+        self.lenovo_images = []
         self.Buttons = []
         for i in range(10): # Only the top 10 sold computers will be shown
             computer_name = df_OS.iloc[i]['Name']
@@ -106,7 +107,29 @@ class OS_computers_page(tk.Frame):
             elif computer_type == "mainframe":
                 image_tempo = Image.open( f"images/mainframes/{computer_name}.png" )
 
-            image_tempo = image_tempo.resize( (200,200), Image.ANTIALIAS )
+            image_tempo = image_tempo.resize( (230,200), Image.ANTIALIAS )
+            
+            self.lenovo_images.append(None)
+            self.lenovo_images[i] = ImageTk.PhotoImage(  image_tempo )
+            self.Buttons.append(None)
+            
+            self.Buttons[i] = tk.Button( self.top, 
+             command = lambda name = computer_name,type_ = computer_type : self.command_computers(name,type_), 
+             text = f"{computer_name}", fg = "black", image = self.lenovo_images[i],
+             activebackground = "light blue", compound = "top")
+
+            self.Buttons[i].place( relx = 0 + plus_relx, rely = 0.2 + plus_rely, 
+                                    relwidth = 0.18, relheight = 0.33)
+            plus_relx += 0.195 
+
+            if plus_relx > 0.9: 
+                plus_relx = 0  
+                plus_rely += 0.37
+            
+
+            
+            
+            '''
             self.computer = ImageTk.PhotoImage(image_tempo)
             self.computer_1 = tk.Label( image  = self.computer)
             self.computer_1.image = self.computer
@@ -131,7 +154,7 @@ class OS_computers_page(tk.Frame):
                 plus_relx = 0
                 plus_y += 240
                 plus_rely += 0.35 
-        
+            '''
             
         #-------------------------Back Button----------------------------
 
