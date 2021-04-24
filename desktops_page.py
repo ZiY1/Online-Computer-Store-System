@@ -5,19 +5,18 @@ from PIL import ImageTk, Image
 
 import numpy as np
 import pandas as pd
-
 # python scripts
 import guess_page 
-import customer_page
-import laptops_page_2
+import customer_page 
 import generalized_item 
 
-class laptops_page(tk.Frame):
+
+class desktops_page(tk.Frame):
 
     def __init__(self, customer_name = None, customer_username = None,
                         customer_Id = None,master = None):
         tk.Frame.__init__(self, master)
-        self.master.title( "Laptops Page" )
+        self.master.title( "Desktops Page" )
         self.master.geometry( "1350x676" )
         self.master.configure( background = "light blue")
 
@@ -57,7 +56,7 @@ class laptops_page(tk.Frame):
                             )
 
             self.LabelTitle = tk.ttk.Label( self.top, 
-                                            text = "Lenovo Laptops", 
+                                            text = "Lenovo Desktops", 
                                             style =  "LabelTitle.TLabel" 
                                         )
 
@@ -72,7 +71,7 @@ class laptops_page(tk.Frame):
                             )
 
             self.LabelTitle = tk.ttk.Label( self.top, 
-                                           text = f"Lenovo Laptops\nHello, {self.Customer_Name}", 
+                                           text = f"Lenovo Desktops\nHello, {self.Customer_Name}", 
                                            style = "LabelTitle.TLabel" 
                                           )
 
@@ -83,88 +82,52 @@ class laptops_page(tk.Frame):
 
                             
         #------------------------------------------------------------
-        
-        
-        #---------------------Lenovo Laptop Section-----------------------------------------
-        df = pd.read_excel( "csv_files/items.xlsx" )
-        df_laptop = df[ ( df['Type'] == "Laptop" ) & ( df['Brand'] == 'Lenovo' ) ]
 
+
+        #-----------------------------Desktops Lenovo Section----------------------------------
+        df = pd.read_excel( "csv_files/items.xlsx" ) 
+        df_desktop = df[ (df['Type'] == 'Desktop') & (df['Brand'] == 'Lenovo' )]
+
+        
         plus_x = 0
         plus_y = 0 
-        plus_relx = 0
-        plus_rely = 0  
-        
-        self.lenovo_images = []
+        plus_relx = 0 
+        plus_rely = 0 
+        flag_row = True 
+
         self.Buttons = []
-        for i in range( len(df_laptop) -1 ):
-            laptop_name = df_laptop.iloc[i]['Name']
-            image_tempo = Image.open( f"images/Lenovo_Laptops/{laptop_name}.png" )
+        for i in range( len(df_desktop) -1  ):
+            desktop_name = df_desktop.iloc[i]['Name']
+            image_tempo = Image.open( f"images/Lenovo_Desktops/{desktop_name}.png" )
             image_tempo = image_tempo.resize(  (190,160), Image.ANTIALIAS )
-            self.lenovo_images.append(None)
-
-            self.lenovo_images[i] = ImageTk.PhotoImage(  image_tempo )
-            self.Buttons.append(None)
-            
-            self.Buttons[i] = tk.Button( self.top, 
-             command = lambda computer_name = laptop_name: self.command_laptop(computer_name), 
-             text = laptop_name, fg = "black", image = self.lenovo_images[i],
-             activebackground = "light blue", compound = "top")
-
-            self.Buttons[i].place( relx = 0 + plus_relx, rely = 0.2 + plus_rely, 
-                                    relwidth = 0.1495, relheight = 0.27)
-            plus_relx += 0.1635 
-
-            if plus_relx > 0.9: 
-                plus_relx = 0  
-                plus_rely += 0.35
-            
-            '''
-            self.Lenovo_laptop_1 = tk.Label( image = self.lenovo_laptop )
-            self.Lenovo_laptop_1.image = self.lenovo_laptop 
-
-        
-            self.Lenovo_laptop_1.place(x = 0 + plus_x, y = 140 + plus_y)
+            self.lenovo_desktop = ImageTk.PhotoImage(  image_tempo )
+            self.Lenovo_desktop_1 = tk.Label( image = self.lenovo_desktop )
+            self.Lenovo_desktop_1.image = self.lenovo_desktop 
+ 
+            self.Lenovo_desktop_1.place(x = 0 + plus_x, y = 140 + plus_y)
             plus_x += 210 
             self.Buttons.append(None)
-            self.style.configure( f"{laptop_name}_bt.TButton",  
+            self.style.configure( f"{desktop_name}_bt.TButton",  
                             anchor = "center", 
                             font = ( "Helvetica", 8 ),
                             background = "green",
                             foreground = "black"                                
                         )
-            self.Buttons[i] = tk.ttk.Button(self.top, text = f"{laptop_name}",
-            command = lambda computer_name = laptop_name: self.command_laptop(computer_name),
-            style = f"{laptop_name}_bt.TButton"  )
-            self.Buttons[i].place( relx = 0 + plus_relx, rely = 0.45 + plus_rely, 
+            self.Buttons[i] = tk.ttk.Button(self.top, text = f"{desktop_name}",
+            command = lambda computer_name = desktop_name: self.command_desktop(computer_name),
+            style = f"{desktop_name}_bt.TButton"  )
+            self.Buttons[i].place( relx = 0 + plus_relx, rely = 0.45 + plus_rely,
                                     relwidth = 0.1495, relheight = 0.051)
             plus_relx += 0.1635 
 
             if plus_x > 1100: 
+                flag_row = False
                 plus_x = 0 
                 plus_relx = 0 
-                plus_y += 240 
+                plus_y += 240
                 plus_rely += 0.35
-            '''
-        #--------------------------------------------------------------------------------------------
         
-        #-------------------------Mac & Linux Button----------------------------
-
-        self.style.configure(   "Command_Mac_Linux.TButton", 
-                                font=('Helvetica',16),
-                                background = "green",
-                                foreground = "black"
-                            )
-        self.CommandBack = tk.ttk.Button(   self.top, 
-                                            text = "Looking for mac and linux laptops?",
-                                            command = self.command_mac_linux_laptops,
-                                            style="Command_Mac_Linux.TButton"
-                                        )
-        self.CommandBack.place(relx=0.700, rely=0.88, relwidth= 0.28, relheight=0.05)
-
-    #-----------------------------------------------------------
-
-
-
+    #----------------------------------------------------------------------------------------------
 
 
     #-------------------------Back Button----------------------------
@@ -184,6 +147,8 @@ class laptops_page(tk.Frame):
     #-----------------------------------------------------------
 
 
+
+
     def command_back(self):
         if self.Customer_Name == None: # We are in a guess account
             self.top.destroy()
@@ -195,25 +160,22 @@ class laptops_page(tk.Frame):
                         customer_username = self.Customer_username)
 
 
-    def command_mac_linux_laptops(self):
-        if self.Customer_Name == None: # We are in a guess account
-            self.top.destroy()
-            laptops_page_2.laptops_page_2()
-        else: # We are in a registered account
-            self.top.destroy()
-            laptops_page_2.laptops_page_2(customer_name = self.Customer_Name, 
-                        customer_Id = self.Customer_Id,  
-                        customer_username = self.Customer_username)
 
-    def command_laptop(self, computer_name):
-        laptop_name = computer_name
+    def command_desktop(self, computer_name):
+        desktop_name = computer_name
         self.top.destroy()
 
         if self.Customer_Name == None: # We are in the guess account
-            generalized_item.generalized_item(coming_from = "laptops_page", 
-            item_name = laptop_name )
+            generalized_item.generalized_item(coming_from = "desktops_page", 
+            item_name = desktop_name )
         else: # We are in the user account 
-            generalized_item.generalized_item( coming_from = "laptops_page", 
-            item_name = laptop_name, 
+            generalized_item.generalized_item( coming_from = "desktops_page", 
+            item_name = desktop_name, 
             customer_name = self.Customer_Name, customer_Id = self.Customer_Id, 
             customer_username = self.Customer_username)
+
+
+
+
+
+

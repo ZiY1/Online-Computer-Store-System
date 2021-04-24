@@ -98,9 +98,11 @@ class registered_login(tk.Frame):
         Username = Username.lower() # it's not usercase sensitive
 
         df = pd.read_excel( "csv_files/registered_customers.xlsx" )
-        
+        user_info_df = df[df['Username'] == Username ] # dataframe containing the customer info 
+
+
         #--------Check if the username provided is registered-------------
-        if Username not in list(df['Username']):
+        if Username not in list(df['Username']) :
             flag_username_registered = False
             tk.messagebox.showerror( "Error", "invalid email username" )
         else:
@@ -109,10 +111,9 @@ class registered_login(tk.Frame):
 
 
         #-----------check if the password provided matches the username-----
-        user_info_df = df[df['Username'] == Username ] # dataframe containing the customer info 
-
         
-        if user_info_df['Password'].iloc[-1] == Password:
+        
+        if flag_username_registered and user_info_df['Password'].iloc[-1] == Password:
             flag_correct_password = True
         else:
             flag_correct_password = False

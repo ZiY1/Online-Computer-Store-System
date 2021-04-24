@@ -14,6 +14,8 @@ class guest_welcome_page(tk.Frame):
         self.master.title("Guest Home Page")
         self.master.geometry( "1350x676" )
         self.master.configure( background = "light blue" )
+        photo_icon = tk.PhotoImage(file = "images/computer_icon.png" )
+        self.master.iconphoto( False, photo_icon)
         self.create_widgets()
 
     def create_widgets(self):

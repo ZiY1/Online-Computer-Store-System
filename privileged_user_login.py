@@ -15,6 +15,7 @@ class privilaged_user_login(tk.Frame):
         self.master.title( "Privilaged user login page" )
         self.master.geometry( "1350x676" )
         self.master.configure( background = "light blue" )
+       
 
         self.create_widgets()
 

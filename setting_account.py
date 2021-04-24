@@ -5,6 +5,8 @@ from PIL import ImageTk, Image
 
 # python scripts 
 import customer_page
+import provide_credit_card
+
 
 class setting_account(tk.Frame):
     
@@ -13,6 +15,7 @@ class setting_account(tk.Frame):
         self.master.title( "Setting Account Page" )
         self.master.geometry( "1350x676" )
         self.master.configure( background = "light blue" )
+      
         
         # User account info 
         self.customer_name = customer_name
@@ -171,6 +174,10 @@ class setting_account(tk.Frame):
 
     def Command_Credit_Card_Info(self):
         self.top.destroy()
+        provide_credit_card.provide_credit_card(customer_name = self.customer_name, 
+                customer_Id = self.customer_Id, 
+                customer_username = self.customer_username )
+
 
     def Command_Track_Package(self):
         self.top.destroy() 

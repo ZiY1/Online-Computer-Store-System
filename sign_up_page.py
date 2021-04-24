@@ -20,6 +20,7 @@ class sign_up_page(tk.Frame):
         self.master.title("Sign Up Page")
         self.master.geometry( "1350x676" )
         self.master.configure( background = "light blue" )
+        
         self.create_widgets()
 
 
@@ -111,8 +112,8 @@ class sign_up_page(tk.Frame):
     #-----------------------Check if the Name is valid()-------------
 
         regex_name = "[a-zA-Z]+[\s][a-zA-Z]+[\-\']?[a-zA-Z]+"
-
-        if(  re.search(regex_name, Name) ):
+        regex_name2= "[a-zA-Z]+[\s][a-zA-Z]+[-\']?[a-zA-Z]+[\s][a-zA-Z]+"
+        if(  re.fullmatch(regex_name, Name) or re.fullmatch(regex_name2, Name) ):
             flag_valid_name = True
             Name = Name.lower().title()
         else:
@@ -124,9 +125,8 @@ class sign_up_page(tk.Frame):
 
     #----------------Check if the username is a working email----------------
         
-        regex = '^[A-Za-z0-9]+[\._]?[A-Za-z0-9]+[@]\w+[.]\w{2,3}$'
-
-        if(  re.search(regex, Username) ):
+        regex = "[A-Za-z0-9_]+[@]\w+[.]\w{2,3}$"
+        if(  re.fullmatch(regex, Username) ):
             flag_valid_email = True
             Username = Username.lower()
         else:
@@ -149,8 +149,9 @@ class sign_up_page(tk.Frame):
         flag_duplicates = False 
         if (len(df) == 0 ):
             Id = 0
-            tempo = pd.DataFrame( [["0", Name, Username.lower(), Password, "NaN"]],
-                            columns = ['ID', 'Name', 'Username', 'Password', 'Credit card account'] 
+            tempo = pd.DataFrame( [["0", Name, Username.lower(), Password, "empty","0", "","0.00",""]],
+                            columns = ['ID', 'Name', 'Username', 'Password', 'Credit card account',
+                            'Warnings', 'Home Address', 'Balance', 'Phone number'] 
                             )
             df = df.append(tempo)
              
@@ -162,8 +163,9 @@ class sign_up_page(tk.Frame):
             else:
                 Id = int( df['ID'].iloc[-1] )
                 Id += 1 
-                tempo = pd.DataFrame( [[ str(Id) , Name, Username.lower(), Password, "NaN"] ],
-                              columns = ['ID', 'Name', 'Username', 'Password', 'Credit card account'] 
+                tempo = pd.DataFrame( [[ str(Id) , Name, Username.lower(), Password, "empty","0","","0.00",""] ],
+                              columns = ['ID', 'Name', 'Username', 'Password', 'Credit card account',
+                              'Warnings', 'Home Address','Balance', 'Phone number'] 
                             )
                 df = df.append(tempo)
                 
