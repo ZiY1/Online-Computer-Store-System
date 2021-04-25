@@ -31,3 +31,6 @@ pip install xlrd
 ```bash
 pip install openpyxl
 ```
+```bash
+pip install credit_card_checker
+```
