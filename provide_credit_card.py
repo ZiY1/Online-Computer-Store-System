@@ -1,11 +1,12 @@
 import tkinter as tk 
 import tkinter.ttk as ttk 
+from PIL import ImageTk, Image
 
 import re   # used for checking if a string input follows a given format
 import numpy as np
 import pandas as pd
 
-import credit_card_checker # used for checking a credit card number is valid
+import credit_card_checker # used for checking if a credit card number is valid
 
 # python files
 import setting_account
@@ -101,24 +102,45 @@ class provide_credit_card(tk.Frame):
 
 
         #--------------------------Add your card info Button---------------------------------------
-        self.style.configure("Command.TButton", anchor="center", font=("Helvetica", 16),
-                               background = "green", foreground = "black" )
-        self.CommandSignUp = tk.ttk.Button(self.top, text = "Add your card", 
-                        command = self.command_add_card, style = "Command.TButton")
-		
-        self.CommandSignUp.place(relx = 0.35, rely = 0.65, relwidth = 0.13, relheight=0.05)
+        image_tempo = Image.open( f"images/icons/credit_card.png" )
+        image_tempo = image_tempo.resize( (25,25), Image.ANTIALIAS )
+            
+        self.image_card = ImageTk.PhotoImage( image_tempo)
+
+        self.card_button = tk.Button( self.top, text = "Add your card", 
+          image = self.image_card, command = self.command_add_card, compound = "left")
+
+        self.card_button.place( relx = 0.35, rely = 0.65, relwidth = 0.1, relheight = 0.05)
 
         #-----------------------------------------------------------------------------------------
 
         #--------------------------Add funds to account-------------------------------------------
-        self.style.configure("Command.TButton", anchor="center", font=("Helvetica", 16),
-                               background = "green", foreground = "black" )
-        self.Command_addFunds = tk.ttk.Button(self.top, text = "Add Funds to account", 
-                        command = self.command_add_funds, style = "Command.TButton")
-		
-        self.Command_addFunds.place(relx = 0.55, rely = 0.65, relwidth = 0.18, relheight=0.05)
-        
+        image_tempo = Image.open( f"images/icons/money.png" )
+        image_tempo = image_tempo.resize( (25,25), Image.ANTIALIAS )
+            
+        self.image_money = ImageTk.PhotoImage( image_tempo)
+
+        self.money_button = tk.Button( self.top, text = "Add Funds to account", 
+          image = self.image_money, command = self.command_add_funds, compound = "left")
+
+        self.money_button.place( relx = 0.47, rely = 0.65, relwidth = 0.13, relheight = 0.05)
+
         #-----------------------------------------------------------------------------------------
+
+
+        #----------------------------remove credit card section----------------------------------
+        image_tempo = Image.open( f"images/icons/garbage_can.png" )
+        image_tempo = image_tempo.resize( (25,25), Image.ANTIALIAS )
+            
+        self.image_delete = ImageTk.PhotoImage( image_tempo)
+
+        self.remove_button = tk.Button( self.top, text = "remove card", 
+          image = self.image_delete, command = self.remove_card, compound = "left")
+
+        self.remove_button.place( relx = 0.65, rely = 0.65, relwidth = 0.08, relheight = 0.05)
+        #---------------------------------------------------------------------------------------
+
+
 
 
         #------------------------- Go Back to Main Page Customer---------------------------------
@@ -252,3 +274,26 @@ class provide_credit_card(tk.Frame):
         setting_account.setting_account( customer_name = self.customer_name, 
                     customer_Id = self.customer_Id, 
                     customer_username = self.customer_username)        
+
+
+    def remove_card(self):
+        df_accounts = pd.read_excel( "csv_files/registered_customers.xlsx" )
+        df_user_info = df_accounts[df_accounts['Username'] == self.customer_username]
+
+        if df_user_info['Credit card account'].iloc[-1] == "empty":
+            tk.messagebox.showerror("Error", "You do not have a credit" +
+            " card linked to your account")
+        else:
+
+            if tk.messagebox.askyesno(title = "Warning", 
+                    message = "You are about to remove your credit card number from your account.\n" + 
+                    "This will reset your funds to $ 0.00. Would you like to proceed?"):
+                df_user_info.loc[:,('Credit card account')] = str("empty")
+                df_user_info.loc[:, ('Balance') ] = float(0.00)
+                df_accounts[ df_accounts['Username'] == self.customer_username] = df_user_info
+                df_accounts.to_excel( "csv_files/registered_customers.xlsx", index = False)
+            
+                # send the okay to the user of the system
+                tk.messagebox.showinfo("Success", 
+                                    "Your credit card has been removed from your store account" )
+

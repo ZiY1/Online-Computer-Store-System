@@ -494,36 +494,33 @@ class customer_page(tk.Frame):
 
 
     #-------------------------Log out----------------------------
-        self.style.configure(   "Log_out.TButton", 
-                                font=('Helvetica',16),
-                                background = "green",
-                                foreground = "black"   
-                            )
-        self.log_out = tk.ttk.Button(   self.top, 
-                                            text ="Log out",
-                                            command = self.log_out,
-                                            style = "Log_out.TButton"
-                                        )
+        image_tempo = Image.open( f"images/icons/sign_out.png" )
+        image_tempo = image_tempo.resize( (25,25), Image.ANTIALIAS )
+            
+        self.image_sign_out = ImageTk.PhotoImage( image_tempo)
 
+        self.sign_out_button = tk.Button( self.top, text = "Sign out", 
+          image = self.image_sign_out, command = self.log_out, compound = "left")
 
-        self.log_out.place(relx=0.870, rely=0.15, relwidth= 0.13, relheight=0.05)
+        self.sign_out_button.place( relx = 0.870, rely = 0.15, relwidth = 0.08, relheight = 0.05)
+
 
     #-----------------------------------------------------------
 
 
     #-------------------------Settings Button----------------------------
-        self.style.configure(   "Settings.TButton", 
-                                font=('Helvetica',16),
-                                background = "green",
-                                foreground = "black"
-                            )
-        self.Command_Settings = tk.ttk.Button(   self.top, 
-                                            text = "Settings",
-                                            command = self.command_Settings,
-                                            style = "Settings.TButton"
-                                        )
-        self.Command_Settings.place(relx=0.870, rely=0.095, relwidth= 0.13, relheight=0.05)
-    #-----------------------------------------------------------
+        
+        image_tempo = Image.open( f"images/icons/settings.png" )
+        image_tempo = image_tempo.resize( (25,25), Image.ANTIALIAS )
+            
+        self.image_settings = ImageTk.PhotoImage( image_tempo)
+
+        self.settings_button = tk.Button( self.top, text = "Settings", 
+          image = self.image_settings, command = self.command_Settings, compound = "left")
+
+        self.settings_button.place( relx = 0.870, rely = 0.095, relwidth = 0.08, relheight = 0.05)
+
+    #------------------------------------------------------------------------------------
 
 
 
