@@ -37,6 +37,10 @@ import OS_computer_page
 import Arch_computer_page
 #---------------------------------
 
+#------------Check out Page------
+import check_out 
+#--------------------------------
+
 class customer_page(tk.Frame):
 
     def __init__(self, customer_name, customer_username, customer_Id, master = None):
@@ -502,7 +506,7 @@ class customer_page(tk.Frame):
         self.sign_out_button = tk.Button( self.top, text = "Sign out", 
           image = self.image_sign_out, command = self.log_out, compound = "left")
 
-        self.sign_out_button.place( relx = 0.870, rely = 0.15, relwidth = 0.08, relheight = 0.05)
+        self.sign_out_button.place( relx = 0.870, rely = 0.15, relwidth = 0.12, relheight = 0.05)
 
 
     #-----------------------------------------------------------
@@ -518,7 +522,7 @@ class customer_page(tk.Frame):
         self.settings_button = tk.Button( self.top, text = "Settings", 
           image = self.image_settings, command = self.command_Settings, compound = "left")
 
-        self.settings_button.place( relx = 0.870, rely = 0.095, relwidth = 0.08, relheight = 0.05)
+        self.settings_button.place( relx = 0.870, rely = 0.095, relwidth = 0.12, relheight = 0.05)
 
     #------------------------------------------------------------------------------------
 
@@ -637,8 +641,25 @@ class customer_page(tk.Frame):
 
     #----------------Check out Command-----------------------------------
     def command_checkout(self):
-        self.top.destroy()
-        # check out page
+        df2 =  pd.read_excel( "csv_files/registered_customers.xlsx" )
+
+        df_user = df2[ df2['Username'] == self.customer_username]
+
+        if df_user['Credit card account'].iloc[-1] == 'empty':
+            tk.messagebox.showerror( "Error", 
+                    "There is no credit card linked to your account.\n" + 
+                    "A credit card account is necessary for making a purchase" )
+        elif float(df_user['Balance'].iloc[-1] ) == 0.00:
+            tk.messagebox.showerror("Error",
+                    "Your current balance is $ 0.00\n" + 
+                    "Go to Settings to provide funds to your account")
+        else:
+            self.top.destroy()
+            check_out.check_out(coming_from = "Main_Page2", item_name = None, 
+                customer_name = self.customer_name, 
+                customer_Id = self.customer_Id, customer_username = self.customer_username) 
+        
+
     #--------------------------------------------------------------------
 
 

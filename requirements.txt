@@ -1,1 +1,3 @@
 credit_card_checker
+requests
+smartystreets.py

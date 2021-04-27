@@ -8,6 +8,8 @@ import pandas as pd
 
 import credit_card_checker # used for checking if a credit card number is valid
 
+#import smartystreets # used for checking if an address is valid (it needs internet connection)
+
 # python files
 import setting_account
 import add_funds 
@@ -77,6 +79,7 @@ class provide_credit_card(tk.Frame):
         self.LabelTitle.place(  relx=0.08, rely = 0.360, relwidth=0.250, relheight=0.125 )
 		#------------------------------------------------------------------------------------------
 
+    
         #---------------------------Expiration Date Section---------------------------------------- 
         month_options = ["",'01','02','03','04','05','06','07','08','09','10','11','12']
         year_options = ["",'2022','2023','2024','2025','2026','2027','2028','2029','2030']
@@ -101,6 +104,24 @@ class provide_credit_card(tk.Frame):
         #------------------------------------------------------------------------------------------
 
 
+        #------------------------Shipping address Section---------------------------------------
+        
+        self.AddressNameVar = tk.StringVar()
+        self.AddressName =  tk.Entry( self.top, textvariable = self.AddressNameVar ) 
+        self.AddressName.place( relx=0.350, rely = 0.70, relwidth = 0.3, relheight=0.080 )
+
+        self.style.configure("LabelName.TLabel", font = ("Helvetica", 16),
+                                                            background = '#49A'   )
+
+        self.LabelTitle = tk.ttk.Label(self.top, text = "Shipping Address: ", 
+                                        style="LabelName.TLabel", anchor = "center")
+        self.LabelTitle.place(  relx=0.08, rely = 0.680, relwidth=0.250, relheight=0.125 )
+		
+        #---------------------------------------------------------------------------------------
+
+
+
+
         #--------------------------Add your card info Button---------------------------------------
         image_tempo = Image.open( f"images/icons/credit_card.png" )
         image_tempo = image_tempo.resize( (25,25), Image.ANTIALIAS )
@@ -110,7 +131,7 @@ class provide_credit_card(tk.Frame):
         self.card_button = tk.Button( self.top, text = "Add your card", 
           image = self.image_card, command = self.command_add_card, compound = "left")
 
-        self.card_button.place( relx = 0.35, rely = 0.65, relwidth = 0.1, relheight = 0.05)
+        self.card_button.place( relx = 0.35, rely = 0.81, relwidth = 0.1, relheight = 0.05)
 
         #-----------------------------------------------------------------------------------------
 
@@ -123,7 +144,7 @@ class provide_credit_card(tk.Frame):
         self.money_button = tk.Button( self.top, text = "Add Funds to account", 
           image = self.image_money, command = self.command_add_funds, compound = "left")
 
-        self.money_button.place( relx = 0.47, rely = 0.65, relwidth = 0.13, relheight = 0.05)
+        self.money_button.place( relx = 0.47, rely = 0.81, relwidth = 0.13, relheight = 0.05)
 
         #-----------------------------------------------------------------------------------------
 
@@ -137,7 +158,7 @@ class provide_credit_card(tk.Frame):
         self.remove_button = tk.Button( self.top, text = "remove card", 
           image = self.image_delete, command = self.remove_card, compound = "left")
 
-        self.remove_button.place( relx = 0.65, rely = 0.65, relwidth = 0.08, relheight = 0.05)
+        self.remove_button.place( relx = 0.65, rely = 0.81, relwidth = 0.08, relheight = 0.05)
         #---------------------------------------------------------------------------------------
 
 
@@ -160,7 +181,7 @@ class provide_credit_card(tk.Frame):
         Name = self.TextName.get()
         Exp_Month = self.Exp_MonthVar.get() 
         Exp_Year = self.Exp_YearVar.get() 
-
+        shipping_address = self.AddressName.get()
         
         #-----------------------Check if the Name is valid-------------------
 
@@ -193,8 +214,21 @@ class provide_credit_card(tk.Frame):
 
         #-------------------------------------------------------------------------
 
+        #----------------Check if Address is valid-------------------------------------
+        shipping_address = str( shipping_address)
+        
 
-        if flag_valid_name and flag_valid_exp_date and flag_valid_credit_card:
+        if shipping_address == "":
+            valid_address = False
+            tk.messagebox.showerror( "Error", "Not a Valid address" )
+        else:
+            valid_address = True
+        
+        #------------------------------------------------------------------------------
+
+
+
+        if flag_valid_name and flag_valid_exp_date and flag_valid_credit_card and valid_address:
 
             # Modify the excel file by adding the credit card number        
             df = pd.read_excel( "csv_files/registered_customers.xlsx" )
@@ -217,7 +251,7 @@ class provide_credit_card(tk.Frame):
                     flag_already_linked = True
 
 
-            if flag_already_linked:  #df_user_info['Credit card account'].iloc[-1] == Card_No:
+            if flag_already_linked:  
                 tk.messagebox.showerror( "Error", 
                     "the credit card provided is already linked to your account" )
             elif flag_duplicate_credit_card:

@@ -23,7 +23,7 @@ import purpose_computer_page
 import OS_computer_page
 import Arch_computer_page
 
-
+import check_out
 
 class generalized_item(tk.Frame):
 
@@ -489,6 +489,9 @@ class generalized_item(tk.Frame):
                     "Go to Settings to provide funds to your account")
         else:
             self.top.destroy()
-            pass # checkout page 
+            check_out.check_out(coming_from = self.coming_from_page, 
+                    item_name = self.item_name, customer_name = self.Customer_Name, 
+                    customer_Id = self.Customer_Id, 
+                    customer_username = self.Customer_username) 
         
 
