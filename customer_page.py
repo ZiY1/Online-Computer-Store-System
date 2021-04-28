@@ -664,18 +664,11 @@ class customer_page(tk.Frame):
 
 
     #------------Manager deciding what system should be on the homepage-------
-    def manager_system_inputs(self, system1 = None, system2 = None,
-                              system3 = None, default = True):
-        if default: # 1) laptops ; 2) desktops  3) workstations
-            system_1 = "laptops"
-            system_2 = "desktops"  
-            system_3 = "workstations"
-        else:
-            system_1 = system1
-            system_2 = system2
-            system_3 = system3 
-
-
-        return (system_1, system_2, system_3)  
+    def manager_system_inputs(self):
+        df = pd.read_excel( "csv_files/suggested_systems.xlsx" )
+        System1 = str(df.iloc[0,0])
+        System2 = str(df.iloc[1,0])
+        System3 = str(df.iloc[2,0])
+        return System1, System2, System3 
 
     #--------------------------------------------------------------------------  

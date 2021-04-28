@@ -2,18 +2,22 @@ import tkinter as tk
 import tkinter.ttk as ttk 
 
 from PIL import ImageTk, Image
+import pandas as pd 
+import numpy as np 
+import re
 
 # python scripts 
 import customer_page
 import provide_credit_card
-
+import complaint_page
+import discussion_table
 
 class setting_account(tk.Frame):
     
-    def __init__( self, customer_name, customer_Id, customer_username ,master = None ):
+    def __init__( self, customer_name, customer_Id, customer_username, master = None ): #customer_name, customer_Id, customer_username ,
         tk.Frame.__init__(self, master) 
         self.master.title( "Setting Account Page" )
-        self.master.geometry( "1350x676" )
+        self.master.geometry( "989x676" )
         self.master.configure( background = "light blue" )
       
         
@@ -32,25 +36,26 @@ class setting_account(tk.Frame):
         #---------------------------------Title----------------------------------------
         self.style.configure( 
                             "LabelTitle.TLabel", 
+                            relief=tk.SUNKEN,
                             anchor = "center", 
                             font = ("Helvetica", 23),
                             background = '#49A',
                             foreground = "black" 
                      )
         self.LabelTitle =  tk.ttk.Label( self.top, 
-                                      text = "User settings account", 
+                                      text = "User Account Settings ", 
                                       style = "LabelTitle.TLabel"        
                                     )   
-        self.LabelTitle.place( relx = 0.25, rely = 0.500, relwidth = 0.572, relheight = 0.095 )
+        self.LabelTitle.place( relx = 0.26, rely = 0.035, relwidth = 0.49, relheight = 0.085 )
         #----------------------------------------------------------------------------------
 
         #--------------------------IMAGE---------------------------------------------
 
-        self.my_image = ImageTk.PhotoImage( Image.open( "images/lenovo_icon.jpg" )  )
+        # self.my_image = ImageTk.PhotoImage( Image.open( "images/lenovo_icon.jpg" )  )
         
-        self.label_image = tk.Label( image = self.my_image)
-        self.label_image.image = self.my_image 
-        self.label_image.place( x = 250, y = 0 )
+        # self.label_image = tk.Label( image = self.my_image)
+        # self.label_image.image = self.my_image 
+        # self.label_image.place( x = 250, y = 0 )
         #-----------------------------------------------------------------------------
 
         #-------------------------Purchase History Section Button--------------------
@@ -66,7 +71,7 @@ class setting_account(tk.Frame):
                                         command = self.Command_Purchase_History, 
                                         style = "Command_Purchase_History.TButton"  
                                       )
-        self.Command_Purchase_History.place( relx = 0, rely = 0.600, relwidth = 0.300, relheight = 0.071 )
+        self.Command_Purchase_History.place( relx = 0.1, rely = 0.2, relwidth = 0.300, relheight = 0.071 )
         #---------------------------------------------------------------------------------------
 
         #---------Provide/Update credit card information Section Button--------------------------------
@@ -77,11 +82,11 @@ class setting_account(tk.Frame):
                                foreground = "black"    
                             )
         self.Command_Credit_Card_Info = tk.ttk.Button(  self.top, 
-                            text = "Provide/Update your credit card information",  
+                            text = "Provide/Update my credit card",  
                                            command = self.Command_Credit_Card_Info, 
                                            style = "Command_Credit_Card_Info.TButton"
                                         )
-        self.Command_Credit_Card_Info.place( relx = 0, rely = 0.700, relwidth = 0.300, relheight = 0.071)
+        self.Command_Credit_Card_Info.place( relx = 0.1, rely = 0.35, relwidth = 0.300, relheight = 0.071)
         #-----------------------------------------------------------------------------------
 
         #-----------------------Track my current Package Section Button----------------------------
@@ -96,7 +101,7 @@ class setting_account(tk.Frame):
                                      command = self.Command_Track_Package,
                                      style = "Command_Track_Package.TButton"
                                    )
-        self.Command_Track_Package.place( relx = 0, rely = 0.800, relwidth = 0.300, relheight = 0.071 )
+        self.Command_Track_Package.place( relx = 0.1, rely = 0.5, relwidth = 0.300, relheight = 0.071 )
         #-------------------------------------------------------------------------------
 
 
@@ -114,7 +119,7 @@ class setting_account(tk.Frame):
                                         command = self.Command_Account_info, 
                                         style = "Command_Account_info.TButton"  
                                       )
-        self.Command_Account_info.place( relx = 0.7, rely = 0.600, relwidth = 0.300, relheight = 0.071 )
+        self.Command_Account_info.place( relx = 0.6, rely = 0.2, relwidth = 0.300, relheight = 0.071 )
         #---------------------------------------------------------------------------------------
 
         #---------Place a complaint Section Button--------------------------------
@@ -129,8 +134,25 @@ class setting_account(tk.Frame):
                                            command = self.Command_Place_Complaint, 
                                            style = "Command_Place_Complaint.TButton"
                                         )
-        self.Command_Place_Complaint.place( relx = 0.7, rely = 0.700, relwidth = 0.300, relheight = 0.071)
+        self.Command_Place_Complaint.place( relx = 0.6, rely = 0.35, relwidth = 0.300, relheight = 0.071)
         #-----------------------------------------------------------------------------------
+
+
+        #-----------------View All My Review Section Button----------------------------
+        self.style.configure( "Command_Check_Review.TButton", 
+                               anchor = "left", 
+                               font = ( "Helvetica", 14 ), 
+                               background = "green",
+                               foreground = "black" 
+                            )
+        self.Command_Check_Review = tk.ttk.Button( self.top, 
+                                     text = "Check all my reviews", 
+                                     command = self.Command_Check_Review,
+                                     style = "Command_Check_Review.TButton"
+                                   )
+        self.Command_Check_Review.place( relx = 0.6, rely = 0.5, relwidth = 0.300, relheight = 0.071 )
+        #-------------------------------------------------------------------------------
+
 
         #-----------------Check my inbox Section Button----------------------------
         self.style.configure( "Command_Check_Inbox.TButton", 
@@ -144,7 +166,7 @@ class setting_account(tk.Frame):
                                      command = self.Command_Check_Inbox,
                                      style = "Command_Check_Inbox.TButton"
                                    )
-        self.Command_Check_Inbox.place( relx = 0.7, rely = 0.800, relwidth = 0.300, relheight = 0.071 )
+        self.Command_Check_Inbox.place( relx = 0.6, rely = 0.65, relwidth = 0.300, relheight = 0.071 )
         #-------------------------------------------------------------------------------
 
 
@@ -152,19 +174,12 @@ class setting_account(tk.Frame):
         self.style.configure( "Command_Go_Back.TButton", font = ("Helvetica", 16),
                                 background = "green",   foreground = "black" )
         self.CommandExit = tk.ttk.Button(  self.top, 
-                                       text = "Go Back",
+                                       text = "Back",
                                        command = self.Command_Go_Back,
                                        style = "Command_Go_Back.TButton" 
         )
-        self.CommandExit.place( relx = 0.873, rely = 0.88, relwidth = 0.119, relheight = 0.065)
+        self.CommandExit.place( relx = 0.86, rely = 0.92, relwidth = 0.119, relheight = 0.065)
     #---------------------------------------------------------------------------------
-
-
-
-
-
-
-
 
 
     def Command_Purchase_History(self):
@@ -193,6 +208,19 @@ class setting_account(tk.Frame):
 
     def Command_Place_Complaint(self):
         self.top.destroy()
+        complaint_page.complaint_page(self.customer_name, self.customer_Id, self.customer_username)
+
+    def Command_Check_Review(self):
+        discussion_type = "Me All"
+        df = pd.read_excel( "csv_files/discussions.xlsx" )
+        df_no_violated = df[df['Status'] == "Non-Violated"]
+        df_me = df_no_violated[df_no_violated['Username'] == self.customer_username]
+        if len(df_me) == 0:
+          tk.messagebox.showinfo("Info", "You haven't posted any comment yet")
+        else:
+          self.top.destroy()
+          discussion_table.discussion_table("setting_account", None, self.customer_name, self.customer_Id, self.customer_username, discussion_type, df_me)
+
 
     def Command_Check_Inbox(self):
         self.top.destroy()
@@ -203,3 +231,8 @@ class setting_account(tk.Frame):
         customer_page.customer_page(customer_name = self.customer_name,  
         customer_username = self.customer_username, customer_Id = self.customer_Id)
 
+# Test Only
+#---------------------Main----------
+if __name__ == "__main__":
+    top = tk.Tk()
+    setting_account(top).mainloop()   

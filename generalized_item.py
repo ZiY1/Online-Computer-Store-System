@@ -24,6 +24,7 @@ import OS_computer_page
 import Arch_computer_page
 
 import check_out
+import discussion_table
 
 class generalized_item(tk.Frame):
 
@@ -375,6 +376,7 @@ class generalized_item(tk.Frame):
 
 
     def star_printer(self, star_numbers):
+        star_numbers = round(star_numbers)
         if star_numbers == 0:
             return "☆☆☆☆☆"
         elif star_numbers == 1:
@@ -389,7 +391,24 @@ class generalized_item(tk.Frame):
             return "★★★★★"
 
     def command_reviews(self):
-        self.top.destroy() # Ziyi's part
+        df = pd.read_excel( "csv_files/discussions.xlsx" )
+        df_no_violated = df[df['Status'] == "Non-Violated"]
+        df_computer = df_no_violated[df_no_violated['Computer Name'] == self.item_name]
+        if self.Customer_username is None:
+            discussion_type = "Guest"
+            if len(df_computer) == 0:
+                tk.messagebox.showinfo("Info", "No comment of this computer posted")
+            else:
+                self.top.destroy()
+                discussion_table.discussion_table(self.coming_from_page, self.item_name, None, None, None, discussion_type, df_computer)
+        else:
+            discussion_type = "All"
+            if len(df_computer) == 0:
+                tk.messagebox.showinfo("Info", "No comment of this computer posted")
+            else:
+                self.top.destroy()
+                discussion_table.discussion_table(self.coming_from_page, self.item_name, self.Customer_Name, self.Customer_Id, self.Customer_username, discussion_type, df_computer)
+
 
 
     def add_to_shopping_cart(self):
