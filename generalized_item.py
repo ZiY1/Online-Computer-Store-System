@@ -15,6 +15,7 @@ import mainframes_page
 import desktops_page
 import workstations_page
 import servers_page
+import computer_parts_page
 
 import guess_page
 import customer_page
@@ -25,6 +26,10 @@ import Arch_computer_page
 
 import check_out
 import discussion_table
+import discussion_page
+
+
+import select_computer_parts
 
 class generalized_item(tk.Frame):
 
@@ -90,6 +95,7 @@ class generalized_item(tk.Frame):
          #------------------------Title----------------------------- 
         if self.Customer_Name == None:
             self.style.configure( "LabelTitle.TLabel", 
+                               relief = tk.SUNKEN,
                                anchor = "center", 
                                font = ("Helvetica", 16),
                                background = '#49A'    
@@ -105,6 +111,7 @@ class generalized_item(tk.Frame):
                             )
         else:
             self.style.configure( "LabelTitle.TLabel", 
+                               relief = tk.SUNKEN, 
                                anchor = "left", 
                                font = ("Helvetica", 16),
                                background = '#49A'    
@@ -132,6 +139,8 @@ class generalized_item(tk.Frame):
             image_tempo = Image.open( f"images/mainframes/{item_name}.png")
         elif self.item_type == "Workstation":
             image_tempo = Image.open( f"images/workstations/{item_name}.png" ) 
+        elif self.item_type == "Computer Part":
+            image_tempo = Image.open( f"images/computer_parts/{item_name}.png" )
         
         image_tempo = image_tempo.resize(  (190,160), Image.ANTIALIAS )
         self.lenovo_item = ImageTk.PhotoImage(  image_tempo )
@@ -143,20 +152,37 @@ class generalized_item(tk.Frame):
 
 
         #----Computer Architecture, OS, Purpose and Price Display --------------------
-        self.style.configure( "Label_Item_Info.TLabel", 
-                               anchor = "left", 
-                               font = ("Bold", 18),
-                               background = 'light blue'    
-                            )
+        if self.item_type != "Computer Part":
+            self.style.configure( "Label_Item_Info.TLabel", 
+                                anchor = "left", 
+                                font = ("Bold", 18),
+                                background = 'light blue'    
+                                )
 
-        self.Label_Item_Info = tk.ttk.Label( self.top, 
-                                            text = f"Architecture: {self.item_architecture}\nOS:  {self.item_OS}\nMain Purpose: {self.item_purpose}\nPrice: ${ int(self.item_price) }.00", 
-                                            style =  "Label_Item_Info.TLabel" 
-                                        )
+            self.Label_Item_Info = tk.ttk.Label( self.top, 
+                                                text = f"Architecture: {self.item_architecture}\nOS:  {self.item_OS}\nMain Purpose: {self.item_purpose}\nPrice: ${ int(self.item_price) }.00", 
+                                                style =  "Label_Item_Info.TLabel" 
+                                            )
 
-        self.Label_Item_Info.place( relx = 0.17, rely = 0.2, 
-                               relwidth = 0.24 , relheight = 0.16 
-                            )
+            self.Label_Item_Info.place( relx = 0.17, rely = 0.2, 
+                                relwidth = 0.24 , relheight = 0.16 
+                                )
+        else:
+            self.style.configure( "Label_Item_Info.TLabel", 
+                                anchor = "left", 
+                                font = ("Bold", 18),
+                                background = 'light blue'    
+                                )
+
+            self.Label_Item_Info = tk.ttk.Label( self.top, 
+                                                text = f"\n\n\nPrice: ${ int(self.item_price) }.00", 
+                                                style =  "Label_Item_Info.TLabel" 
+                                            )
+
+            self.Label_Item_Info.place( relx = 0.17, rely = 0.2, 
+                                relwidth = 0.24 , relheight = 0.16 
+                                )
+
         #---------------------------------------------------------------------------------
 
 
@@ -164,6 +190,8 @@ class generalized_item(tk.Frame):
 
 
         #---------------Item Features Display ---------------------------------------
+
+        name_feature = "Computer" if self.item_type != "Computer Part" else "Item"
         self.style.configure( "Label_Item_Feature.TLabel", 
                                anchor = "left", 
                                font = ("Bold", 14),
@@ -172,7 +200,7 @@ class generalized_item(tk.Frame):
 
 
         self.Label_Item_Features = tk.ttk.Label( self.top, 
-                                            text = f"Computer Features:\n\n{self.item_features}", 
+                                            text = f"{name_feature} Features:\n\n{self.item_features}", 
                                             style =  "Label_Item_Feature.TLabel" 
                                         )
 
@@ -222,6 +250,21 @@ class generalized_item(tk.Frame):
         #----------------------------------------------------------------------------------
 
 
+        #---------------------------Post a Review Section---------------------------------------
+        if self.Customer_Name != None:
+            image_tempo = Image.open( f"images/icons/review.png" )
+            image_tempo = image_tempo.resize(  (25,25), Image.ANTIALIAS )
+            self.post_review_pic = ImageTk.PhotoImage(  image_tempo )
+            
+            post_review_button = tk.Button(self.top, 
+                    command = self.command_post_review,
+                    text = "Post a review", image = self.post_review_pic,
+                    compound = "left")
+            post_review_button.place(relx = 0.25, rely= 0.46, relwidth= 0.1, relheight = 0.05)
+        #---------------------------------------------------------------------------------------
+
+
+
         #---------------------------Customer Review Section---------------------------------
 
         image_tempo = Image.open( f"images/reviews-customer-logo.png" )
@@ -255,7 +298,7 @@ class generalized_item(tk.Frame):
             
             df_orders = pd.read_excel("csv_files/orders.xlsx")
 
-            df_user_shopping_cart = df_orders[ (df_orders["Username"] == self.Customer_username) & (df_orders['Order Status'] == "in cart") ]
+            df_user_shopping_cart = df_orders[ (df_orders["Username"] == self.Customer_username) & (df_orders['Order_Status'] == "in cart") ]
 
             items_in_cart = len(df_user_shopping_cart)
             if items_in_cart == 0: 
@@ -374,6 +417,16 @@ class generalized_item(tk.Frame):
                         customer_username = self.Customer_username,
                                 customer_Id = self.Customer_Id )
 
+        elif self.coming_from_page == "computer_parts_page":
+            if self.Customer_username == None: # We are on the guess page
+                computer_parts_page.computer_parts_page()
+            else: # We are on the user page
+                computer_parts_page.computer_parts_page(customer_name = self.Customer_Name, 
+                        customer_username = self.Customer_username,
+                        customer_Id = self.Customer_Id )
+
+
+
 
     def star_printer(self, star_numbers):
         star_numbers = round(star_numbers)
@@ -400,40 +453,46 @@ class generalized_item(tk.Frame):
                 tk.messagebox.showinfo("Info", "No comment of this computer posted")
             else:
                 self.top.destroy()
-                discussion_table.discussion_table(self.coming_from_page, self.item_name, None, None, None, discussion_type, df_computer)
+                discussion_table.discussion_table(coming_from = self.coming_from_page, 
+                coming_from_discuss = "generalized_item",
+                item_name = self.item_name, customer_name = None, 
+                customer_Id = None, customer_username = None, 
+                discussion_type = discussion_type, df = df_computer)
         else:
             discussion_type = "All"
             if len(df_computer) == 0:
                 tk.messagebox.showinfo("Info", "No comment of this computer posted")
             else:
                 self.top.destroy()
-                discussion_table.discussion_table(self.coming_from_page, self.item_name, self.Customer_Name, self.Customer_Id, self.Customer_username, discussion_type, df_computer)
-
+                discussion_table.discussion_table(coming_from = self.coming_from_page, 
+                coming_from_discuss = "generalized_item",
+                item_name = self.item_name, customer_name = self.Customer_Name, 
+                customer_Id = self.Customer_Id, customer_username = self.Customer_username, 
+                discussion_type = discussion_type, df = df_computer)
 
 
     def add_to_shopping_cart(self):
-        df_orders = pd.read_excel("csv_files/orders.xlsx")
+        
+        if self.item_type == "Laptop".title() or self.item_type == "workstation".title() or self.item_type == "Desktop".title():
+            select_computer_parts.select_computer_parts( my_geometry = "550x450",
+            coming_from = self.coming_from_page,
+            item_name = self.item_name, item_price = self.item_price, 
+            customer_name = self.Customer_Name, customer_Id = self.Customer_Id, 
+            customer_username = self.Customer_username)
+            
+            generalized_item(coming_from = self.coming_from_page, item_name = self.item_name, 
+                    customer_name = self.Customer_Name, 
+                    customer_Id = self.Customer_Id, customer_username = self.Customer_username)
+        else:    
+            df_orders = pd.read_excel("csv_files/orders.xlsx")
 
-        item_name = self.item_name
-        item_price = self.item_price
-        if len( df_orders ) == 0: 
-            # Order_Id | Username | Item_Name | Tracking Order | Date order processed 
-            # | Delivery Company assigned | Home address | Order Status
+            item_name = self.item_name
+            item_price = self.item_price
+            
+            # Order_Id | Username | Item_Name | Customized | Item_Price |Tracking Order | Date order processed 
+            # | Delivery_Company_Assigned | Home address | Order_Status
 
-            #----------------Generate a random tracking order---------------------------------------
-            random_number = str( random.random() +1 ).split(".")[1]
-            letters = string.ascii_lowercase 
-            random_str = ''.join(random.choice(letters) for i in range(6))
-            tracking_order = ''.join(random.choice( random_str + random_number) for i in range(26) )
-            tracking_order += str(self.Customer_Id)
-            #--------------------------------------------------------------------------------------
-            tempo = pd.DataFrame( [[str("0"), self.Customer_username, item_name, item_price ,tracking_order, "empty", "empty", "empty","in cart" ]],
-                              columns = ["Order_Id", "Username","Item_Name", "Item_Price","Tracking Order", "Date order processed", "Delivery Company assigned", "Home address", "Order Status"])
-
-            df_orders = df_orders.append(tempo)
-            df_orders.to_excel( "csv_files/orders.xlsx", index = False)
-        else:
-            df_user_shopping_cart = df_orders[ (df_orders["Username"] == self.Customer_username) & (df_orders['Order Status'] == "in cart") ]
+            df_user_shopping_cart = df_orders[ (df_orders["Username"] == self.Customer_username) & (df_orders['Order_Status'] == "in cart") ]
 
             if len(df_user_shopping_cart) == 0: # we do not have any items in the user shopping cart
             
@@ -444,52 +503,45 @@ class generalized_item(tk.Frame):
                 tracking_order = ''.join(random.choice( random_str + random_number) for i in range(26) )
                 tracking_order += str(self.Customer_Id)
                 #--------------------------------------------------------------------------------------
-                order_id = int( df_orders['Order_Id'].iloc[-1] )
-                order_id += 1
-                tempo = pd.DataFrame( [[str( order_id ), self.Customer_username, item_name, item_price, tracking_order, "empty", "empty", "empty","in cart" ]],
-                                columns = ["Order_Id", "Username", "Item_Name", "Item_Price", "Tracking Order", "Date order processed", "Delivery Company assigned", "Home address", "Order Status"])
-
-                df_orders = df_orders.append(tempo)
-                df_orders.to_excel( "csv_files/orders.xlsx", index = False)
             else: # we have items in the user shopping cart 
-                
                 # no need of generating a new tracking order
                 tracking_order = df_user_shopping_cart['Tracking Order'].iloc[-1]
-                order_id = int( df_orders['Order_Id'].iloc[-1] )
-                order_id += 1
-                tempo = pd.DataFrame( [[str( order_id ), self.Customer_username, item_name, item_price, tracking_order, "empty", "empty", "empty","in cart" ]],
-                                columns = ["Order_Id", "Username", "Item_Name", "Item_Price", "Tracking Order", "Date order processed", "Delivery Company assigned", "Home address", "Order Status"])
+                
+            order_id = len(df_orders)
+            tempo = pd.DataFrame( [[ order_id, self.Customer_username, item_name, "Default" ,item_price, tracking_order, "empty", "empty", "empty","in cart" ]],
+                            columns = ["Order_Id", "Username", "Item_Name", "Customized" ,"Item_Price", "Tracking Order", "Date order processed", "Delivery_Company_Assigned", "Home address", "Order_Status"])
 
-                df_orders = df_orders.append(tempo)
-                df_orders.to_excel( "csv_files/orders.xlsx", index = False)
+            df_orders = df_orders.append(tempo)
+            df_orders.to_excel( "csv_files/orders.xlsx", index = False)
 
 
-    #-----------------Check out Section----------------------
-        image_tempo = Image.open( f"images/checkout.png" )
-        image_tempo = image_tempo.resize(  (70,35), Image.ANTIALIAS )
-        self.checkout_pic = ImageTk.PhotoImage(  image_tempo )
+
+        #-----------------Check out Section----------------------
+            image_tempo = Image.open( f"images/checkout.png" )
+            image_tempo = image_tempo.resize(  (70,35), Image.ANTIALIAS )
+            self.checkout_pic = ImageTk.PhotoImage(  image_tempo )
+            
+            df_orders = pd.read_excel("csv_files/orders.xlsx")
+
+            df_user_shopping_cart = df_orders[ (df_orders["Username"] == self.Customer_username) & (df_orders['Order_Status'] == "in cart") ]
+
+            items_in_cart = len(df_user_shopping_cart)
+            if items_in_cart == 0: 
+
+                checkout_button = tk.Button(self.top, 
+                    command = self.command_checkout,
+                    text = "", image = self.checkout_pic,
+                    compound = "bottom")
+                checkout_button.place(relx = 0.77, rely= 0.05, relwidth= 0.07, relheight=0.1)
+            else:
+                checkout_button = tk.Button(self.top, 
+                    command = self.command_checkout,
+                    text = f"{items_in_cart} items", image = self.checkout_pic,
+                    compound = "bottom")
+                checkout_button.place(relx = 0.77, rely= 0.05, relwidth= 0.07, relheight=0.1)
         
-        df_orders = pd.read_excel("csv_files/orders.xlsx")
-
-        df_user_shopping_cart = df_orders[ (df_orders["Username"] == self.Customer_username) & (df_orders['Order Status'] == "in cart") ]
-
-        items_in_cart = len(df_user_shopping_cart)
-        if items_in_cart == 0: 
-
-            checkout_button = tk.Button(self.top, 
-                command = self.command_checkout,
-                text = "", image = self.checkout_pic,
-                compound = "bottom")
-            checkout_button.place(relx = 0.77, rely= 0.05, relwidth= 0.07, relheight=0.1)
-        else:
-            checkout_button = tk.Button(self.top, 
-                command = self.command_checkout,
-                text = f"{items_in_cart} items", image = self.checkout_pic,
-                compound = "bottom")
-            checkout_button.place(relx = 0.77, rely= 0.05, relwidth= 0.07, relheight=0.1)
-    
-    #----------------------------------------------------------
-
+        #----------------------------------------------------------
+            
 
 
 
@@ -513,4 +565,23 @@ class generalized_item(tk.Frame):
                     customer_Id = self.Customer_Id, 
                     customer_username = self.Customer_username) 
         
+
+    def command_post_review(self):
+        
+        df_orders = pd.read_excel( "csv_files/orders.xlsx" )
+        
+        
+        df_user_history = df_orders[ (df_orders["Username"] == self.Customer_username) & (df_orders['Order_Status'] != "in cart") & (df_orders['Order_Status'] != "cancelled") ]
+        
+        
+        if self.item_name not in list(df_user_history["Item_Name"] ):
+            tk.messagebox.showerror( "Error", "Before posting a review on an item " +
+              "you need to purchase it" )
+        else:
+            self.top.destroy()
+            discussion_page.discussion_page(coming_from = self.coming_from_page, 
+            item_name = self.item_name, customer_name = self.Customer_Name, 
+            customer_Id = self.Customer_Id, customer_username = self.Customer_username,
+			master = None)
+
 

@@ -20,7 +20,6 @@ import desktops_page
 #---------------------------
 
 
-
 #-------Popular Computers Page---
 import generalized_item
 #------------------------------
@@ -38,6 +37,12 @@ import OS_computer_page
 #--------Arch Pages-------
 import Arch_computer_page
 #------------------------
+
+
+# ----Computer Parts Page-----
+import computer_parts_page
+#-----------------------------
+
 
 class guess_page(tk.Frame):
 
@@ -64,11 +69,13 @@ class guess_page(tk.Frame):
         
         #------------------------Title----------------------------- 
         
-        self.style.configure( "LabelTitle.TLabel", 
-                               anchor = "center", 
-                               font = ("Helvetica", 26),
-                               background = '#49A'    
+        self.style.configure( "LabelTitle.TLabel",
+                            relief = tk.SUNKEN, 
+                            anchor = "center", 
+                            font = ("Helvetica", 26),
+                            background = '#49A'    
                             )
+
         self.LabelTitle = tk.ttk.Label( self.top, 
                                         text = "HOME PAGE", 
                                         style =  "LabelTitle.TLabel" 
@@ -80,10 +87,12 @@ class guess_page(tk.Frame):
         
         #--------------------Computer System Label-----------------------
         self.style.configure( "Computer_System_Label.TLabel", 
-                               anchor = "center", 
-                               font = ("Helvetica", 16),
-                               background = '#49A'  
+                            relief = tk.SUNKEN,
+                            anchor = "center", 
+                            font = ("Helvetica", 16),
+                            background = '#49A'  
                             )
+
         self.Computer_System_Label = tk.ttk.Label( self.top, 
                                         text = "Recommended Computer Systems", 
                                         style =  "Computer_System_Label.TLabel" 
@@ -126,33 +135,7 @@ class guess_page(tk.Frame):
                                     relwidth = 0.13, relheight = 0.26 )
             plus_relx += 0.14
 
-            '''
-            image_tempo = image_tempo.resize(  (160,160), Image.ANTIALIAS )
-            self.system = ImageTk.PhotoImage(  image_tempo )
             
-            self.label_system = tk.Label( image = self.system )
-            self.label_system.image = self.system 
-
-            self.label_system.place( x = 0 + plus_x , y = 204 )
-            plus_x += 180  
-            # Buttton Computer System 
-            self.System_Buttons.append(None)
-            self.style.configure( "Computer_system_bt.TButton",  
-                                anchor = "center", 
-                                font = ( "Helvetica", 8 ),
-                                background = "green",
-                                foreground = "black"                                
-                                )
-                                
-            self.System_Buttons[i] = tk.ttk.Button(  self.top, 
-                text = f"{system_name}",
-                command = lambda name_system = system_name: self.command_button_system(name_system), 
-                style = "Computer_system_bt.TButton"  
-                                        )
-            self.System_Buttons[i].place( relx = 0 + plus_relx, rely = 0.54, relwidth = 0.1285, 
-                                          relheight = 0.051 )
-            plus_relx += 0.14
-            '''
 
     #--------------------------------------------------------------------------------------------------
     
@@ -161,14 +144,17 @@ class guess_page(tk.Frame):
     
             #-----------------3 Most popular computers LABEL----------------
         self.style.configure( "Popular_Computers_Label.TLabel", 
-                               anchor = "left", 
-                               font = ("Helvetica", 16),
-                               background = '#49A'  
+                            relief = tk.SUNKEN,
+                            anchor = "left", 
+                            font = ("Helvetica", 16),
+                            background = '#49A'  
                             )
+
         self.Popular_Computers_Label = tk.ttk.Label( self.top, 
                                         text = "Top 3 Best Selling Computers", 
                                         style =  "Popular_Computers_Label.TLabel" 
                                       )
+
         self.Popular_Computers_Label.place( relx = 0.43, rely = 0.2, 
                                relwidth = 0.580 , relheight = 0.1 
                             )
@@ -177,7 +163,7 @@ class guess_page(tk.Frame):
 
             #---------Get the most popular(best selling computers)------------
         df = pd.read_excel( "csv_files/items.xlsx" )
-        df_all_computers = df[ df['Type'] != "Computer part" ]
+        df_all_computers = df[ df['Type'] != "Computer Part" ]
 
         df_all_computers = df_all_computers.sort_values( by = "Number of Sales", ascending = False) 
         popular_computers = df_all_computers[:3]
@@ -204,7 +190,7 @@ class guess_page(tk.Frame):
                 image_tempo = Image.open( f"images/servers/{computer_name}.png" )
             elif computer_type == "mainframe":
                 image_tempo = Image.open( f"images/mainframes/{computer_name}.png" )
-
+            
             image_tempo = image_tempo.resize(  (220,160), Image.ANTIALIAS )
             self.lenovo_images.append(None)
 
@@ -219,32 +205,7 @@ class guess_page(tk.Frame):
             self.Computer_Buttons[i].place( relx = 0.4315 + plus_relx, rely = 0.32, 
                                     relwidth = 0.175, relheight = 0.26)
             plus_relx += 0.19 
-
-            '''
-            self.computer1 = ImageTk.PhotoImage(  image_tempo )    
-            self.label_computer1 = tk.Label( image = self.computer1 )
-            self.label_computer1.image = self.computer1 
-
-            self.label_computer1.place( x = 553 + plus_x, y = 204 )
-            plus_x += 260
-
-            self.Computer_Buttons.append(None)
-            self.style.configure( "Popular_Computer_bt1.TButton",  
-                                anchor = "center", 
-                                font = ( "Helvetica", 8 ),
-                                background = "green",
-                                foreground = "black"                                
-                                )
-                                
-            self.Computer_Buttons[i] = tk.ttk.Button(  self.top, 
-                    text = f"{computer_name}",
-                    command = lambda name = computer_name,type_ = computer_type : self.command_computers(name,type_), 
-                    style = "Popular_Computer_bt1.TButton"  
-                                        )
-            self.Computer_Buttons[i].place( relx = 0.4315 + plus_relx, rely = 0.54, relwidth = 0.15, relheight = 0.051 )
-
-            plus_relx += 0.2027 
-            '''
+    
     #---------------------------------------------------------------------------------
 
 
@@ -253,14 +214,17 @@ class guess_page(tk.Frame):
 
         #--------------Label for operating system: Mac, Windows, Linux-----------------
         self.style.configure( "Popular_Computers_Label.TLabel", 
-                               anchor = "left", 
-                               font = ("Helvetica", 16),
-                               background = '#49A'  
+                            relief = tk.SUNKEN,
+                            anchor = "left", 
+                            font = ("Helvetica", 16),
+                            background = '#49A'  
                             )
+
         self.Popular_Computers_Label = tk.ttk.Label( self.top, 
                                         text = "Operating\nSystems:", 
                                         style =  "Popular_Computers_Label.TLabel" 
                                       )
+
         self.Popular_Computers_Label.place( relx = 0, rely = 0.6, 
                                relwidth = 0.09 , relheight = 0.175 
                             )
@@ -308,14 +272,17 @@ class guess_page(tk.Frame):
     #------------------Architecture Section------------------------------
             #-----------------Label for architecture--------------------------------
         self.style.configure( "Architecture_Label.TLabel", 
-                               anchor = "left", 
-                               font = ("Helvetica", 15),
-                               background = '#49A'  
+                            relief = tk.SUNKEN,
+                            anchor = "left", 
+                            font = ("Helvetica", 15),
+                            background = '#49A'  
                             )
+
         self.Architecture_Label = tk.ttk.Label( self.top, 
                                         text = "Architecture:", 
                                         style =  "Architecture_Label.TLabel" 
                                       )
+
         self.Architecture_Label.place( relx = 0, rely = 0.77, 
                                relwidth = 0.09 , relheight = 0.2 
                             )
@@ -359,37 +326,26 @@ class guess_page(tk.Frame):
     #--------------------------------------------------------------------
 
 
-
     #---------------------Computer Parts Section-------------------------------------
         image_tempo = Image.open( f"images/computer_parts/cpu_gpu.png" )
-        image_tempo = image_tempo.resize(  (290,220), Image.ANTIALIAS )
-        self.gpu_cpu = ImageTk.PhotoImage(  image_tempo )
+        self.image_part = image_tempo.resize(  (300,220), Image.ANTIALIAS )
         
-        self.label_gpu_cpu = tk.Label( image = self.gpu_cpu )
-        self.label_gpu_cpu.image = self.gpu_cpu
-        self.label_gpu_cpu.place( x = 976, y = 411 )
-
-
-    # Computer Parts Button
-        self.style.configure( "computer_parts_bt.TButton",  
-                              anchor = "center", 
-                              font = ( "Helvetica", 8 ),
-                              background = "green",
-                              foreground = "black"                                
-                            )
-                            
-        self.button_computer_parts = tk.ttk.Button(  self.top, 
-                                        text = "Computer Parts" ,
-                                        command = self.command_computer_parts , 
-                                        style = "computer_parts_bt.TButton"  
+        self.computer_parts_image = ImageTk.PhotoImage(  self.image_part )
+        self.computer_parts_image.image = self.image_part
+        
+        self.button_computer_parts_ = tk.Button(  self.top, 
+                text = "Computer Parts",
+                command = self.command_computer_parts, 
+                image = self.computer_parts_image,
+                compound = "top"
                                       )
-        self.button_computer_parts.place( relx = 0.92, rely = 0.88,
-                                     relwidth = 0.07, relheight = 0.051 )
-    #----------------
-
-    #-----------------------------------------------------------------------
+        self.button_computer_parts_.place( relx = 0.752, rely = 0.61,
+                                     relwidth = 0.235, relheight = 0.36 )
+    #----------------------------------------------------------------------------------
 
 
+
+    
 
     #---------------------Main Purpose Section------------------------------
 
@@ -554,6 +510,7 @@ class guess_page(tk.Frame):
     #-----------------Command for Computer Parts-----------------
     def command_computer_parts(self):
         self.top.destroy()
+        computer_parts_page.computer_parts_page()
     #---------------------------------------------------------------
 
 

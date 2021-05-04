@@ -148,7 +148,8 @@ class add_funds(tk.Frame):
 
             if flag_invalid:
                 tk.messagebox.showerror( "Error", 
-                   message = "Invalid input provided" )
+                   message = "Invalid input provided" +
+                   "Try an input which follows the currency format 0.00" )
             else:
                 df = pd.read_excel( "csv_files/registered_customers.xlsx" )
                 df_user_info = df[df['Username'] == self.customer_username]

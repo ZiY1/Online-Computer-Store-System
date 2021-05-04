@@ -11,6 +11,8 @@ import customer_page
 import provide_credit_card
 import complaint_page
 import discussion_table
+import purchase_history_page
+import account_info_page
 
 class setting_account(tk.Frame):
     
@@ -36,7 +38,7 @@ class setting_account(tk.Frame):
         #---------------------------------Title----------------------------------------
         self.style.configure( 
                             "LabelTitle.TLabel", 
-                            relief=tk.SUNKEN,
+                            relief = tk.SUNKEN,
                             anchor = "center", 
                             font = ("Helvetica", 23),
                             background = '#49A',
@@ -48,15 +50,6 @@ class setting_account(tk.Frame):
                                     )   
         self.LabelTitle.place( relx = 0.26, rely = 0.035, relwidth = 0.49, relheight = 0.085 )
         #----------------------------------------------------------------------------------
-
-        #--------------------------IMAGE---------------------------------------------
-
-        # self.my_image = ImageTk.PhotoImage( Image.open( "images/lenovo_icon.jpg" )  )
-        
-        # self.label_image = tk.Label( image = self.my_image)
-        # self.label_image.image = self.my_image 
-        # self.label_image.place( x = 250, y = 0 )
-        #-----------------------------------------------------------------------------
 
         #-------------------------Purchase History Section Button--------------------
         self.style.configure( "Command_Purchase_History.TButton",  
@@ -114,12 +107,12 @@ class setting_account(tk.Frame):
                               foreground = "black"                                
                             )
                             
-        self.Command_Account_info = tk.ttk.Button(  self.top, 
+        self.Button_account_info = tk.ttk.Button(  self.top, 
                                         text = "View my account information",
-                                        command = self.Command_Account_info, 
+                                        command = self.command_account_info, 
                                         style = "Command_Account_info.TButton"  
                                       )
-        self.Command_Account_info.place( relx = 0.6, rely = 0.2, relwidth = 0.300, relheight = 0.071 )
+        self.Button_account_info.place( relx = 0.6, rely = 0.2, relwidth = 0.300, relheight = 0.071 )
         #---------------------------------------------------------------------------------------
 
         #---------Place a complaint Section Button--------------------------------
@@ -153,23 +146,6 @@ class setting_account(tk.Frame):
         self.Command_Check_Review.place( relx = 0.6, rely = 0.5, relwidth = 0.300, relheight = 0.071 )
         #-------------------------------------------------------------------------------
 
-
-        #-----------------Check my inbox Section Button----------------------------
-        self.style.configure( "Command_Check_Inbox.TButton", 
-                               anchor = "left", 
-                               font = ( "Helvetica", 14 ), 
-                               background = "green",
-                               foreground = "black" 
-                            )
-        self.Command_Check_Inbox = tk.ttk.Button( self.top, 
-                                     text = "Check my inbox", 
-                                     command = self.Command_Check_Inbox,
-                                     style = "Command_Check_Inbox.TButton"
-                                   )
-        self.Command_Check_Inbox.place( relx = 0.6, rely = 0.65, relwidth = 0.300, relheight = 0.071 )
-        #-------------------------------------------------------------------------------
-
-
     #---------------------------Go Back Button---------------------------------------
         self.style.configure( "Command_Go_Back.TButton", font = ("Helvetica", 16),
                                 background = "green",   foreground = "black" )
@@ -184,6 +160,9 @@ class setting_account(tk.Frame):
 
     def Command_Purchase_History(self):
         self.top.destroy() 
+        purchase_history_page.purchase_history_page(customer_name = self.customer_name, 
+                customer_Id = self.customer_Id, 
+                customer_username = self.customer_username)
 
 
 
@@ -198,12 +177,10 @@ class setting_account(tk.Frame):
         self.top.destroy() 
 
 
-    def Command_Go_Back(self):
+    def command_account_info(self):
         self.top.destroy()
-
-
-    def Command_Account_info(self):
-        self.top.destroy()        
+        account_info_page.account_info_page( customer_name = self.customer_name, 
+        customer_Id = self.customer_Id, customer_username = self.customer_username)        
         
 
     def Command_Place_Complaint(self):
@@ -219,17 +196,19 @@ class setting_account(tk.Frame):
           tk.messagebox.showinfo("Info", "You haven't posted any comment yet")
         else:
           self.top.destroy()
-          discussion_table.discussion_table("setting_account", None, self.customer_name, self.customer_Id, self.customer_username, discussion_type, df_me)
-
-
-    def Command_Check_Inbox(self):
-        self.top.destroy()
+          discussion_table.discussion_table(coming_from = None, 
+                coming_from_discuss = "setting_account",
+                item_name = None, customer_name = self.customer_name, 
+                customer_Id = self.customer_Id, 
+                customer_username = self.customer_username, 
+                discussion_type = discussion_type, df = df_me)
 
 
     def Command_Go_Back(self):
         self.top.destroy()
         customer_page.customer_page(customer_name = self.customer_name,  
         customer_username = self.customer_username, customer_Id = self.customer_Id)
+
 
 # Test Only
 #---------------------Main----------

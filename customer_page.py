@@ -37,6 +37,14 @@ import OS_computer_page
 import Arch_computer_page
 #---------------------------------
 
+#-----------Computer Parts Page-----
+import computer_parts_page
+#-----------------------------------
+
+#-----------Email Page------------
+import emails_page
+#---------------------------------
+
 #------------Check out Page------
 import check_out 
 #--------------------------------
@@ -72,6 +80,7 @@ class customer_page(tk.Frame):
         #------------------------Title----------------------------- 
         
         self.style.configure( "LabelTitle.TLabel", 
+                               relief=tk.SUNKEN,
                                anchor = "left", 
                                font = ("Helvetica", 20),
                                background = '#49A'    
@@ -89,6 +98,7 @@ class customer_page(tk.Frame):
 
         #--------------------Computer System Label-----------------------
         self.style.configure( "Computer_System_Label.TLabel", 
+                               relief = tk.SUNKEN,
                                anchor = "center", 
                                font = ("Helvetica", 16),
                                background = '#49A'  
@@ -137,40 +147,13 @@ class customer_page(tk.Frame):
             plus_relx += 0.14
 
             
-            
-            '''
-            image_tempo = image_tempo.resize(  (160,160), Image.ANTIALIAS )
-            self.system = ImageTk.PhotoImage(  image_tempo )
-            
-            self.label_system = tk.Label( image = self.system )
-            self.label_system.image = self.system 
-
-            self.label_system.place( x = 0 + plus_x , y = 204 )
-            plus_x += 180   
-            self.System_Buttons.append(None)
-            self.style.configure( "Computer_system_bt.TButton",  
-                                anchor = "center", 
-                                font = ( "Helvetica", 8 ),
-                                background = "green",
-                                foreground = "black"                                
-                                )
-                                
-            self.System_Buttons[i] = tk.ttk.Button(  self.top, 
-                text = f"{system_name}",
-                command = lambda name_system = system_name: self.command_button_system(name_system), 
-                style = "Computer_system_bt.TButton"  
-                                        )
-            self.System_Buttons[i].place( relx = 0 + plus_relx, rely = 0.54, relwidth = 0.1285, 
-                                          relheight = 0.051 )
-            plus_relx += 0.14
-            '''
-
     #-----------------------------------------------------------------
 
     #----------------------3 Most popular computers Section--------------------
 
         #-----------------3 Most popular computers LABEL----------------
         self.style.configure( "Popular_Computers_Label.TLabel", 
+                               relief = tk.SUNKEN,
                                anchor = "left", 
                                font = ("Helvetica", 16),
                                background = '#49A'  
@@ -188,7 +171,7 @@ class customer_page(tk.Frame):
 
             #---------Get the most popular(best selling computers)------------
         df = pd.read_excel( "csv_files/items.xlsx" )
-        df_all_computers = df[ df['Type'] != "Computer part" ]
+        df_all_computers = df[ df['Type'] != "Computer Part" ]
 
         df_all_computers = df_all_computers.sort_values( by = "Number of Sales", ascending = False) 
         popular_computers = df_all_computers[:3]
@@ -231,36 +214,6 @@ class customer_page(tk.Frame):
                                     relwidth = 0.175, relheight = 0.26)
             plus_relx += 0.19 
 
-
-
-            
-            '''
-            image_tempo = image_tempo.resize(  (190,160), Image.ANTIALIAS )
-            self.computer1 = ImageTk.PhotoImage(  image_tempo )    
-            self.label_computer1 = tk.Label( image = self.computer1 )
-            self.label_computer1.image = self.computer1 
-
-            self.label_computer1.place( x = 553 + plus_x, y = 204 )
-            plus_x += 260
-
-            self.Computer_Buttons.append(None)
-            self.style.configure( "Popular_Computer_bt1.TButton",  
-                                anchor = "center", 
-                                font = ( "Helvetica", 8 ),
-                                background = "green",
-                                foreground = "black"                                
-                                )
-                                
-            self.Computer_Buttons[i] = tk.ttk.Button(  self.top, 
-                    text = f"{computer_name}",
-                    command = lambda name = computer_name,type_ = computer_type : self.command_computers(name,type_), 
-                    style = "Popular_Computer_bt1.TButton"  
-                                        )
-            self.Computer_Buttons[i].place( relx = 0.4315 + plus_relx, rely = 0.54, relwidth = 0.15, relheight = 0.051 )
-
-            plus_relx += 0.2027 
-            '''
-
     #---------------------------------------------------------------------------------
 
 
@@ -269,14 +222,17 @@ class customer_page(tk.Frame):
 
         #--------------------Label for operating system: Mac, Windows, Linux-------------------
         self.style.configure( "Popular_Computers_Label.TLabel", 
-                               anchor = "left", 
-                               font = ("Helvetica", 16),
-                               background = '#49A'  
+                            relief = tk.SUNKEN,
+                            anchor = "left", 
+                            font = ("Helvetica", 16),
+                            background = '#49A'  
                             )
+
         self.Popular_Computers_Label = tk.ttk.Label( self.top, 
                                         text = "Operating\nSystems:", 
                                         style =  "Popular_Computers_Label.TLabel" 
-                                      )
+                                    )
+
         self.Popular_Computers_Label.place( relx = 0, rely = 0.6, 
                                relwidth = 0.09 , relheight = 0.175 
                             )
@@ -326,14 +282,17 @@ class customer_page(tk.Frame):
 
         #---------------------Label for architecture---------------------
         self.style.configure( "Architecture_Label.TLabel", 
-                               anchor = "left", 
-                               font = ("Helvetica", 15),
-                               background = '#49A'  
+                            relief = tk.SUNKEN,
+                            anchor = "left", 
+                            font = ("Helvetica", 15),
+                            background = '#49A'  
                             )
+
         self.Architecture_Label = tk.ttk.Label( self.top, 
                                         text = "Architecture:", 
                                         style =  "Architecture_Label.TLabel" 
                                       )
+        
         self.Architecture_Label.place( relx = 0, rely = 0.77, 
                                relwidth = 0.09 , relheight = 0.2 
                             )
@@ -388,7 +347,7 @@ class customer_page(tk.Frame):
         
         df_orders = pd.read_excel("csv_files/orders.xlsx")
 
-        df_user_shopping_cart = df_orders[ (df_orders["Username"] == self.customer_username) & (df_orders['Order Status'] == "in cart") ]
+        df_user_shopping_cart = df_orders[ (df_orders["Username"] == self.customer_username) & (df_orders['Order_Status'] == "in cart") ]
 
         items_in_cart = len(df_user_shopping_cart)
         if items_in_cart == 0: 
@@ -411,30 +370,20 @@ class customer_page(tk.Frame):
 
     #---------------------Computer Parts Section-------------------------------------
         image_tempo = Image.open( f"images/computer_parts/cpu_gpu.png" )
-        image_tempo = image_tempo.resize(  (290,220), Image.ANTIALIAS )
-        self.gpu_cpu = ImageTk.PhotoImage(  image_tempo )
+        self.image_part = image_tempo.resize(  (300,220), Image.ANTIALIAS )
         
-        self.label_gpu_cpu = tk.Label( image = self.gpu_cpu )
-        self.label_gpu_cpu.image = self.gpu_cpu
-        self.label_gpu_cpu.place( x = 976, y = 411 )
-
-
-    # Computer Parts Button
-        self.style.configure( "computer_parts_bt.TButton",  
-                              anchor = "center", 
-                              font = ( "Helvetica", 8 ),
-                              background = "green",
-                              foreground = "black"                                
-                            )
-                            
-        self.button_computer_parts = tk.ttk.Button(  self.top, 
-                                        text = "Computer Parts" ,
-                                        command = self.command_computer_parts , 
-                                        style = "computer_parts_bt.TButton"  
+        self.computer_parts_image = ImageTk.PhotoImage(  self.image_part )
+        self.computer_parts_image.image = self.image_part
+        
+        self.button_computer_parts_ = tk.Button(  self.top, 
+                text = "Computer Parts",
+                command = self.command_computer_parts, 
+                image = self.computer_parts_image,
+                compound = "top"
                                       )
-        self.button_computer_parts.place( relx = 0.92, rely = 0.88,
-                                     relwidth = 0.07, relheight = 0.051 )
-    #----------------
+        self.button_computer_parts_.place( relx = 0.752, rely = 0.61,
+                                     relwidth = 0.235, relheight = 0.36 )
+    #----------------------------------------------------------------------------------
 
 
 
@@ -525,6 +474,39 @@ class customer_page(tk.Frame):
         self.settings_button.place( relx = 0.870, rely = 0.095, relwidth = 0.12, relheight = 0.05)
 
     #------------------------------------------------------------------------------------
+
+
+    #-----------------------Email Section-----------------------------------------------------
+        df_emails = pd.read_excel("csv_files/emails.xlsx")
+        df_emails_user = df_emails[ (df_emails["for_username"] == self.customer_username) & (df_emails["Status"] == "unread" ) ]
+        unread_mails_n = len(df_emails_user)
+        if len(df_emails_user) == 0:
+            image_tempo = Image.open( f"images/icons/closed_mailbox.png" )
+            image_tempo = image_tempo.resize(  (70,35), Image.ANTIALIAS )
+            self.email_pic = ImageTk.PhotoImage(  image_tempo )
+            
+            email_button = tk.Button(self.top, 
+                command = self.command_email,
+                text = "", image = self.email_pic,
+                compound = "bottom")
+            email_button.place(relx = 0.71, rely= 0.095, relwidth= 0.07, relheight=0.1)
+        else:
+            image_tempo = Image.open( f"images/icons/open_mailbox.png" )
+            image_tempo = image_tempo.resize(  (70,35), Image.ANTIALIAS )
+            self.email_pic = ImageTk.PhotoImage(  image_tempo )
+            
+            mail_ = "mail" if unread_mails_n == 1 else "mails"
+            email_button = tk.Button(self.top, 
+                command = self.command_email,
+                text = f"{unread_mails_n} new {mail_}", foreground = "red",
+                image = self.email_pic, compound = "bottom")
+            email_button.place(relx = 0.71, rely= 0.095, relwidth= 0.07, relheight=0.1)
+
+    #----------------------------------------------------------------------------------------------
+
+
+
+
 
 
 
@@ -619,7 +601,9 @@ class customer_page(tk.Frame):
     #-----------------Command for Computer Parts-----------------
     def command_computer_parts(self):
         self.top.destroy()
-
+        computer_parts_page.computer_parts_page( customer_name = self.customer_name,
+            customer_Id = self.customer_Id, customer_username = self.customer_username)
+    
     #---------------------------------------------------------------
 
     #--------------------Command Main Purpose-----------------------
@@ -663,6 +647,14 @@ class customer_page(tk.Frame):
     #--------------------------------------------------------------------
 
 
+    #---------------------Email Section--------------------------------------
+    def command_email(self):
+        self.top.destroy()
+        emails_page.emails_page( customer_name = self.customer_name,
+         customer_Id = self.customer_Id, customer_username = self.customer_username)
+    #-------------------------------------------------------------------------
+
+
     #------------Manager deciding what system should be on the homepage-------
     def manager_system_inputs(self):
         df = pd.read_excel( "csv_files/suggested_systems.xlsx" )
@@ -672,3 +664,8 @@ class customer_page(tk.Frame):
         return System1, System2, System3 
 
     #--------------------------------------------------------------------------  
+
+
+
+
+

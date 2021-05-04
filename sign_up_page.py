@@ -10,6 +10,8 @@ import customer_page
 import main as home
 import registered_login
 
+
+
 # TODO: line 200, 203
 class sign_up_page(tk.Frame):
 
@@ -53,7 +55,7 @@ class sign_up_page(tk.Frame):
 		
 
         # Email Address 
-        self.UsernameVar = tk.StringVar(value="Pleasr enter email")
+        self.UsernameVar = tk.StringVar(value="Please enter email")
         self.TextUsername =  tk.Entry( self.top, textvariable = self.UsernameVar ) 
         self.TextUsername.place( relx=0.350, rely=0.540, relwidth=0.5550, relheight=0.080 )
 
@@ -141,29 +143,21 @@ class sign_up_page(tk.Frame):
             df = pd.read_excel( "csv_files/registered_customers.xlsx" )
             df_active = df[df['Status'] == 'active']
 
-            flag_duplicates = False 
-            if len(df) == 0 :
-                Id = 0
-                tempo = pd.DataFrame( [["0", Name, Username.lower(), Password, "empty","0", "","0.00","","active"]],
+            if Username.lower() in list( df_active['Username']):
+                # we have duplicate accounts
+                flag_duplicates =  True
+                tk.messagebox.showerror( "Error","username is taken" )
+            else: # We do not have duplicates
+                flag_duplicates = False 
+                Id = len(df)
+                tempo = pd.DataFrame( [[ Id , Name, Username.lower(), Password, "empty","0","empty","0.00","", "active"]],
                             columns = ['ID', 'Name', 'Username', 'Password', 'Credit card account',
-                            'Warnings', 'Home Address', 'Balance', 'Phone number', "Status"])
-                df = df.append(tempo) 
-            else:
-                if Username.lower() in list( df_active['Username']):
-                    # we have duplicate accounts
-                    flag_duplicates =  True
-                    tk.messagebox.showerror( "Error","username is taken" )
-                else:
-                    Id = int( df['ID'].iloc[-1] )
-                    Id += 1 
-                    tempo = pd.DataFrame( [[ str(Id) , Name, Username.lower(), Password, "empty","0","","0.00","", "active"]],
-                              columns = ['ID', 'Name', 'Username', 'Password', 'Credit card account',
-                              'Warnings', 'Home Address','Balance', 'Phone number', "Status"])
-                    df = df.append(tempo)
+                            'Warnings', 'Home Address','Balance', 'Phone number', "Status"])
+                df = df.append(tempo)
         else:
             if flag_last_time_notify:
                 CurrentWarning, SuspendReason = self.update_suspend_file('customer', Username)
-                tk.messagebox.showerror( "Error", "Application denided, this account has been suspended, and this is the last time we notify you with details.\n"
+                tk.messagebox.showerror( "Error", "Application denied, this account has been suspended, and this is the last time we notify you with details.\n"
                                          + "\nCurrent Warning: " + str(CurrentWarning)
                                         + "\nSuspend Justification: " + str(SuspendReason))
                 # TODO: Inform the user's inbox

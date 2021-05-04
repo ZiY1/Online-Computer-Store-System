@@ -234,8 +234,6 @@ class provide_credit_card(tk.Frame):
             df = pd.read_excel( "csv_files/registered_customers.xlsx" )
             df_user_info = df[df['Username'] == self.customer_username]
 
-
-
             #---------------Check if the credit card number is not repeated-----------
             
             Card = Card_No.replace(" ", "")
@@ -265,6 +263,7 @@ class provide_credit_card(tk.Frame):
                    "Your current funds will reset to $0.00"):
                    df_user_info.loc[:,('Credit card account')] = str(Card_No)
                    df_user_info.loc[:, ('Balance') ] = float(0.00)
+                   df_user_info.loc[:, ('Home Address')] = shipping_address
                    df[ df['Username'] == self.customer_username] = df_user_info
                    df.to_excel( "csv_files/registered_customers.xlsx", index = False)
                 
@@ -274,6 +273,7 @@ class provide_credit_card(tk.Frame):
 
             else:
                 df_user_info.loc[:,('Credit card account')] = str(Card_No)
+                df_user_info.loc[:, ('Home Address')] = shipping_address
                 df[ df['Username'] == self.customer_username] = df_user_info
                 df.to_excel( "csv_files/registered_customers.xlsx", index = False)
                 

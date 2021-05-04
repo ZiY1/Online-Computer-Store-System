@@ -114,7 +114,7 @@ class edit_system_page(tk.Frame):
 		System1 = str(df.iloc[0,0])
 		System2 = str(df.iloc[1,0])
 		System3 = str(df.iloc[2,0])
-		return System1, System2, System3
+		return (System1, System2, System3)
 
 
 

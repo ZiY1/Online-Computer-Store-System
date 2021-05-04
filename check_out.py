@@ -6,6 +6,8 @@ from tkinter.messagebox import askyesno
 import numpy as np
 import pandas as pd
 
+import datetime
+
 # python script 
 import customer_page 
 import generalized_item
@@ -68,17 +70,18 @@ class check_out(tk.Frame):
         # add that new frame to a window in the canvas
         self.my_canvas.create_window((0,0), window = self.second_frame, anchor = "nw")
 
+        self.second_frame.configure( background = "light blue")
+        self.my_canvas.configure( background = "light blue")
+
 
         df_orders = pd.read_excel( "csv_files/orders.xlsx" )
         df_items = pd.read_excel( "csv_files/items.xlsx" )
-        df_user_shopping_cart = df_orders[ (df_orders["Username"] == self.Customer_username) & (df_orders['Order Status'] == "in cart") ]
+        df_user_shopping_cart = df_orders[ (df_orders["Username"] == self.Customer_username) & (df_orders['Order_Status'] == "in cart") ]
         
         total = df_user_shopping_cart['Item_Price'].sum()
         self.total_sum = float(total)
         self.total = "{:,.2f}".format(total)
         self.total_items = len(df_user_shopping_cart)
-
-        self.second_frame.configure( background = "light blue")
 
         #-------------------------Lenovo Icon -------------------------------------------
         image_tempo = Image.open( "images/lenovo_icon_2.png" )
@@ -94,6 +97,7 @@ class check_out(tk.Frame):
         #-----------------------title page--------------------------------------------
         self.style = tk.ttk.Style()
         self.style.configure( "LabelTitle.TLabel", 
+                               relief = tk.SUNKEN,
                                anchor = "left", 
                                font = ("Helvetica", 26),
                                background = '#49A'    
@@ -111,7 +115,7 @@ class check_out(tk.Frame):
 
         self.style.configure( "LabelShopping.TLabel", 
                                anchor = "left", 
-                               font = ("Bold", 36),
+                               font = ("Helvetica", 36,"bold"),
                                background = 'light blue'    
                             )
 
@@ -127,15 +131,15 @@ class check_out(tk.Frame):
 
         self.style.configure( "LabelShopp.TLabel", 
                                anchor = "left", 
-                               font = ("Bold", 26),
+                               font = ("Helvetica", 26, "bold"),
                                background = 'light blue'    
                             )
 
-        self.LabelPicture = tk.ttk.Label( self.second_frame, 
+        self.LabelItem = tk.ttk.Label( self.second_frame, 
                                            text = "   Item", 
                                            style = "LabelShopp.TLabel" 
                                           )
-        self.LabelPicture.grid( row = 6, column = 0, columnspan = 1)
+        self.LabelItem.grid( row = 6, column = 0, columnspan = 1)
 
         self.LabelPrice = tk.ttk.Label( self.second_frame, 
                                            text = "  Price", 
@@ -153,12 +157,16 @@ class check_out(tk.Frame):
         self.images = list()
         self.remove_buttons = list()
         self.images_delete = list()
+        self.label_images = list()
         for i in range( len(df_user_shopping_cart)):
             #tk.Button(second_frame, text = f"Button {thing}").grid( row = thing, column = 0)
             item_name = df_user_shopping_cart['Item_Name'].iloc[i]
             item_price = df_user_shopping_cart['Item_Price'].iloc[i]
             item_price = "$ {:,.2f}".format(item_price)
             item_type = df_items[df_items['Name'] == item_name ]['Type'].iloc[-1]
+            item_customized = df_user_shopping_cart['Customized'].iloc[i]
+            
+            custom = "\n(Customized)" if item_customized == "Customized" else ""
             
             image_tempo2 = Image.open( f"images/icons/garbage_can.png" )
             image_tempo2 = image_tempo2.resize( (25,25), Image.ANTIALIAS )
@@ -182,6 +190,8 @@ class check_out(tk.Frame):
                 image_tempo = Image.open( f"images/servers/{item_name}.png" )
             elif item_type == "mainframe":
                 image_tempo = Image.open( f"images/mainframes/{item_name}.png" )
+            elif item_type == "Computer Part":
+                image_tempo = Image.open( f"images/computer_parts/{item_name}.png" )
             
 
             
@@ -194,12 +204,13 @@ class check_out(tk.Frame):
                                font = ("Bold", 16),
                                background = 'light blue'    
                             )
-
-            
-            tk.Label( self.second_frame, text = f"{item_name}", image = self.images[i],
-                        compound = tk.TOP,
-                        font = "Bold").grid( row = 7 + i , column = 0, pady = 10 )
-            
+             
+            self.label_images.append(None)
+            self.label_images[i] = tk.Label( self.second_frame, text = f"{item_name}" + custom, 
+                    image = self.images[i],
+                    compound = tk.TOP,
+                    font = "Bold").grid( row = 7 + i , column = 0, pady = 10 )
+        
             self.LabelPrice = tk.ttk.Label(self.second_frame, text = f"{item_price}",
               font = "Bold", style =  "Label_imag.TLabel")
 
@@ -221,7 +232,7 @@ class check_out(tk.Frame):
 
         self.style.configure( "Labelsubtotal.TLabel", 
                                anchor = "left", 
-                               font = ("Bold", 20),
+                               font = ("Helvetica", 20, "bold"),
                                background = 'light blue'    
                             )
 
@@ -263,11 +274,7 @@ class check_out(tk.Frame):
 
         #------------------------Go Back section--------------------------------
 
-        tk.Label( self.second_frame, text = " "*90, foreground  = "light blue",
-        background = "light blue").grid(row = 0, column = 6)
-
-
-
+        
         image_tempo3 = Image.open( f"images/icons/go_back.png" )
         image_tempo3 = image_tempo3.resize( (25,25), Image.ANTIALIAS )
         
@@ -276,11 +283,8 @@ class check_out(tk.Frame):
         self.back_button = tk.Button( self.second_frame, text = "Back     ", 
                                         image = self.image_back, 
                                         command = self.go_back, compound = "left")
-        self.back_button.grid( row = 0, column = 7, padx = 10)   
-
-        tk.Label( self.second_frame, text = " "*90, foreground  = "light blue",
-        background = "light blue").grid(row = 0, column = 8)
-                             
+        self.back_button.grid( row = 0, column = 7 )   
+                     
         #------------------------------------------------------------------------
 
 
@@ -289,12 +293,12 @@ class check_out(tk.Frame):
         df_orders = pd.read_excel( "csv_files/orders.xlsx" )
         df_items = pd.read_excel( "csv_files/items.xlsx" )
         df_user_shopping_cart = df_orders[ (df_orders["Username"] == self.Customer_username) 
-        & (df_orders['Order Status'] == "in cart") & (df_orders["Item_Name"] == item_name )]
+        & (df_orders['Order_Status'] == "in cart") & (df_orders["Item_Name"] == item_name )]
 
-        df_user_shopping_cart.loc[:, ("Order Status")].iloc[0] = "cancelled"
+        df_user_shopping_cart.loc[:, ("Order_Status")].iloc[0] = "cancelled"
         
         df_orders[ (df_orders['Username'] == self.Customer_username) &
-         (df_orders['Order Status'] == 'in cart') & 
+         (df_orders['Order_Status'] == 'in cart') & 
          (df_orders['Item_Name'] == item_name) ] = df_user_shopping_cart
 
         df_orders.to_excel( "csv_files/orders.xlsx", index = False)
@@ -303,7 +307,7 @@ class check_out(tk.Frame):
         df_items = pd.read_excel( "csv_files/items.xlsx" )
         
         df_user_shopping_cart2 = df_orders2[ (df_orders2["Username"] == self.Customer_username) & 
-                (df_orders2['Order Status'] == "in cart") ]
+                (df_orders2['Order_Status'] == "in cart") ]
         
         self.master.destroy()
 
@@ -348,18 +352,99 @@ class check_out(tk.Frame):
 
             #-------------Place the in-cart orders in processing status----------------------
             df_orders = pd.read_excel( "csv_files/orders.xlsx" )
-            df_customer_cart = df_orders[ (df_orders['Username'] == self.Customer_username) & (df_orders['Order Status'] == "in cart") ]
-            
-            df_customer_cart.loc[:,('Order Status')] = "processing"
+            df_customer_cart = df_orders[ (df_orders['Username'] == self.Customer_username) & (df_orders['Order_Status'] == "in cart") ]
+            df_update_sales = df_customer_cart            
+            df_customer_cart.loc[:,('Order_Status')] = "processing"
+            now = datetime.datetime.now()
+            date_processed = now.strftime("%m/%d/%Y, %H:%M:%S")
 
-            df_orders[ (df_orders['Username'] == self.Customer_username) & (df_orders['Order Status'] == "in cart") ] = df_customer_cart
+            df_customer_cart.loc[:,('Date order processed')] = date_processed
+            df_orders[ (df_orders['Username'] == self.Customer_username) & (df_orders['Order_Status'] == "in cart") ] = df_customer_cart
             df_orders.to_excel( "csv_files/orders.xlsx", index = False)
             #--------------------------------------------------------------------------------
+
+            #---------------------------Update the number of sales--------------------------------
+            df_items = pd.read_excel("csv_files/items.xlsx")
+
+            for i in range( len(df_update_sales)):
+                item_sold = df_update_sales['Item_Name'].iloc[i]
+                tempo_df = df_items[ df_items['Name'] == item_sold]
+                tempo_df['Number of Sales'] += 1
+                df_items[ df_items['Name'] == item_sold] = tempo_df
+            df_items.to_excel("csv_files/items.xlsx", index = False)
+            #-------------------------------------------------------------------------------
+
+
+            #---------------------Send "email" receipt to customer---------------------
+            now = datetime.datetime.now()
+            date_send = now.strftime("%m/%d/%Y, %H:%M:%S")
+
+            message1 = f"Dear {self.Customer_Name},\n\n"
+            message2 = "Your Order has been placed. Here are the details of your order. Our delivery team will notify once your package arrives.\n"
+            message3 = "In the meantime, you can track your order by the tracking order.\n"
+            #df_customer_cart
+            track_order = df_customer_cart["Tracking Order"].iloc[-1]
+            total_sum = float ( df_customer_cart["Item_Price"].sum() )
+            total_sum = "$ {:,.2f}".format(total_sum)
+            message4 = f"\t\t\t\tTracking Order: {track_order}\n"
+            
+            message5 = "\t\tItem Name\t\t\t\t\tItem Price\n"
+            message6 = ""
+            #fixed_v = 41
+            for i in range( len(df_customer_cart) ):
+                item = str ( df_customer_cart["Item_Name"].iloc[i])
+                custom = str( df_customer_cart["Customized"].iloc[i] )
+                
+                custom = " (Customized)" if custom == "Customized" else ""
+
+                price = float ( df_customer_cart["Item_Price"].iloc[i] )
+                price = "$ {:,.2f}".format(price)
+                
+                name_printed = item + custom
+                len_item = len(name_printed) 
+                name_printed += " "*10 if len_item <= 10 else ""
+                #length = int( abs(fixed_v - len_item ) ) 
+                
+                message6 += "\t\t{:60s}\t\t\t\t{:20s}\n".format( name_printed, price)
+                
+            
+            message7 = f"\t\t\t         \t\t\t\t\tSubtotal: {total_sum}"
+            message8 = "\nThanks, Lenovo Team"
+            message = message1 + message2 + message3 + message4 + message5 + message6 + message7 + message8 
+
+            df_emails = pd.read_excel( "csv_files/emails.xlsx")
+            
+            Id = len(df_emails) 
+            tempo = pd.DataFrame( [[Id, self.Customer_username, "Lenovo Store", date_send,"Order Placed", message,"unread"]],
+                        columns = ['ID', 'for_username', 'From', 'Date_received', 'Subject', 'Message', 'Status'])
+            df_emails = df_emails.append(tempo)
+
+            df_emails.to_excel("csv_files/emails.xlsx", index = False)
+            
+            #-------------------------------------------------------------------------------
+
+
+            #----------------------------Send the collected money to the manager-----------------
+            df_staffs = pd.read_excel("csv_files/privileged_users.xlsx")
+            df_manager = df_staffs[df_staffs["Username"] == "admin@lenovo.com" ]
+            current_income = float ( df_manager["Income"].iloc[-1] )
+            df_manager.loc[:,("Income")] = self.total_sum + current_income
+            
+            df_staffs[df_staffs["Username"] == "admin@lenovo.com"] = df_manager
+            df_staffs.to_excel( "csv_files/privileged_users.xlsx", index = False )
+            #----------------------------------------------------------------------------------
+
+
+
+
+
+
 
             #---------------------Show success message---------------------------------------
             tk.messagebox.showinfo("Success", "Your order has been placed.\n"+ 
                 "You will receive an order receipt" )
             #--------------------------------------------------------------------------------
+
 
             self.master.destroy()
 
