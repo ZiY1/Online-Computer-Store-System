@@ -265,9 +265,9 @@ class discussion_page(tk.Frame):
 		for word in my_list:
 			if word.lower() in list(df_taboo['Taboo Words']):
     			#Change it to *****
-				#number_of_star = len(word)
+				number_of_star = len(word)
 
-				my_string = my_string.replace(word, "*" )
+				my_string = my_string.replace(word, "*"*number_of_star )
 				flag_taboo_word = True
 
 		return my_string, flag_taboo_word

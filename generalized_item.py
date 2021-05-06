@@ -53,6 +53,8 @@ class generalized_item(tk.Frame):
         self.item_OS = df_item_info['OS'].iloc[-1]
         self.item_architecture = df_item_info['Architecture'].iloc[-1]
         self.item_star = df_item_info['overall review'].iloc[-1]
+        self.item_CPU = df_item_info['CPU cores'].iloc[-1]
+        self.item_GPU = df_item_info['Graphic Card'].iloc[-1]
         #---------------------------------------------------------------------------
 
         
@@ -476,7 +478,10 @@ class generalized_item(tk.Frame):
         if self.item_type == "Laptop".title() or self.item_type == "workstation".title() or self.item_type == "Desktop".title():
             select_computer_parts.select_computer_parts( my_geometry = "550x450",
             coming_from = self.coming_from_page,
+            item_arch = self.item_architecture,
             item_name = self.item_name, item_price = self.item_price, 
+            item_type = self.item_type, item_CPU = self.item_CPU, 
+            item_GPU = self.item_GPU, item_purpose = self.item_purpose,
             customer_name = self.Customer_Name, customer_Id = self.Customer_Id, 
             customer_username = self.Customer_username)
             

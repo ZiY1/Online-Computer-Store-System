@@ -65,6 +65,7 @@ class purchase_history_page(tk.Frame):
         self.my_canvas.configure( background = "light blue" )
 
 
+        '''
         #-------------------------Lenovo Icon -------------------------------------------
         image_tempo = Image.open( "images/lenovo_icon_2.png" )
         #image_tempo = image_tempo.resize(  (160,160), Image.ANTIALIAS )
@@ -74,7 +75,7 @@ class purchase_history_page(tk.Frame):
         self.label_image.image = self.my_image 
         self.label_image.grid()
         #-------------------------------------------------------------------------------
-
+        '''
 
         #-----------------------title page--------------------------------------------
         self.style = tk.ttk.Style()
@@ -89,7 +90,7 @@ class purchase_history_page(tk.Frame):
                                            text = f"Purchase History Page\nHello, {self.Customer_Name}", 
                                            style = "LabelTitle.TLabel" 
                                           )
-        self.LabelTitle.grid( row = 0, column = 1, padx = 50)
+        self.LabelTitle.grid( row = 0, column = 0, padx = 50)
         #-----------------------------------------------------------------------------
 
 
@@ -97,7 +98,7 @@ class purchase_history_page(tk.Frame):
 
         self.style.configure( "LabelShopping.TLabel", 
                                anchor = "left", 
-                               font = ("Helvetica", 36,"bold"),
+                               font = ("Helvetica", 26,"bold"),
                                background = 'light blue'    
                             )
 
@@ -113,7 +114,7 @@ class purchase_history_page(tk.Frame):
 
         self.style.configure( "LabelShopp.TLabel", 
                                anchor = "left", 
-                               font = ("Helvetica", 26, "bold"),
+                               font = ("Helvetica", 20, "bold"),
                                background = 'light blue'    
                             )
 
@@ -123,24 +124,38 @@ class purchase_history_page(tk.Frame):
                                           )
         self.LabelPicture.grid( row = 6, column = 0, columnspan = 1)
 
+        self.LabelPrice = tk.ttk.Label( self.second_frame, 
+                                           text = "Price", 
+                                           style = "LabelShopp.TLabel" 
+                                          )
+        self.LabelPrice.grid( row = 6, column = 1, padx = 50)
+        
+
         self.LabelDate = tk.ttk.Label( self.second_frame, 
                                            text = "Date Purchased", 
                                            style = "LabelShopp.TLabel" 
                                           )
-        self.LabelDate.grid( row = 6, column = 1, padx = 50)
+        self.LabelDate.grid( row = 6, column = 2, padx = 50)
+        
+
+        self.LabelDate = tk.ttk.Label( self.second_frame, 
+                                           text = "Date Purchased", 
+                                           style = "LabelShopp.TLabel" 
+                                          )
+        self.LabelDate.grid( row = 6, column = 2, padx = 50)
         
         self.LabelStatus = tk.ttk.Label( self.second_frame, 
                                            text = "Status", 
                                            style = "LabelShopp.TLabel" 
                                           )
-        self.LabelStatus.grid( row = 6, column = 2)
+        self.LabelStatus.grid( row = 6, column = 3)
         
 
         self.LabelID = tk.ttk.Label( self.second_frame, 
                                            text = "Order ID", 
                                            style = "LabelShopp.TLabel" 
                                           )
-        self.LabelID.grid( row = 6, column = 3, padx = 50)
+        self.LabelID.grid( row = 6, column = 4, padx = 50)
         
 
         #-------------------------------------------------------------------------------
@@ -156,6 +171,7 @@ class purchase_history_page(tk.Frame):
         for i in range( len(df_user_history)):
             #tk.Button(second_frame, text = f"Button {thing}").grid( row = thing, column = 0)
             item_name = df_user_history['Item_Name'].iloc[i]
+            item_price = df_user_history['Item_Price'].iloc[i]
             item_date = df_user_history['Date order processed'].iloc[i]
             item_status = df_user_history['Order_Status'].iloc[i]
             item_Id = df_user_history['Order_Id'].iloc[i]
@@ -192,21 +208,27 @@ class purchase_history_page(tk.Frame):
                         compound = tk.TOP,
                         font = "Bold").grid( row = 7 + i , column = 0, pady = 10 )
             
+            item_price = "$ {:,.2f}".format(item_price)
+                
+            self.Label_Price = tk.ttk.Label( self.second_frame, text = f"{item_price}",
+                    style = "Label_imag.TLabel")
+            self.Label_Price.grid( row = 7 +i, column = 1)
+
             self.Label_Date = tk.ttk.Label(self.second_frame, text = f"{item_date}",
               style =  "Label_imag.TLabel")
 
-            self.Label_Date.grid( row = 7 + i, column = 1)
+            self.Label_Date.grid( row = 7 + i, column = 2)
 
             
             self.Label_Status = tk.ttk.Label(self.second_frame, text = f"{item_status}",
               style =  "Label_imag.TLabel")
 
-            self.Label_Status.grid( row = 7 + i, column = 2)
+            self.Label_Status.grid( row = 7 + i, column = 3)
             
             self.Label_ID = tk.ttk.Label(self.second_frame, text = f"{item_Id}",
               style =  "Label_imag.TLabel")
 
-            self.Label_ID.grid( row = 7 + i, column = 3)
+            self.Label_ID.grid( row = 7 + i, column = 4)
 
 
 
@@ -250,7 +272,7 @@ class purchase_history_page(tk.Frame):
         self.back_button = tk.Button( self.second_frame, text = "Back", 
                                         image = self.image_back, 
                                         command = self.go_back, compound = "left")
-        self.back_button.grid( row = 0, column = 3, padx = 10)   
+        self.back_button.grid( row = 0, column = 4, padx = 10)   
 
                          
         #------------------------------------------------------------------------
