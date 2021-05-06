@@ -73,12 +73,17 @@ class select_computer_parts(tk.Frame):
         if self.item_purpose.lower() == "gaming" or self.item_type.lower() == "workstation":
             self.type_of_batteries = [ "Default Durable Type (+$0.00)", 
                                 "Highly Durable Type (+$25.00)" ]
+        elif self.item_GPU in ["AMD Radeon™ Graphics", "Intel® Iris® Xe Graphics",
+                            "NVIDIA® GeForce®", "Integrated PowerVR GX6250"]:
+            self.type_of_batteries = [ "Default Durable Type (+$0.00)", 
+                            "Highly Durable Type (+$25.00)" ]
         else:
             self.type_of_batteries = [ "Regular Type (+$0.00)", "Durable Type (+$25.00)",
-                                "Highly Durable Type (+$50.00)"  ]
+                            "Highly Durable Type (+$50.00)"  ]
             
         self.combobox_battery = tk.ttk.Combobox(self.top, value = self.type_of_batteries, 
                     width = 15)
+
         self.combobox_battery.set(self.type_of_batteries[0])
         self.combobox_battery["state"] = 'readonly'
         self.combobox_battery.place( relx = 0.45, rely = 0.1, relwidth = 0.47, relheight = 0.04)
