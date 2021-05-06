@@ -47,6 +47,8 @@ class generalized_item(tk.Frame):
         self.item_type = df_item_info['Type'].iloc[-1].title()
 
         self.item_price = df_item_info['Price'].iloc[-1]
+        self.item_price_f = "$ {:,.2f}".format(self.item_price)
+               
         self.item_features = df_item_info['Features'].iloc[-1]
 
         self.item_purpose = df_item_info['Purpose'].iloc[-1]
@@ -162,7 +164,7 @@ class generalized_item(tk.Frame):
                                 )
 
             self.Label_Item_Info = tk.ttk.Label( self.top, 
-                                                text = f"Architecture: {self.item_architecture}\nOS:  {self.item_OS}\nMain Purpose: {self.item_purpose}\nPrice: ${ int(self.item_price) }.00", 
+                                                text = f"Architecture: {self.item_architecture}\nOS:  {self.item_OS}\nMain Purpose: {self.item_purpose}\nPrice: {self.item_price_f }", 
                                                 style =  "Label_Item_Info.TLabel" 
                                             )
 
@@ -177,7 +179,7 @@ class generalized_item(tk.Frame):
                                 )
 
             self.Label_Item_Info = tk.ttk.Label( self.top, 
-                                                text = f"\n\n\nPrice: ${ int(self.item_price) }.00", 
+                                                text = f"\n\n\nPrice: { self.item_price_f}", 
                                                 style =  "Label_Item_Info.TLabel" 
                                             )
 

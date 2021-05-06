@@ -82,7 +82,7 @@ class purpose_computers_page(tk.Frame):
         #------------------------------------------------------------
 
         df = pd.read_excel("csv_files/items.xlsx")
-        df_purpose = df[ ( df['Purpose'] == self.purpose ) ] # Purpose e.g:Gaming, Business, Scientific 
+        df_purpose = df[ ( df['Purpose'] == self.purpose ) & ( (df['Type'] == 'Laptop') | (df['Type'] == 'Desktop') | ( df['Type'] == 'workstation')  ) ] # Purpose e.g:Gaming, Business, Scientific 
         df_purpose = df_purpose.sort_values(by = 'Number of Sales', ascending = False) # sort in popular order
 
         plus_x = 0 

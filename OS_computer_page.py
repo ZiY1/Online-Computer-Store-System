@@ -82,9 +82,13 @@ class OS_computers_page(tk.Frame):
         #------------------------------------------------------------
 
         df = pd.read_excel("csv_files/items.xlsx")
-        df_OS = df[ ( df['OS'] == self.OS ) ] # OS e.g: Windows, Mac, Linux 
-        df_OS = df_OS.sort_values(by = 'Number of Sales', ascending = False) # sort in popular order
-
+        if self.OS.lower() != "linux":
+            df_OS = df[ ( df['OS'] == self.OS ) & ( (df['Type'] == "Laptop") | (df['Type'] == 'Desktop')) ] # OS e.g: Windows, Mac, Linux 
+            df_OS = df_OS.sort_values(by = 'Number of Sales', ascending = False) # sort in popular order
+        else:
+            df_OS = df[ ( df['OS'] == self.OS )  ]  
+        
+        
         plus_x = 0 
         plus_y = 0
         plus_relx = 0

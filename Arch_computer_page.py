@@ -83,7 +83,7 @@ class Arch_computers_page(tk.Frame):
         #------------------------------------------------------------
 
         df = pd.read_excel("csv_files/items.xlsx")
-        df_Arch = df[ ( df['Architecture'] == self.Arch ) ] # Architecture e.g: Intel, AMD Ryzen 
+        df_Arch = df[ ( df['Architecture'] == self.Arch ) &( (df['Type'] == 'Laptop') | (df['Type'] == 'Desktop') | (df['Type'] == 'workstation')  )] # Architecture e.g: Intel, AMD Ryzen 
         df_Arch = df_Arch.sort_values(by = 'Number of Sales', ascending = False) # sort in popular order
 
         plus_x = 0 
@@ -94,7 +94,7 @@ class Arch_computers_page(tk.Frame):
 
         self.lenovo_images = []
         self.Buttons = []
-        for i in range(10): # Only the top 10 sold computers will be shown
+        for i in range( 10 ): # Only the top 10 sold computers will be shown
             computer_name = df_Arch.iloc[i]['Name']
             computer_type = df_Arch.iloc[i]['Type']
 
