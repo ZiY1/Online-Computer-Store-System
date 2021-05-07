@@ -100,6 +100,7 @@ class sign_up_page(tk.Frame):
     def command_sign_up(self):
         
         Name = self.TextName.get()
+        Name = Name.strip()
         Username = self.TextUsername.get()
         Password = self.TextPassword.get()
 

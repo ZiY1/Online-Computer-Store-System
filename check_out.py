@@ -380,7 +380,7 @@ class check_out(tk.Frame):
             date_send = now.strftime("%m/%d/%Y, %H:%M:%S")
 
             message1 = f"Dear {self.Customer_Name},\n\n"
-            message2 = "Your Order has been placed. Here are the details of your order. Our delivery team will notify once your package arrives.\n"
+            message2 = "Your Order has been placed. Here are the details of your order. Our delivery team will notify you once your package arrives.\n"
             message3 = "In the meantime, you can track your order by the tracking order.\n"
             #df_customer_cart
             track_order = df_customer_cart["Tracking Order"].iloc[-1]

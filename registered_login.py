@@ -3,6 +3,7 @@ import tkinter.ttk as ttk
 
 import numpy as np
 import pandas as pd
+import datetime
 
 
 # python files 
@@ -101,10 +102,30 @@ class registered_login(tk.Frame):
                                         + "\nCurrent Warning: " + str(CurrentWarning)
                                         + "\nSuspend Justification: " + str(SuspendReason))
                 self.top.destroy()
+                
                 user_info_df = df_customer[df_customer['Username'] == Username ]
                 Customer_Name = user_info_df['Name'].iloc[-1] 
                 Customer_Username = user_info_df['Username'].iloc[-1]
                 Customer_Id = user_info_df['ID'].iloc[-1]
+                
+                message1 = f"Dear {Customer_Name},\n\n"
+                message2 = "We regret to inform you that your account has been suspended. You are allowed one last login"
+                message3 = "to clean up your account.\n"
+                message4 = "\nThanks, Lenovo Admin"
+                message = message1 + message2 + message3 + message4 
+                df_emails = pd.read_excel( "csv_files/emails.xlsx")
+            
+                Id = len(df_emails)
+                now = datetime.datetime.now()
+                date_send = now.strftime("%m/%d/%Y, %H:%M:%S") 
+                
+                tempo = pd.DataFrame( [[Id, Customer_Username, "Lenovo Admin", date_send, "Account Suspended", message, "unread"]],
+                            columns = ['ID', 'for_username', 'From', 'Date_received', 'Subject', 'Message', 'Status'])
+                df_emails = df_emails.append(tempo)
+
+                df_emails.to_excel("csv_files/emails.xlsx", index = False)    
+                
+
                 customer_page.customer_page(Customer_Name, Customer_Username, Customer_Id)
             elif flag_username_registered and flag_correct_password and not flag_last_chance_login:
                 CurrentWarning, SuspendReason = self.update_suspend_file('customer', Username, flag_last_chance_login)
