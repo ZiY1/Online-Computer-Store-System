@@ -13,6 +13,7 @@ import complaint_page
 import discussion_table
 import purchase_history_page
 import account_info_page
+import search_info
 
 class setting_account(tk.Frame):
     
@@ -96,6 +97,25 @@ class setting_account(tk.Frame):
                                    )
         self.Command_Track_Package.place( relx = 0.1, rely = 0.5, relwidth = 0.300, relheight = 0.071 )
         #-------------------------------------------------------------------------------
+
+
+        #-----Search Info about clerks/delivery/companies Section Button------------------
+        self.style.configure( "Command_Search_info.TButton", 
+                               anchor = "left", 
+                               font = ( "Helvetica", 14 ), 
+                               background = "green",
+                               foreground = "black" 
+                            )
+        self.Button_Search_info = tk.ttk.Button( self.top, 
+                                     text = "Search info", 
+                                     command = self.Command_Search_info,
+                                     style = "Command_Search_info.TButton"
+                                   )
+        self.Button_Search_info.place( relx = 0.1, rely = 0.65, relwidth = 0.300, relheight = 0.071 )
+        #-------------------------------------------------------------------------------
+
+
+
 
 
 
@@ -209,6 +229,12 @@ class setting_account(tk.Frame):
         customer_page.customer_page(customer_name = self.customer_name,  
         customer_username = self.customer_username, customer_Id = self.customer_Id)
 
+
+    def Command_Search_info(self):
+          self.top.destroy()
+          search_info.search_info( customer_name = self.customer_name, 
+                     customer_Id = self.customer_Id, 
+                     customer_username = self.customer_username)
 
 # Test Only
 #---------------------Main----------
