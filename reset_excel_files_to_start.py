@@ -41,7 +41,9 @@ df_items.to_excel("csv_files/items.xlsx", index  = False)
 
 
 
-tempo_df2 = df_staffs[ df_staffs["Type_user"] == "Super user"] 
-tempo_df2['Income'] = 0.00
+#tempo_df2 = df_staffs[ df_staffs["Type_user"] == "Super user"] 
+tempo_df2 = df_staffs.iloc[0:11] # gather the default privileged users
+tempo_df2['Income'] = 0.00  # reset their income 
+tempo_df2['Status'] = 'active' # reset their status
 tempo_df2.to_excel("csv_files/privileged_users.xlsx",index = False)
 

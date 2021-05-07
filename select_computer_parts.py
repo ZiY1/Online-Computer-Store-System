@@ -74,7 +74,8 @@ class select_computer_parts(tk.Frame):
             self.type_of_batteries = [ "Default Durable Type (+$0.00)", 
                                 "Highly Durable Type (+$25.00)" ]
         elif self.item_GPU in ["AMD Radeon™ Graphics", "Intel® Iris® Xe Graphics",
-                            "NVIDIA® GeForce®", "Integrated PowerVR GX6250"]:
+                            "NVIDIA® GeForce®", "Integrated PowerVR GX6250", "NVIDIA® Graphics",
+                            "Radeon Pro"]:
             self.type_of_batteries = [ "Default Durable Type (+$0.00)", 
                             "Highly Durable Type (+$25.00)" ]
         else:
