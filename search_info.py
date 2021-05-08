@@ -307,7 +307,7 @@ class search_info(tk.Frame):
         #-------------------------------------------------------------------------------
         
         
-        df_computer = df_staff[ ( (df_staff['Type_user'] == "computer") | ( df_staff['Type_user'] == 'computer company' ) ) & (df_staff['Status'] == "active") ]
+        df_computer = df_staff[ ( (df_staff['Type_user'] == "computer") | ( df_staff['Type_user'] == 'computer_company' ) ) & (df_staff['Status'] == "active") ]
 
         self.computer_images = list()
         for i in range( len(df_computer) ):
