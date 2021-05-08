@@ -12,6 +12,8 @@ warnings.filterwarnings("ignore")
 5) complaints
 6) discussion_reports
 7) discussions
+8) biddings
+9) tracking_orders
 '''
 
 def empty_df(df, directory):
@@ -19,7 +21,9 @@ def empty_df(df, directory):
     df_tempo = pd.DataFrame( columns = df.columns)
     df_tempo.to_excel(directory, index = False)
 
-files = [ "registered_customers","suspend_users","emails","orders","complaints","discussion_reports","discussions"]
+files = [   "registered_customers", "suspend_users", "emails", "orders",
+            "complaints", "discussion_reports", "discussions", "biddings",
+            "tracking_orders" ]
 
 df_customers = pd.read_excel("csv_files/registered_customers.xlsx")
 
@@ -45,5 +49,6 @@ df_items.to_excel("csv_files/items.xlsx", index  = False)
 tempo_df2 = df_staffs.iloc[0:11] # gather the default privileged users
 tempo_df2['Income'] = 0.00  # reset their income 
 tempo_df2['Status'] = 'active' # reset their status
+tempo_df2['Warnings'] = 0 # reset their warnings
 tempo_df2.to_excel("csv_files/privileged_users.xlsx",index = False)
 
