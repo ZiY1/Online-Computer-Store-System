@@ -87,7 +87,7 @@ class edit_account_page(tk.Frame):
 		self.Label6 = tk.ttk.Label(self.top, text="Suspend \nJustification:", style='Label1.TLabel')
 		self.Label6.place(relx=0.12, rely=0.56, relwidth=0.4, relheight=0.162)
 
-		self.Text6 = tk.Text(self.top, font=("Helvetica",11), state="disable")
+		self.Text6 = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD, state="disable")
 		self.Text6.place(relx=0.4, rely=0.583, relwidth=0.4, relheight=0.22)
 
 		# Confirm Button
@@ -114,27 +114,14 @@ class edit_account_page(tk.Frame):
 			self.Combo2 = tk.ttk.Combobox(self.top, state="readonly",values=self.Combo1List2, font=("Helvetica",11))
 			self.Combo2.bind("<<ComboboxSelected>>", self.get_combo2)
 			self.Combo2.place(relx=0.4, rely=0.215, relwidth=0.4, relheight=0.068)
+		self.create_refresh_textbox()
 
 	def get_combo2(self, event):
 		if self.Combo2.get() == "Suspend":
-			self.Text3 = tk.ttk.Entry(self.top, textvariable=self.Text3Var, font=("Helvetica",11), state="disable")
-			self.Text3.place(relx=0.4, rely=0.307, relwidth=0.4, relheight=0.068)
-
-			self.Text5 = tk.ttk.Entry(self.top, textvariable=self.Text5Var, font=("Helvetica",11), state="disable")
-			self.Text5.place(relx=0.4, rely=0.491, relwidth=0.4, relheight=0.068)
-
-			self.Text6 = tk.Text(self.top, font=("Helvetica",11))
-			self.Text6.place(relx=0.4, rely=0.583, relwidth=0.4, relheight=0.22)
+			self.suspend_refresh_textbox()
 
 		else:
-			self.Text3 = tk.ttk.Entry(self.top, textvariable=self.Text3Var, font=("Helvetica",11))
-			self.Text3.place(relx=0.4, rely=0.307, relwidth=0.4, relheight=0.068)
-
-			self.Text5 = tk.ttk.Entry(self.top, textvariable=self.Text5Var, font=("Helvetica",11))
-			self.Text5.place(relx=0.4, rely=0.491, relwidth=0.4, relheight=0.068)
-
-			self.Text6 = tk.Text(self.top, font=("Helvetica",11), state="disable")
-			self.Text6.place(relx=0.4, rely=0.583, relwidth=0.4, relheight=0.22)
+			self.create_refresh_textbox()
 
 
 	def command_view(self):
@@ -171,6 +158,12 @@ class edit_account_page(tk.Frame):
 			type_user = "customer"
 			self.suspend_user(type_user)
 
+		if self.Combo2.get() == "Suspend":
+			self.suspend_refresh_textbox()
+
+		else:
+			self.create_refresh_textbox()
+
 	def command_cancel(self, event=None):
 		self.top.destroy()
 		mmp.manager_management_page(self.admin_name, self.admin_username)
@@ -182,15 +175,6 @@ class edit_account_page(tk.Frame):
 
 
     	#----------------Check if the username is a working email----------------
-        
-		# regex = '^[A-Za-z0-9]+[\._]?[A-Za-z0-9]+[@]\w+[.]\w{2,3}$'
-
-		# if(re.search(regex, Username) ):
-		# 	flag_valid_email = True
-		# 	Username = Username.lower()
-		# else:
-		# 	flag_valid_email = False
-		# 	tk.messagebox.showerror( "Error", "invalid email username" )
 
 		regex = "[A-Za-z0-9_]+[@]\w+[.]\w{2,3}$"
 		if(  re.fullmatch(regex, Username) ):
@@ -332,12 +316,34 @@ class edit_account_page(tk.Frame):
 	def wrap(self, string, lenght=55):
 		return '\n'.join(textwrap.wrap(string, lenght))
 
+	def create_refresh_textbox(self):
+		self.Text3Var = tk.StringVar()
+		self.Text3 = tk.ttk.Entry(self.top, textvariable=self.Text3Var, font=("Helvetica",11))
+		self.Text3.place(relx=0.4, rely=0.307, relwidth=0.4, relheight=0.068)
 
+		self.Text4Var = tk.StringVar(value="Pleasr enter email")
+		self.Text4 = tk.ttk.Entry(self.top, textvariable=self.Text4Var, font=("Helvetica",11))
+		self.Text4.place(relx=0.4, rely=0.399, relwidth=0.4, relheight=0.068)
 
+		self.Text5Var = tk.StringVar()
+		self.Text5 = tk.ttk.Entry(self.top, textvariable=self.Text5Var, font=("Helvetica",11))
+		self.Text5.place(relx=0.4, rely=0.491, relwidth=0.4, relheight=0.068)
 
+		self.Text6 = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD, state="disable")
+		self.Text6.place(relx=0.4, rely=0.583, relwidth=0.4, relheight=0.22)
 
-# Test Only
-#---------------------Main----------
-if __name__ == "__main__":
-    top = tk.Tk()
-    edit_account_page(top).mainloop()    
+	def suspend_refresh_textbox(self):
+		self.Text3Var = tk.StringVar()
+		self.Text3 = tk.ttk.Entry(self.top, textvariable=self.Text3Var, font=("Helvetica",11), state="disable")
+		self.Text3.place(relx=0.4, rely=0.307, relwidth=0.4, relheight=0.068)
+
+		self.Text4Var = tk.StringVar(value="Pleasr enter email")
+		self.Text4 = tk.ttk.Entry(self.top, textvariable=self.Text4Var, font=("Helvetica",11))
+		self.Text4.place(relx=0.4, rely=0.399, relwidth=0.4, relheight=0.068)
+
+		self.Text5Var = tk.StringVar()
+		self.Text5 = tk.ttk.Entry(self.top, textvariable=self.Text5Var, font=("Helvetica",11), state="disable")
+		self.Text5.place(relx=0.4, rely=0.491, relwidth=0.4, relheight=0.068)
+
+		self.Text6 = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
+		self.Text6.place(relx=0.4, rely=0.583, relwidth=0.4, relheight=0.22)

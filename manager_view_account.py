@@ -15,7 +15,7 @@ import view_account_table as vat
 
 class view_account_page(tk.Frame):
 
-	def __init__(self, name, username, master=None): 
+	def __init__(self,  name, username, master=None): #name, username,
 		tk.Frame.__init__(self, master)
 
 		self.admin_name = name

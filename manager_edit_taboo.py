@@ -87,23 +87,9 @@ class edit_taboo_page(tk.Frame):
 
 	def get_combo1(self, event):
 		if self.Combo1.get() == 'Delete':
-			# Enable Id
-			self.Text3Var = tk.StringVar()
-			self.Text3 = tk.ttk.Entry(self.top, textvariable=self.Text3Var, font=("Helvetica",11))
-			self.Text3.place(relx=0.45, rely=0.430, relwidth=0.4, relheight=0.068)
-			# Disable Word
-			self.Text4Var = tk.StringVar()
-			self.Text4 = tk.ttk.Entry(self.top, textvariable=self.Text4Var, font=("Helvetica",11), state='disable')
-			self.Text4.place(relx=0.45, rely=0.545, relwidth=0.4, relheight=0.068)
+			self.delete_refresh()
 		else:
-			# Disable Id
-			self.Text3Var = tk.StringVar()
-			self.Text3 = tk.ttk.Entry(self.top, textvariable=self.Text3Var, font=("Helvetica",11), state='disable')
-			self.Text3.place(relx=0.45, rely=0.430, relwidth=0.4, relheight=0.068)
-			# Enable Word
-			self.Text4Var = tk.StringVar()
-			self.Text4 = tk.ttk.Entry(self.top, textvariable=self.Text4Var, font=("Helvetica",11))
-			self.Text4.place(relx=0.45, rely=0.545, relwidth=0.4, relheight=0.068)
+			self.create_refresh()
 
 	def command_cancel(self):
 		if self.coming_from == 'manager_management_page':
@@ -158,6 +144,10 @@ class edit_taboo_page(tk.Frame):
 			if not flag_empty_word and not flag_duplicates and flag_valid_format:
 				df.to_excel("csv_files/taboo_list.xlsx", index=False)
 				tk.messagebox.showinfo("Success",  TabooWord + " added to the list")
+
+				# refresh text entered
+				self.create_refresh()
+
 		else: # Delete Section 
 
 			if str(self.Text3.get()).isdigit():	# first check if the ID is an integer
@@ -174,19 +164,31 @@ class edit_taboo_page(tk.Frame):
 					df.drop(df.index[(df['ID'] == WordId)], axis=0, inplace=True)
 					df.to_excel("csv_files/taboo_list.xlsx", index=False)
 					tk.messagebox.showinfo("Success",  "Taboo word deleted")
+
+					# refresh text entered
+					self.delete_refresh()
+
 			else:
     				tk.messagebox.showerror("Error", "Invalid Id input provided.\n" + 
 				        "Try an integer next time." )
 
+	def create_refresh(self):
+		# Disable Id
+		self.Text3Var = tk.StringVar()
+		self.Text3 = tk.ttk.Entry(self.top, textvariable=self.Text3Var, font=("Helvetica",11), state='disable')
+		self.Text3.place(relx=0.45, rely=0.430, relwidth=0.4, relheight=0.068)
+		# Enable Word
+		self.Text4Var = tk.StringVar()
+		self.Text4 = tk.ttk.Entry(self.top, textvariable=self.Text4Var, font=("Helvetica",11))
+		self.Text4.place(relx=0.45, rely=0.545, relwidth=0.4, relheight=0.068)
+
+	def delete_refresh(self):
+		# Enable Id
+		self.Text3Var = tk.StringVar()
+		self.Text3 = tk.ttk.Entry(self.top, textvariable=self.Text3Var, font=("Helvetica",11))
+		self.Text3.place(relx=0.45, rely=0.430, relwidth=0.4, relheight=0.068)
+		# Disable Word
+		self.Text4Var = tk.StringVar()
+		self.Text4 = tk.ttk.Entry(self.top, textvariable=self.Text4Var, font=("Helvetica",11), state='disable')
+		self.Text4.place(relx=0.45, rely=0.545, relwidth=0.4, relheight=0.068)
 				
-
-
-
-
-
-
-# Test Only
-#---------------------Main----------
-if __name__ == "__main__":
-    top = tk.Tk()
-    edit_taboo_page(top).mainloop()    

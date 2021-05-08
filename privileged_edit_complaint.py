@@ -16,7 +16,7 @@ import clerk_management_page
 import delivery_company_management_page
 import computer_company_management_page
 
-# TODO: at line 66, 207, 263, 339, 425
+# TODO: at line 66, 207, 263, 339, 425 (finished)
 class edit_complaint_page(tk.Frame):
 
 	def __init__(self, type_privileged_user, name, username, master=None): 
@@ -62,48 +62,7 @@ class edit_complaint_page(tk.Frame):
 		self.Combo1.place(relx=0.53, rely=0.09, relwidth=0.35, relheight=0.032)
 		self.Combo1.set(self.Combo1List1[0])
 
-		# Treeview
-		df = pd.read_excel("csv_files/complaints.xlsx")
-		df_complaint = df[['ID', 'Complainant', 'Complained Party Type', 'Complained Party Email', 'Satisfaction','Time Complained', 
-									 'Status', 'Complained Details', 'Complained Party Response', 'Time Response', 'Manager Justification']]
-		if self.type_privileged_user == 'clerk' or self.type_privileged_user == 'delivery':
-			df_complaint = df_complaint[df_complaint['Complained Party Email'] == self.username]
-		elif self.type_privileged_user == 'computer_company':
-			# TODO: finish this
-			df_complaint = None
-
-		self.tree_frame = tk.Frame(self.top)
-		self.tree_frame.place(relx=0.06, rely=0.15, relwidth=0.9, relheight=0.2)
-		self.tree_scroll = tk.Scrollbar(self.tree_frame)
-		self.tree_scroll.pack(side=tk.RIGHT, fill=tk.Y)
-
-		self.tree = ttk.Treeview(self.tree_frame, yscrollcommand=self.tree_scroll.set)
-		self.tree.pack()
-
-		self.tree_scroll.config(command=self.tree.yview)
-
-		self.tree["column"] = ("ID", "Complainant", "Complained Party Type", "Complained Party Email", "Satisfaction", "Time Complained", "Status")
-		self.tree.column("ID", anchor=tk.W, width=32, stretch=tk.NO)
-		self.tree.column("Complainant", anchor=tk.W, width=175, stretch=tk.NO)
-		self.tree.column("Complained Party Type", anchor=tk.W, width=140, stretch=tk.NO)
-		self.tree.column("Complained Party Email", anchor=tk.W, width=175, stretch=tk.NO)
-		self.tree.column("Satisfaction", anchor=tk.W, width=85, stretch=tk.NO)
-		self.tree.column("Time Complained", anchor=tk.W, width=105, stretch=tk.NO)
-		self.tree.column("Status", anchor=tk.W, width=75, stretch=tk.NO)
-		self.tree.bind('<ButtonRelease-1>', self.selected_item)
-		self.tree["show"] = "headings"
-		self.tree.heading("ID", text="ID", anchor=tk.W)
-		self.tree.heading("Complainant", text="Complainant", anchor=tk.W)
-		self.tree.heading("Complained Party Type", text="Complained Party Type", anchor=tk.W)
-		self.tree.heading("Complained Party Email", text="Complained Party Email", anchor=tk.W)
-		self.tree.heading("Satisfaction", text="Satisfaction", anchor=tk.W)
-		self.tree.heading("Time Complained", text="Time Complained", anchor=tk.W)
-		self.tree.heading("Status", text="Status", anchor=tk.W)
-
-		df_rows = df_complaint.to_numpy().tolist()
-
-		for row in df_rows:
-			self.tree.insert("", "end", value=row)
+		self.update_treeview()
 
 		# Reported Comment Head
 		self.style.configure("LabelHead.TLabel",anchor="w", font=("Helvetica",13), background = "light blue")
@@ -165,7 +124,7 @@ class edit_complaint_page(tk.Frame):
 		self.LabelJustification = tk.ttk.Label(self.top, text=self.response_title, style='LabelHead.TLabel')
 		self.LabelJustification.place(relx=0.375, rely=0.765, relwidth=0.35, relheight=0.04)
 
-		self.Text = tk.Text(self.top, font=("Helvetica",11))
+		self.Text = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
 		self.Text.place(relx=0.049, rely=0.8, relwidth=0.9, relheight=0.09)
 		self.Text.configure(state="disabled")
 
@@ -210,9 +169,8 @@ class edit_complaint_page(tk.Frame):
 			self.complainant = list_row[1]
 			self.complained_party_type = list_row[2]
 			if self.complained_party_type == "Purchased Item":
-				self.order_id = list_row[3]
+				self.complained_party_email = list_row[3]
 				self.type_user = "computer_company"
-				# TODO: find its correspoding computer_company email
 			elif self.complained_party_type == "Store Clerk":
 				self.complained_party_email = list_row[3]
 				self.type_user = "clerk"
@@ -247,7 +205,7 @@ class edit_complaint_page(tk.Frame):
 					self.Text.configure(state="disabled")
 				else:
 					self.ButtonSubmit.configure(state="normal")
-					self.Text = tk.Text(self.top, font=("Helvetica",11))
+					self.Text = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
 					self.Text.place(relx=0.049, rely=0.8, relwidth=0.9, relheight=0.09)
 
 			# Case 1: status = "pending" and satisfaction = "pending" complained party has responsed, 
@@ -269,7 +227,7 @@ class edit_complaint_page(tk.Frame):
 					if self.type_privileged_user == "manager":
 						self.ButtonViolated.configure(state="normal")
 						self.ButtonNonViolated.configure(state="normal")
-						self.Text = tk.Text(self.top, font=("Helvetica",11))
+						self.Text = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
 						self.Text.place(relx=0.049, rely=0.8, relwidth=0.9, relheight=0.09)
 					else:
 						self.ButtonSubmit.configure(state="disabled")
@@ -357,15 +315,13 @@ class edit_complaint_page(tk.Frame):
 			self.refresh()
 
 			# Complained Party get penalty
-			if self.type_user == "computer_company":
-				# TODO: call update_warning, pass in computer_company username...
-				pass
-			else:
-				self.update_warning(self.type_user, self.complained_party_email)
+			self.update_warning(self.type_user, self.complained_party_email)
 
 			# Disable button untile the next selection
 			self.ButtonViolated.configure(state="disabled")
 			self.ButtonNonViolated.configure(state="disabled")
+			self.Text = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
+			self.Text.place(relx=0.049, rely=0.8, relwidth=0.9, relheight=0.09)
 			self.Text.configure(state="disabled")
 		else:
 			tk.messagebox.showerror("Error", "Manager Justification cannot be empty")
@@ -393,6 +349,8 @@ class edit_complaint_page(tk.Frame):
 			# Disable button untile the next selection
 			self.ButtonViolated.configure(state="disabled")
 			self.ButtonNonViolated.configure(state="disabled")
+			self.Text = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
+			self.Text.place(relx=0.049, rely=0.8, relwidth=0.9, relheight=0.09)
 			self.Text.configure(state="disabled")
 		else:
 			tk.messagebox.showerror("Error", "Manager Justification cannot be empty")
@@ -421,6 +379,8 @@ class edit_complaint_page(tk.Frame):
 
 			# Disable button untile the next selection
 			self.ButtonSubmit.configure(state="disabled")
+			self.Text = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
+			self.Text.place(relx=0.049, rely=0.8, relwidth=0.9, relheight=0.09)
 			self.Text.configure(state="disabled")
 		else:
 			tk.messagebox.showerror("Error", "Complained Party Response cannot be empty")
@@ -429,7 +389,6 @@ class edit_complaint_page(tk.Frame):
 		if self.type_privileged_user == 'manager':
 			self.top.destroy()
 			mmp.manager_management_page(self.name, self.username)
-			#TODO: finish this
 		elif self.type_privileged_user == 'clerk':
 			self.top.destroy()
 			clerk_management_page.clerk_management_page(self.name, self.username)
@@ -470,8 +429,7 @@ class edit_complaint_page(tk.Frame):
 		if self.type_privileged_user == 'clerk' or self.type_privileged_user == 'delivery':
 			df_complaint = df_complaint[df_complaint['Complained Party Email'] == self.username]
 		elif self.type_privileged_user == 'computer_company':
-			# TODO: finish this
-			df_complaint = None
+			df_complaint = df_complaint[df_complaint['Complained Party Email'] == self.username]
 
 			
 		self.tree_frame = tk.Frame(self.top)
@@ -527,7 +485,8 @@ class edit_complaint_page(tk.Frame):
 
 		else:
 			df = pd.read_excel("csv_files/privileged_users.xlsx")
-			df_privileged_active = df[df['Status'] == "active"]
+			df2 = df[df['Type_user'] == type_user]
+			df_privileged_active = df2[df2['Status'] == "active"]
 			if username.lower() in list(df_privileged_active['Username']):
 				flag_username_exist = True
 				df_user_row = df[df['Username'] == username]
@@ -546,10 +505,11 @@ class edit_complaint_page(tk.Frame):
 			# Update the warning (+1)
 			if current_warning < 3:
 				current_warning = current_warning + 1
-				df.loc[df['Username'] == username, 'Warnings'] = current_warning
 				if type_user == "customer":
+					df.loc[df['Username'] == username, 'Warnings'] = current_warning
 					df.to_excel("csv_files/registered_customers.xlsx", index=False)
 				else:
+					df['Warnings'] = np.where((df['Username'] == username) & (df['Type_user'] == type_user), current_warning, df.Warnings)
 					df.to_excel("csv_files/privileged_users.xlsx", index=False)
 
 			# Auto suspend if Warning == 3
@@ -578,7 +538,8 @@ class edit_complaint_page(tk.Frame):
 					df_cus.loc[df_cus['Username'] == username, 'Status'] = 'suspended'
 					df_cus.to_excel("csv_files/registered_customers.xlsx", index=False)
 				else:
-					df_privileged = pd.read_excel("csv_files/registered_customers.xlsx")
-					df_privileged.loc[df_privileged['Username'] == username, 'Status'] = 'suspended'
+					df_privileged = pd.read_excel("csv_files/privileged_users.xlsx")
+					df_privileged['Status'] = np.where((df_privileged['Username'] == username) & (df_privileged['Type_user'] == type_user), 'suspended', df_privileged.Status)
+					#df_privileged.loc[df_privileged['Username'] == username, 'Status'] = 'suspended'
 					df_privileged.to_excel("csv_files/privileged_users.xlsx", index=False)
 

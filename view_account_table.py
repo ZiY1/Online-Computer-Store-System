@@ -28,6 +28,7 @@ class view_account_table(tk.Frame):
 	def create_widgets(self):
 		self.top = tk.Toplevel()		
 		self.top.title("User Accounts Info Page")
+		#self.top.geometry('700x500')
 
 		if self.type_user == 'clerk' or self.type_user == 'computer_company' or self.type_user == 'delivery':
 			df = pd.read_excel( "csv_files/privileged_users.xlsx" )
@@ -47,8 +48,14 @@ class view_account_table(tk.Frame):
 			self.users_table(df)
 
 	def users_table(self, df):
+
+		self.tree_frame = tk.Frame(self.top)
+		self.tree_frame.pack()#place(relx=0.06, rely=0.15, relwidth=0.9, relheight=0.2)
+		self.tree_scroll = tk.Scrollbar(self.tree_frame)
+		self.tree_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+		
+
 		self.style1 = tk.ttk.Style()
-		#self.style1.theme_use("default")
 		self.style1.configure("Treeview",
 		 	background="white",
 		 	foreground="black",
@@ -58,7 +65,9 @@ class view_account_table(tk.Frame):
 
 
 
-		self.tree = tk.ttk.Treeview(self.top)
+		self.tree = tk.ttk.Treeview(self.tree_frame, yscrollcommand=self.tree_scroll.set)
+		self.tree_scroll.config(command=self.tree.yview)
+
 
 		# Set up new treeview
 		self.tree["columns"] = list(df.columns)
@@ -66,7 +75,8 @@ class view_account_table(tk.Frame):
 
 		# Loop through column list for headers
 		for column in self.tree["column"]:
-			self.tree.heading(column, text=column)
+			self.tree.heading(column, text=column, anchor=tk.W)
+			self.tree.column(column, width=170, anchor=tk.W, stretch=tk.NO)
 
 		# Put data in treeview
 		self.tree.tag_configure('oddrow', background='white')

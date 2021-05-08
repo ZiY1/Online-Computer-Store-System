@@ -130,7 +130,7 @@ class edit_discussion_page(tk.Frame):
 		self.LabelJustification = tk.ttk.Label(self.top, text="Manager Justification:", style='LabelHead.TLabel')
 		self.LabelJustification.place(relx=0.36, rely=0.765, relwidth=0.35, relheight=0.04)
 
-		self.Text = tk.Text(self.top, font=("Helvetica",11))
+		self.Text = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
 		self.Text.place(relx=0.049, rely=0.8, relwidth=0.9, relheight=0.09)
 		self.Text.configure(state="disabled")
 
@@ -179,7 +179,7 @@ class edit_discussion_page(tk.Frame):
 				self.ButtonNonViolated = tk.ttk.Button(self.top, text="Non-Violated", command=self.non_violated, style="ButtonAll.TButton")
 				self.ButtonNonViolated.place(relx=0.415, rely=0.92, relwidth=0.2, relheight=0.05)
 
-				self.Text = tk.Text(self.top, font=("Helvetica",11))
+				self.Text = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
 				self.Text.place(relx=0.049, rely=0.8, relwidth=0.9, relheight=0.09)
 
 
@@ -291,6 +291,9 @@ class edit_discussion_page(tk.Frame):
 			# Disable button untile the next selection
 			self.ButtonViolated.configure(state="disabled")
 			self.ButtonNonViolated.configure(state="disabled")
+
+			self.Text = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
+			self.Text.place(relx=0.049, rely=0.8, relwidth=0.9, relheight=0.09)
 			self.Text.configure(state="disabled")
 		else:
 			tk.messagebox.showerror("Error", "Manager Justification cannot be empty")
@@ -319,6 +322,9 @@ class edit_discussion_page(tk.Frame):
 			# Disable button untile the next selection
 			self.ButtonViolated.configure(state="disabled")
 			self.ButtonNonViolated.configure(state="disabled")
+
+			self.Text = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
+			self.Text.place(relx=0.049, rely=0.8, relwidth=0.9, relheight=0.09)
 			self.Text.configure(state="disabled")
 		else:
 			tk.messagebox.showerror("Error", "Manager Justification cannot be empty")
@@ -423,11 +429,3 @@ class edit_discussion_page(tk.Frame):
 			tk.messagebox.showerror("Erorr", "Customer username not found, this may occurred when the customer is already suspended, failed to update the warning")
 
 
-
-
-
-# Test Only
-#---------------------Main----------
-if __name__ == "__main__":
-    top = tk.Tk()
-    edit_discussion_page(top).mainloop()    
