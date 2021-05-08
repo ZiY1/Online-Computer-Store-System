@@ -301,8 +301,6 @@ class report_table(tk.Frame):
 			df_report = df[df["Status"] == "reverse"]
 
 		# Treeview
-		#df_report.drop(labels='Manager Justification', axis='columns', inplace=True)
-
 		self.tree_frame = tk.Frame(self.top)
 		self.tree_frame.place(relx=0.08, rely=0.2, relwidth=0.85, relheight=0.25)
 		self.tree_scroll = tk.Scrollbar(self.tree_frame)
@@ -358,20 +356,3 @@ class report_table(tk.Frame):
 			df_rows = df_new.to_numpy().tolist()
 			for row in df_rows:
 				self.tree.insert("", "end", value=row)
-
-		# self.tree["columns"] = ("ID", "Reporter", "Reported Comment ID", "Reported Time", "Status")
-		# self.tree.column("ID", anchor=tk.W, width=32, stretch=tk.NO)
-		# self.tree.column("Reporter", anchor=tk.W, width=230, stretch=tk.NO)
-		# self.tree.column("Reported Comment ID", anchor=tk.W, width=130, stretch=tk.NO)
-		# self.tree.column("Reported Time", anchor=tk.W, width=95, stretch=tk.NO)
-		# self.tree.column("Status", anchor=tk.W, width=75, stretch=tk.NO)
-		# self.tree.bind('<ButtonRelease-1>', self.selected_item)
-		# self.tree["show"] = "headings"	
-		# self.tree.heading("ID", text="ID", anchor=tk.W)
-		# self.tree.heading("Reporter", text="Reporter", anchor=tk.W)
-		# self.tree.heading("Reported Comment ID", text="Reported Comment ID", anchor=tk.W)
-		# self.tree.heading("Reported Time", text="Reported Time", anchor=tk.W)
-		# self.tree.heading("Status", text="Status", anchor=tk.W)
-		# df_rows = df_report.to_numpy().tolist()
-		# for row in df_rows:
-		# 	self.tree.insert("", "end", value=row)
