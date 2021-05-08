@@ -222,7 +222,9 @@ class discussion_page(tk.Frame):
 					self.update_warning(df_customers)
 				
 				df_ratings = df[ df["Computer Name"] == self.item_name ] 
-				new_rating = ( float(df_ratings['Vote'].sum()) + self.Rating)/(len(df_ratings) +1)
+				
+				new_rating = ( df_ratings['Vote'].sum() )/(len(df_ratings))
+				
 				df.to_excel("csv_files/discussions.xlsx", index=False)
 				# Update overall review for this computer
 				df_items = pd.read_excel( "csv_files/items.xlsx" )
@@ -277,7 +279,7 @@ class discussion_page(tk.Frame):
 		
 		for word in my_list:
 			if word.lower() in list(df_taboo['Taboo Words']):
-    			#Change it to *****
+    			# Change it to *****
 				number_of_star = len(word)
 
 				my_string = my_string.replace(word, "*"*number_of_star )
