@@ -73,9 +73,10 @@ class select_computer_parts(tk.Frame):
         if self.item_purpose.lower() == "gaming" or self.item_type.lower() == "workstation":
             self.type_of_batteries = [ "Default Durable Type (+$0.00)", 
                                 "Highly Durable Type (+$25.00)" ]
-        elif self.item_GPU in ["AMD Radeon™ Graphics", "Intel® Iris® Xe Graphics",
+        elif self.item_GPU in ["AMD Radeon™ Graphics", "Intel® Iris® Xe Graphics", 'NVIDIA® GTX',
                             "NVIDIA® GeForce®", "Integrated PowerVR GX6250", "NVIDIA® Graphics",
-                            "Radeon Pro"]:
+                            "Radeon Pro", "NVIDIA® GeForce® RTX™" , 'NVIDIA® GeForce® GTX']:
+                        
             self.type_of_batteries = [ "Default Durable Type (+$0.00)", 
                             "Highly Durable Type (+$25.00)" ]
         else:
@@ -155,8 +156,7 @@ class select_computer_parts(tk.Frame):
         if self.item_purpose.lower() == "gaming": # self.item_GPU
             
             if self.item_arch == "AMD Ryzen":
-                list_GPU = ['NVIDIA® GeForce®', 'Radeon Pro', 'ATI Mobility Radeon',
-                            'AMD Radeon™ Graphics',
+                list_GPU = ['NVIDIA® GeForce®', 'Radeon Pro', 'AMD Radeon™ Graphics',
                             'NVIDIA® GeForce® RTX™', 'NVIDIA® GeForce® GTX',
                             'NVIDIA® Graphics', 'NVIDIA® GTX'
                             ]
@@ -278,7 +278,8 @@ class select_computer_parts(tk.Frame):
             battery_choices = [ 'Regular Type', 'Durable Type', 'Highly Durable Type' ]
         '''       
         flag_invalid_choice = False
-        if tempo_GPU in ['NVIDIA® Quadro®', 'Intel® UHD Graphics', 'ATI Radeon HD 5670' ]:
+        if tempo_GPU in ['NVIDIA® Quadro®', 'Intel® UHD Graphics', 'ATI Radeon HD 5670',
+                           'ATI Mobility Radeon'  ]:
             if tempo_screen in ['4k(Ultra HD)', '8k', '10k']:
                 flag_invalid_choice = True
                 self.top.destroy()
@@ -309,7 +310,7 @@ class select_computer_parts(tk.Frame):
         if tempo_GPU in [ 'NVIDIA® GeForce®','AMD Radeon™ Graphics',
                         'Integrated PowerVR GX6250',
                         'Intel® Iris® Xe Graphics', 'NVIDIA® GeForce® RTX™',
-                        'ATI Mobility Radeon', 'Radeon Pro', 'NVIDIA® GeForce® GTX',
+                        'Radeon Pro', 'NVIDIA® GeForce® GTX',
                         'NVIDIA® Graphics', 'NVIDIA® GTX']:
             if tempo_battery in ['Regular Type']:
                 flag_invalid_choice = True

@@ -150,40 +150,56 @@ class complaint_page(tk.Frame):
 				flag_email_exist = True
 			else:
 				flag_email_exist = False
+				tk.messagebox.showerror("Error", "Complained Email doesn't exist")
+
 		elif complained_party_type == "Delivery Company" and flag_email_valid:
 			df_clerk = df[df['Type_user'] == 'delivery']
 			if complained_email in list(df_clerk['Username']):
 				flag_email_exist = True
 			else:
 				flag_email_exist = False
+				tk.messagebox.showerror("Error", "Complained Email doesn't exist")
+
 		elif complained_party_type == "Purchased Item" and flag_email_valid:
 			#TODO: finish this
 			# In orders file, fetch out all processing or assigned orders of this user
 			df_order = pd.read_excel("csv_files/orders.xlsx")
 			df_processing = df_order[df_order['Order_Status'].isin(['processing', 'assigned'])]
 			df_me = df_processing[df_processing['Username'] == self.username]
-			if int(complained_email) in list(df_me['Order_Id']):
-				flag_email_exist = True
 
-				# fetch out the computer name
-				df_order_row = df_me[df_me['Order_Id'] == int(complained_email)]
-				computer_name = str(df_order_row['Item_Name'].iloc[-1])
+					
 
-				# fetch out the assigned computer company in items file for this computer 
-				df_item = pd.read_excel("csv_files/items.xlsx")
-				df_computer_row = df_item[df_item['Name'] == computer_name]
+			if complained_email.isdigit(): 
+				
+				if ( int(complained_email) in list(df_me['Order_Id']) ):
+					flag_email_exist = True
 
-				# add a complaint order id in complaint details
-				complaint_detail = 'Complained Order ID: ' + str(complained_email) + '\t\t\t\t\t\t\t\t\t\t\t' + complaint_detail
+					# fetch out the computer name
+					df_order_row = df_me[df_me['Order_Id'] == int(complained_email)]
+					computer_name = str(df_order_row['Item_Name'].iloc[-1])
 
-				# change complained_email to computer company assigned
-				complained_email = str(df_computer_row['Computer Company'].iloc[-1])
+					# fetch out the assigned computer company in items file for this computer 
+					df_item = pd.read_excel("csv_files/items.xlsx")
+					df_computer_row = df_item[df_item['Name'] == computer_name]
+
+					# add a complaint order id in complaint details
+					complaint_detail = 'Complained Order ID: ' + str(complained_email) + '\t\t\t\t\t\t\t\t\t\t\t' + complaint_detail
+
+					# change complained_email to computer company assigned
+					complained_email = str(df_computer_row['Computer Company'].iloc[-1])
+				else:
+					# The Id provided is not in the data record
+					flag_email_exist = False
+					tk.messagebox.showerror( "Error", "Complained order Id not in the data record.")
 			else:
-				flag_email_exist = False
-
+    				# No integer provided
+					flag_email_exist = False
+					tk.messagebox.showerror("Error", "Invalid input provided.\n" + 
+					                        "Try to input an integer this time." )
+		'''
 		if not flag_email_exist:
 			tk.messagebox.showerror("Error", "Complained Email or Order ID doesn't exist")
-
+		'''
 		# write to the dataframe
 		df_complaint = pd.read_excel("csv_files/complaints.xlsx")
 
@@ -232,4 +248,3 @@ class complaint_page(tk.Frame):
 	def command_cancel(self):
 		self.top.destroy()
 		setting_account.setting_account(self.name, self.id, self.username)
-

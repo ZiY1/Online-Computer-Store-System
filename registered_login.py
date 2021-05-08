@@ -110,7 +110,7 @@ class registered_login(tk.Frame):
                 
                 message1 = f"Dear {Customer_Name},\n\n"
                 message2 = "We regret to inform you that your account has been suspended. You are allowed one last login"
-                message3 = "to clean up your account.\n"
+                message3 = " to clean up your account.\n"
                 message4 = "\nThanks, Lenovo Admin"
                 message = message1 + message2 + message3 + message4 
                 df_emails = pd.read_excel( "csv_files/emails.xlsx")

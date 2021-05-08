@@ -565,6 +565,9 @@ class generalized_item(tk.Frame):
             tk.messagebox.showerror("Error",
                     "Your current balance is $ 0.00\n" + 
                     "Go to Settings to provide funds to your account")
+        elif df_user['Status'].iloc[-1] != 'active':
+            tk.messagebox.showerror( "Error", 
+                    "You are suspended and cannot complete any check out orders." )
         else:
             self.top.destroy()
             check_out.check_out(coming_from = self.coming_from_page, 
