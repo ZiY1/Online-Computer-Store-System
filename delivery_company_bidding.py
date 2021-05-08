@@ -119,20 +119,26 @@ class delivery_company_bidding(tk.Frame):
 			self.buyer_username = list_row[1]
 			self.date_purchased = list_row[2]
 			self.order_status = list_row[3]
-			self.home_address = list_row[7]
+
+			# get customers' home address in cutomer file
+			df_cus = pd.read_excel("csv_files/registered_customers.xlsx")
+			df_cus_row = df_cus[df_cus['Username'] == self.buyer_username]
+			self.home_address = str(df_cus_row['Home Address'].iloc[-1])
+			
 			# put items of the same tracking order in a list
 			self.order_ids = list()
 			self.item_names = list()
 			self.item_prices = list()
 			self.images = list()
+			self.is_customized = list()
 
 			# get all orders of the same tracking order number, !drop the cancelled and in cart
 			self.df = pd.read_excel("csv_files/orders.xlsx")
 			self.df.drop( self.df.index[(self.df['Order_Status'] == 'cancelled')], axis=0, inplace = True)
 			self.df.drop( self.df.index[(self.df['Order_Status'] == 'in cart')], axis=0, inplace = True)
 			df2 = self.df.sort_values(by='Tracking Order')
-			df_order = df2[['Tracking Order', 'Username', 'Date order processed', 'Order_Status', 'Order_Id', 'Item_Name',
-							'Item_Price', 'Home address', 'Delivery_Company_assigned']]
+			df_order = df2[['Tracking Order', 'Username', 'Date order processed', 'Order_Status', 'Order_Id', 'Item_Name', 'Customized',
+							'Item_Price', 'Home address', 'Delivery_Company_Assigned']]
 			df_a_tracking_order = df_order[df_order['Tracking Order'] == self.tracking_order]
 			self.subtotal = df_a_tracking_order['Item_Price'].sum()
 			df_a_tracking_order_list = df_a_tracking_order.to_numpy().tolist()
@@ -140,7 +146,8 @@ class delivery_company_bidding(tk.Frame):
 			for row in df_a_tracking_order_list:
 				self.order_ids.append(row[4])
 				self.item_names.append(row[5])
-				self.item_prices.append(float(row[6]))
+				self.is_customized.append(row[6])
+				self.item_prices.append(float(row[7]))
 
 			# get info of each computer, for displaying the image
 			df_items = pd.read_excel( "csv_files/items.xlsx" )
@@ -167,9 +174,14 @@ class delivery_company_bidding(tk.Frame):
 				order_id = self.order_ids[i]
 				item_name = self.item_names[i]
 				item_price = "$ {:,.2f}".format(self.item_prices[i])
+				customized = self.is_customized[i]
+
 				# Display the order id, item_name, item_price
 				tk.ttk.Label(self.MyFrame, text="Order Id: " + str(order_id) ,style="LabelHeadline.TLabel").grid(sticky="W", row=4+counter, column=0, padx=0, pady=5)
-				tk.ttk.Label(self.MyFrame, text="Product: " + item_name ,style="LabelHeadline.TLabel").grid(sticky="W", row=5+counter, column=0, padx=0, pady=5)
+				if customized == 'Customized':
+					tk.ttk.Label(self.MyFrame, text="Product: " + item_name + '(Customized)' ,style="LabelHeadline.TLabel").grid(sticky="W", row=5+counter, column=0, padx=0, pady=5)
+				else:
+					tk.ttk.Label(self.MyFrame, text="Product: " + item_name ,style="LabelHeadline.TLabel").grid(sticky="W", row=5+counter, column=0, padx=0, pady=5)
 				tk.ttk.Label(self.MyFrame, text="Price: " + item_price ,style="LabelHeadline.TLabel").grid(sticky="W", row=6+counter, column=0, padx=0, pady=5)
 
 				# Display the image
@@ -293,8 +305,8 @@ class delivery_company_bidding(tk.Frame):
 			df2 = df[df['Order_Status'].isin(['assigned', 'delivered'])]
 
 		df3 = df2.sort_values(by='Tracking Order')
-		df_order = df3[['Tracking Order', 'Username', 'Date order processed', 'Order_Status', 'Order_Id', 'Item_Name',
-						'Item_Price', 'Home address', 'Delivery_Company_assigned']]
+		df_order = df3[['Tracking Order', 'Username', 'Date order processed', 'Order_Status', 'Order_Id', 'Item_Name', 'Customized',
+						'Item_Price', 'Home address', 'Delivery_Company_Assigned']]
 
 		self.tree_frame = tk.Frame(self.top)
 		self.tree_frame.place(relx=0.06, rely=0.15, relwidth=0.9, relheight=0.2)
