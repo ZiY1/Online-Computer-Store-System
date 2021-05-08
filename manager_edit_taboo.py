@@ -101,76 +101,81 @@ class edit_taboo_page(tk.Frame):
 
 
 	def command_confirm(self):
-		if self.Combo1.get() == 'Create':
-			TabooWord = self.Text4.get().lower()
-			TabooWord = TabooWord.strip() # strip white spaces
-			df = pd.read_excel("csv_files/taboo_list.xlsx")
-			flag_duplicates = False # declare here avoid referenced before assignment
-			
-			
-			# Check if the Taboo word entered is empty
-			if TabooWord == "":
-				flag_empty_word = True
-				tk.messagebox.showerror("Error", "Taboo word cannot be empty")
-			else:
-				flag_empty_word = False
-
-			# check if the input is a valid word
-			
-			regex_format_1 = "[a-zA-Z]+"
-			regex_format_2 = "[a-zA-Z]+[\s][a-zA-Z]+"
-			if(  re.fullmatch(regex_format_1, TabooWord) or re.fullmatch(regex_format_2, TabooWord) ):
-    				flag_valid_format = True
-			else:
-					flag_valid_format = False
-					tk.messagebox.showerror( "Error", "Provide a valid word" )
-
-
-			# Check if taboo list is an English word 
-			if (len(df) == 0):
-				tempo = pd.DataFrame([["0", TabooWord]], columns=['ID','Taboo Words'])
-				df = df.append(tempo)
-			else:
-				if TabooWord in list(df['Taboo Words']):
-					# We have duplicates accounts
-					flag_duplicates = True
-					tk.messagebox.showerror("Error", "Taboo word is already in the list")
-				else:
-					Id = int( df['ID'].iloc[-1] )
-					Id += 1
-					tempo = pd.DataFrame([[Id, TabooWord]], columns=['ID','Taboo Words'])
-					df = df.append(tempo)
-
-			if not flag_empty_word and not flag_duplicates and flag_valid_format:
-				df.to_excel("csv_files/taboo_list.xlsx", index=False)
-				tk.messagebox.showinfo("Success",  TabooWord + " added to the list")
-
-				# refresh text entered
-				self.create_refresh()
-
-		else: # Delete Section 
-
-			if str(self.Text3.get()).isdigit():	# first check if the ID is an integer
-				WordId = int(self.Text3.get())
+		# Check if suspended
+		df_suspend = pd.read_excel( "csv_files/suspend_users.xlsx" )
+		if self.username.lower() in list(df_suspend['Username']):
+			tk.messagebox.showerror("Error", "You can't edit the taboo list because you are suspended")
+		else:
+			if self.Combo1.get() == 'Create':
+				TabooWord = self.Text4.get().lower()
+				TabooWord = TabooWord.strip() # strip white spaces
 				df = pd.read_excel("csv_files/taboo_list.xlsx")
+				flag_duplicates = False # declare here avoid referenced before assignment
 				
-				if WordId in list(df['ID']):
-					flag_id_exist = True
+				
+				# Check if the Taboo word entered is empty
+				if TabooWord == "":
+					flag_empty_word = True
+					tk.messagebox.showerror("Error", "Taboo word cannot be empty")
 				else:
-					flag_id_exist = False
-					tk.messagebox.showerror("Error", "Invalid word Id")
+					flag_empty_word = False
+
+				# check if the input is a valid word
 				
-				if flag_id_exist:
-					df.drop(df.index[(df['ID'] == WordId)], axis=0, inplace=True)
+				regex_format_1 = "[a-zA-Z]+"
+				regex_format_2 = "[a-zA-Z]+[\s][a-zA-Z]+"
+				if(  re.fullmatch(regex_format_1, TabooWord) or re.fullmatch(regex_format_2, TabooWord) ):
+	    				flag_valid_format = True
+				else:
+						flag_valid_format = False
+						tk.messagebox.showerror( "Error", "Provide a valid word" )
+
+
+				# Check if taboo list is an English word 
+				if (len(df) == 0):
+					tempo = pd.DataFrame([["0", TabooWord]], columns=['ID','Taboo Words'])
+					df = df.append(tempo)
+				else:
+					if TabooWord in list(df['Taboo Words']):
+						# We have duplicates accounts
+						flag_duplicates = True
+						tk.messagebox.showerror("Error", "Taboo word is already in the list")
+					else:
+						Id = int( df['ID'].iloc[-1] )
+						Id += 1
+						tempo = pd.DataFrame([[Id, TabooWord]], columns=['ID','Taboo Words'])
+						df = df.append(tempo)
+
+				if not flag_empty_word and not flag_duplicates and flag_valid_format:
 					df.to_excel("csv_files/taboo_list.xlsx", index=False)
-					tk.messagebox.showinfo("Success",  "Taboo word deleted")
+					tk.messagebox.showinfo("Success",  TabooWord + " added to the list")
 
 					# refresh text entered
-					self.delete_refresh()
+					self.create_refresh()
 
-			else:
-    				tk.messagebox.showerror("Error", "Invalid Id input provided.\n" + 
-				        "Try an integer next time." )
+			else: # Delete Section 
+
+				if str(self.Text3.get()).isdigit():	# first check if the ID is an integer
+					WordId = int(self.Text3.get())
+					df = pd.read_excel("csv_files/taboo_list.xlsx")
+					
+					if WordId in list(df['ID']):
+						flag_id_exist = True
+					else:
+						flag_id_exist = False
+						tk.messagebox.showerror("Error", "Invalid word Id")
+					
+					if flag_id_exist:
+						df.drop(df.index[(df['ID'] == WordId)], axis=0, inplace=True)
+						df.to_excel("csv_files/taboo_list.xlsx", index=False)
+						tk.messagebox.showinfo("Success",  "Taboo word deleted")
+
+						# refresh text entered
+						self.delete_refresh()
+
+				else:
+	    				tk.messagebox.showerror("Error", "Invalid Id input provided.\n" + 
+					        "Try an integer next time." )
 
 	def create_refresh(self):
 		# Disable Id
