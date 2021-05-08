@@ -11,6 +11,7 @@ import view_account_table as vat
 import manager_choose_system as mcs
 import manager_edit_discussion as med
 import privileged_edit_complaint as pec
+import manager_view_suspicious_bidding as mvsb
 
 class manager_management_page(tk.Frame):
 
@@ -71,6 +72,9 @@ class manager_management_page(tk.Frame):
 		self.EditTaboo.place(relx=0.296, rely=0.2, relwidth=0.49, relheight=0.065)
 
 		# Row 3
+		self.ViewSusBidding = tk.ttk.Button(self.Frame1, text="View Suspicious Bidding", command=self.view_sus_bidding, style="AllCommand.TButton")
+		self.ViewSusBidding.place(relx=0.296, rely=0.3, relwidth=0.49, relheight=0.065)
+
 		self.EditDiscussion = tk.ttk.Button(self.Frame2, text="Edit Discussion Reports", command=self.edit_discussion, style="AllCommand.TButton")
 		self.EditDiscussion.place(relx=0.296, rely=0.3, relwidth=0.49, relheight=0.065)
 
@@ -94,6 +98,11 @@ class manager_management_page(tk.Frame):
 	def view_account(self):
 		self.top.destroy()
 		mva.view_account_page(self.admin_name, self.admin_username)
+
+	def view_sus_bidding(self):
+		self.top.destroy()
+		mvsb.manager_view_suspicious_bidding(self.admin_name, self.admin_username)
+
 
 	def edit_account(self):
 		self.top.destroy()

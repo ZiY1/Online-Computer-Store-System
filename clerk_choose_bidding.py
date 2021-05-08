@@ -280,16 +280,17 @@ class clerk_choose_bidding(tk.Frame):
 			counter = counter+4
 
 		if status == 'assigned' or status == 'delivered':
+			tk.ttk.Label(self.MyFrame2, text="", style="LabelHeadline.TLabel").grid(sticky="W", row=1+len(self.bidder_names)*counter, column=0, padx=0, pady=15)
 			tk.ttk.Label(self.MyFrame2, text="Assigned By: "+self.assigned_by ,
-				style="LabelHeadline.TLabel").grid(sticky="W", row=1+len(self.bidder_names)*counter, column=0, padx=0, pady=5)
-			tk.ttk.Label(self.MyFrame2, text="Assigned On: "+self.assigned_on ,
 				style="LabelHeadline.TLabel").grid(sticky="W", row=2+len(self.bidder_names)*counter, column=0, padx=0, pady=5)
+			tk.ttk.Label(self.MyFrame2, text="Assigned On: "+self.assigned_on ,
+				style="LabelHeadline.TLabel").grid(sticky="W", row=3+len(self.bidder_names)*counter, column=0, padx=0, pady=5)
 			if str(self.justification) == "" or str(self.justification) == "nan":
 				tk.ttk.Label(self.MyFrame2, text="Justification: No justification provided" ,
-					style="LabelHeadline.TLabel").grid(sticky="W", row=3+len(self.bidder_names)*counter, column=0, padx=0, pady=5)
+					style="LabelHeadline.TLabel").grid(sticky="W", row=4+len(self.bidder_names)*counter, column=0, padx=0, pady=5)
 			else:
 				tk.ttk.Label(self.MyFrame2, text="Justification: " + str(self.justification) ,
-					style="LabelHeadline.TLabel").grid(sticky="W", row=3+len(self.bidder_names)*counter, column=0, padx=0, pady=5)
+					style="LabelHeadline.TLabel").grid(sticky="W", row=4+len(self.bidder_names)*counter, column=0, padx=0, pady=5)
 
 	def locate_min(self, my_list):
 		smallest = min(my_list)
