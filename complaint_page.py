@@ -49,7 +49,7 @@ class complaint_page(tk.Frame):
 		self.Label01.place(relx=0.16, rely=0.16, relwidth=0.6, relheight=0.058)
 
 		self.style.configure("CommandView.TButton", font=("Helvetica",14))
-		self.ButtonCasted = tk.ttk.Button(self.top, text="Casted", command=self.command_view_report, style="CommandView.TButton")
+		self.ButtonCasted = tk.ttk.Button(self.top, text="Posted", command=self.command_view_report, style="CommandView.TButton")
 		self.ButtonCasted.place(relx=0.5, rely=0.15, relwidth=0.18, relheight=0.06)
 
 		self.ButtonRecieved = tk.ttk.Button(self.top, text="Recieved", command=self.command_view_report_recieved, style="CommandView.TButton")
@@ -57,7 +57,7 @@ class complaint_page(tk.Frame):
 
 		# Row 0: Complaint I Casted
 		self.style.configure("Label1.TLabel",anchor="w", font=("Helvetica",15), background = "light blue")
-		self.Label0 = tk.ttk.Label(self.top, text="Complaint I Casted:", style='Label1.TLabel')
+		self.Label0 = tk.ttk.Label(self.top, text="Complaint I Posted:", style='Label1.TLabel')
 		self.Label0.place(relx=0.16, rely=0.26, relwidth=0.6, relheight=0.058)
 
 		self.style.configure("CommandView.TButton", font=("Helvetica",14))
@@ -232,7 +232,7 @@ class complaint_page(tk.Frame):
 				tk.messagebox.showerror("Error", "You can't make any complaint because you are suspended")
 			else:
 				df_complaint.to_excel("csv_files/complaints.xlsx", index=False)
-				tk.messagebox.showinfo("Success", "New complaint casted")
+				tk.messagebox.showinfo("Success", "New complaint posted")
 
 				# refresh text boxes'
 				self.Text2Var = tk.StringVar()

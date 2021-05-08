@@ -88,7 +88,7 @@ class discussion_page(tk.Frame):
 
 		# Row 0.5
 		self.style.configure("Label1.TLabel",anchor="w", font=("Helvetica",15), background = "light blue")
-		self.Label01 = tk.ttk.Label(self.top, text="Comments I Casted:", style='Label1.TLabel')
+		self.Label01 = tk.ttk.Label(self.top, text="Comments I Posted:", style='Label1.TLabel')
 		self.Label01.place(relx=0.16, rely=0.32, relwidth=0.6, relheight=0.058)
 
 		self.style.configure("CommandView.TButton", font=("Helvetica",14))
