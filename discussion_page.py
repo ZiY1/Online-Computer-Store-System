@@ -115,7 +115,7 @@ class discussion_page(tk.Frame):
 		self.Label3 = tk.ttk.Label(self.top, text="Write a Comment:", style='Label1.TLabel')
 		self.Label3.place(relx=0.16, rely=0.605, relwidth=0.33, relheight=0.062)
 
-		self.Text3 = tk.Text(self.top, font=("Helvetica",11))
+		self.Text3 = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
 		self.Text3.place(relx=0.49, rely=0.613, relwidth=0.4, relheight=0.2)
 
 		# Confirm Button
@@ -217,8 +217,6 @@ class discussion_page(tk.Frame):
 			if self.Customer_username.lower() in list(df_suspend_user['Username']):
 				tk.messagebox.showerror("Error", "You can't write any comment because you are suspended")
 			else:
-    			#tk.messagebox.showinfo("Success", "New comment posted")
-				tk.messagebox.showinfo("Success","New comment posted")
 				if self.flag_taboo_headline or self.flag_taboo_content:
 					df_customers = pd.read_excel("csv_files/registered_customers.xlsx")
 					self.update_warning(df_customers)
@@ -236,6 +234,21 @@ class discussion_page(tk.Frame):
 				else:
 					df_items.loc[df_items['Name'] == self.item_name, 'overall review'] = new_rating
 					df_items.to_excel("csv_files/items.xlsx", index=False)
+
+				tk.messagebox.showinfo("Success","New comment posted")
+				# refresh the text entered
+				self.Combo1List1 = ["1", "2", "3", "4", "5"]
+				self.Combo1 = tk.ttk.Combobox(self.top, state="readonly",values=self.Combo1List1, font=("Helvetica",11))
+				self.Combo1.place(relx=0.49, rely=0.425, relwidth=0.4, relheight=0.06)
+
+				self.Text1Var = tk.StringVar()
+				self.Text1 = tk.ttk.Entry(self.top, textvariable=self.Text1Var, font=("Helvetica",11))
+				self.Text1.place(relx=0.49, rely=0.510, relwidth=0.4, relheight=0.06)
+
+				self.Text3 = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
+				self.Text3.place(relx=0.49, rely=0.613, relwidth=0.4, relheight=0.2)
+
+
 
 
 	def command_cancel(self):
@@ -312,14 +325,3 @@ class discussion_page(tk.Frame):
 			self.top.destroy()
 			home.HomePage()
 			tk.messagebox.showerror("Error", "Sorry, you are suspended")
-
-
-
-
-
-
-# Test Only
-#---------------------Main----------
-if __name__ == "__main__":
-    top = tk.Tk()
-    discussion_page(top).mainloop()   

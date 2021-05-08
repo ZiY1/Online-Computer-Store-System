@@ -14,7 +14,6 @@ import report_table
 import complaint_table
 import setting_account
 
-#!!! TODO: the order ID is left unfinished; line 162
 
 class complaint_page(tk.Frame):
 
@@ -87,7 +86,7 @@ class complaint_page(tk.Frame):
 		self.Label3 = tk.ttk.Label(self.top, text="Details\nof the complaint:", style='Label1.TLabel')
 		self.Label3.place(relx=0.16, rely=0.5725, relwidth=0.33, relheight=0.1)
 
-		self.Text3 = tk.Text(self.top, font=("Helvetica",11))
+		self.Text3 = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
 		self.Text3.place(relx=0.49, rely=0.583, relwidth=0.4, relheight=0.2)
 
 		# Confirm Button
@@ -159,7 +158,28 @@ class complaint_page(tk.Frame):
 				flag_email_exist = False
 		elif complained_party_type == "Purchased Item" and flag_email_valid:
 			#TODO: finish this
-			pass
+			# In orders file, fetch out all processing or assigned orders of this user
+			df_order = pd.read_excel("csv_files/orders.xlsx")
+			df_processing = df_order[df_order['Order_Status'].isin(['processing', 'assigned'])]
+			df_me = df_processing[df_processing['Username'] == self.username]
+			if int(complained_email) in list(df_me['Order_Id']):
+				flag_email_exist = True
+
+				# fetch out the computer name
+				df_order_row = df_me[df_me['Order_Id'] == int(complained_email)]
+				computer_name = str(df_order_row['Item_Name'].iloc[-1])
+
+				# fetch out the assigned computer company in items file for this computer 
+				df_item = pd.read_excel("csv_files/items.xlsx")
+				df_computer_row = df_item[df_item['Name'] == computer_name]
+
+				# add a complaint order id in complaint details
+				complaint_detail = 'Complained Order ID: ' + str(complained_email) + '\t\t\t\t\t\t\t\t\t\t\t' + complaint_detail
+
+				# change complained_email to computer company assigned
+				complained_email = str(df_computer_row['Computer Company'].iloc[-1])
+			else:
+				flag_email_exist = False
 
 		if not flag_email_exist:
 			tk.messagebox.showerror("Error", "Complained Email or Order ID doesn't exist")
@@ -198,6 +218,14 @@ class complaint_page(tk.Frame):
 				df_complaint.to_excel("csv_files/complaints.xlsx", index=False)
 				tk.messagebox.showinfo("Success", "New complaint casted")
 
+				# refresh text boxes'
+				self.Text2Var = tk.StringVar()
+				self.Text2 = tk.ttk.Entry(self.top, textvariable=self.Text2Var, font=("Helvetica",11))
+				self.Text2.place(relx=0.49, rely=0.465, relwidth=0.4, relheight=0.06)
+
+				self.Text3 = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
+				self.Text3.place(relx=0.49, rely=0.583, relwidth=0.4, relheight=0.2)
+
 
 
 
@@ -205,18 +233,3 @@ class complaint_page(tk.Frame):
 		self.top.destroy()
 		setting_account.setting_account(self.name, self.id, self.username)
 
-
-
-
-
-
-
-
-
-
-
-# Test Only
-#---------------------Main----------
-if __name__ == "__main__":
-    top = tk.Tk()
-    complaint_page(top).mainloop()   
