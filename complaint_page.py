@@ -164,7 +164,7 @@ class complaint_page(tk.Frame):
 			#TODO: finish this
 			# In orders file, fetch out all processing or assigned orders of this user
 			df_order = pd.read_excel("csv_files/orders.xlsx")
-			df_processing = df_order[df_order['Order_Status'].isin(['processing', 'assigned'])]
+			df_processing = df_order[df_order['Order_Status'].isin(['processing', 'assigned', 'delivered'])]
 			df_me = df_processing[df_processing['Username'] == self.username]
 
 					
