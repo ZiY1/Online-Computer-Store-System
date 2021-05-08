@@ -6,10 +6,11 @@ import tkinter.ttk as ttk
 import privileged_user_login as pul
 import privileged_edit_complaint
 import manager_edit_taboo
+import clerk_choose_bidding
 
 class clerk_management_page(tk.Frame):
 
-	def __init__(self, name, username, master=None): 
+	def __init__(self, name, username, master=None):
 		tk.Frame.__init__(self, master)
 
 		self.name = name
@@ -53,8 +54,6 @@ class clerk_management_page(tk.Frame):
 
 
 
-
-
 		# Log out button
 		self.LogOut = tk.ttk.Button(self.top, text="Log Out", command=self.log_out, style="AllCommand.TButton")
 		self.LogOut.place(relx=0.89, rely=0.076, relwidth=0.1, relheight=0.05)
@@ -69,7 +68,8 @@ class clerk_management_page(tk.Frame):
 		manager_edit_taboo.edit_taboo_page("clerk_management_page", self.name, self.username)
 
 	def choose_bidding(self):
-		pass
+		self.top.destroy()
+		clerk_choose_bidding.clerk_choose_bidding(self.name, self.username)
 
 	def log_out(self):
 		self.top.destroy()

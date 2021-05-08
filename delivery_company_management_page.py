@@ -5,10 +5,12 @@ import tkinter.ttk as ttk
 # python scripts 
 import privileged_user_login as pul
 import privileged_edit_complaint
+import delivery_company_bidding
+import delivery_company_provide_tracking
 
 class delivery_company_management_page(tk.Frame):
 
-	def __init__(self, name, username, master=None):
+	def __init__(self, name, username,master=None): #
 		tk.Frame.__init__(self, master)
 
 		self.name = name
@@ -40,6 +42,13 @@ class delivery_company_management_page(tk.Frame):
 		self.DealWithComplaint = tk.ttk.Button(self.top, text="Deal With Complaints", command=self.deal_with_complaint, style="AllCommand.TButton")
 		self.DealWithComplaint.place(relx=0.16, rely=0.2, relwidth=0.23, relheight=0.065)
 
+		self.Bidding = tk.ttk.Button(self.top, text="Bidding", command=self.bidding, style="AllCommand.TButton")
+		self.Bidding.place(relx=0.6, rely=0.2, relwidth=0.23, relheight=0.065)
+
+		# Row 2:
+		self.ProvideTracking = tk.ttk.Button(self.top, text="Provide Tracking Info", command=self.provide_tracking, style="AllCommand.TButton")
+		self.ProvideTracking.place(relx=0.16, rely=0.35, relwidth=0.23, relheight=0.065)
+
 
 
 
@@ -54,6 +63,20 @@ class delivery_company_management_page(tk.Frame):
 		self.top.destroy()
 		privileged_edit_complaint.edit_complaint_page(type_privileged_user, self.name, self.username)
 
+	def bidding(self):
+		self.top.destroy()
+		delivery_company_bidding.delivery_company_bidding(self.name, self.username)
+
+	def provide_tracking(self):
+		self.top.destroy()
+		delivery_company_provide_tracking.delivery_company_provide_tracking(self.name, self.username)
+
 	def log_out(self):
 		self.top.destroy()
 		pul.privilaged_user_login()
+
+# Test Only
+#---------------------Main----------
+if __name__ == "__main__":
+    top = tk.Tk()
+    delivery_company_management_page(top).mainloop()    
