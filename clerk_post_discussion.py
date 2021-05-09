@@ -233,12 +233,7 @@ class clerk_post_discussion(tk.Frame):
 				tk.messagebox.showerror("Error", "You can't write any comment because you are suspended")
 			else:
 				tk.messagebox.showinfo("Success","New comment posted")
-				if self.flag_taboo_headline or self.flag_taboo_content:
-					df_privileged_users = pd.read_excel("csv_files/privileged_users.xlsx")
-					self.update_warning(df_privileged_users, 'clerk')
-					tk.messagebox.showwarning("Warning","You just got one warning because the comment you just posted contains taboo word(s)")
-
-				df.to_excel("csv_files/discussions.xlsx", index=False)
+				
 				# refresh the text entered
 				self.Text1Var = tk.StringVar()
 				self.Text1 = tk.ttk.Entry(self.top, textvariable=self.Text1Var, font=("Helvetica",11))
@@ -246,6 +241,13 @@ class clerk_post_discussion(tk.Frame):
 
 				self.Text3 = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
 				self.Text3.place(relx=0.49, rely=0.613, relwidth=0.4, relheight=0.2)
+
+				if self.flag_taboo_headline or self.flag_taboo_content:
+					df_privileged_users = pd.read_excel("csv_files/privileged_users.xlsx")
+					self.update_warning(df_privileged_users, 'clerk')
+					tk.messagebox.showwarning("Warning","You just got one warning because the comment you just posted contains taboo word(s)")
+
+				df.to_excel("csv_files/discussions.xlsx", index=False)
 
 
 
