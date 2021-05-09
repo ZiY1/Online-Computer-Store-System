@@ -10,17 +10,20 @@ import textwrap
 
 # python scripts 
 import complaint_page
+import clerk_management_page
 
 
 class report_table(tk.Frame):
 
-	def __init__(self, customer_name, customer_Id, customer_username, report_type, master=None): 
+	def __init__(self, coming_from, customer_name, customer_Id, customer_username, report_type, master=None): 
 		tk.Frame.__init__(self, master)
 
 		self.name = customer_name
 		self.id = customer_Id
 		self.username = customer_username
 		self.report_type = report_type
+		self.coming_from = coming_from
+
 		self.master.title("View My Report Page")
 		self.master.geometry("663x855")
 		self.master.configure( background = "light blue" )
@@ -35,7 +38,7 @@ class report_table(tk.Frame):
 
 		# Titles
 		if self.report_type == "casted":
-			title = "View My Casted Report"
+			title = "View My Posted Report"
 		else:
 			title = "View My Receieved Report"
 		self.style.configure("LabelTitle.TLabel", relief=tk.SUNKEN, anchor="center", font=("Helvetica", 16), background = "#49A")
@@ -192,6 +195,7 @@ class report_table(tk.Frame):
 			df_row_list = df_row.to_numpy().tolist()
 			self.CommentID = df_row_list[0][0]
 			self.TypeUser = df_row_list[0][1]
+			self.ReportedEmail = df_row_list[0][2]
 			self.ReportedName = df_row_list[0][3]
 			self.ComputerName = df_row_list[0][4]
 			self.Vote = df_row_list[0][5]
@@ -212,8 +216,12 @@ class report_table(tk.Frame):
 			self.LabelType = tk.ttk.Label(self.MyFrame, text=self.TypeUser + ": " + self.ReportedName, style="LabelType.TLabel")
 			self.LabelType.grid(sticky="W", row=2, column=0, padx=0, pady=5)
 
-			self.LabelVote = tk.ttk.Label(self.MyFrame, text=self.rate_text(self.Vote),  foreground="#DAA520", style="LabelTime.TLabel")
-			self.LabelVote.grid(sticky="W", row=3, column=0, padx=0, pady=3)
+			if str(self.Vote) != 'nan':
+				self.LabelVote = tk.ttk.Label(self.MyFrame, text=self.rate_text(self.Vote),  foreground="#DAA520", style="LabelTime.TLabel")
+				self.LabelVote.grid(sticky="W", row=3, column=0, padx=0, pady=3)
+			else:
+				self.LabelEmail = tk.ttk.Label(self.MyFrame, text=self.ReportedEmail, style="LabelType.TLabel")
+				self.LabelEmail.grid(sticky="W", row=3, column=0, padx=0, pady=3)
 
 			self.LabelTime = tk.ttk.Label(self.MyFrame, text="Reviewed on " + self.Time, style="LabelTime.TLabel")
 			self.LabelTime.grid(sticky="W", row=4, column=0, padx=0, pady=10)
@@ -270,7 +278,10 @@ class report_table(tk.Frame):
 	def back(self):
 		# Remember to pass args
 		self.top.destroy()
-		complaint_page.complaint_page(self.name, self.id, self.username)
+		if self.coming_from == 'complaint_page':
+			complaint_page.complaint_page(self.name, self.id, self.username)
+		else:
+			clerk_management_page.clerk_management_page(self.name, self.username)
 
 	def rate_text(self, rate):
 		if str(rate) == "1":

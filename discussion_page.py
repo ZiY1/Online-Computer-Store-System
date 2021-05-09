@@ -217,14 +217,16 @@ class discussion_page(tk.Frame):
 			if self.Customer_username.lower() in list(df_suspend_user['Username']):
 				tk.messagebox.showerror("Error", "You can't write any comment because you are suspended")
 			else:
+				tk.messagebox.showinfo("Success","New comment posted")
 				if self.flag_taboo_headline or self.flag_taboo_content:
 					df_customers = pd.read_excel("csv_files/registered_customers.xlsx")
 					self.update_warning(df_customers)
+					tk.messagebox.showwarning("Warning","You just got one warning because the comment you just posted contains taboo word(s)")
 				
-				df_ratings = df[ df["Computer Name"] == self.item_name ] 
-				
+				df_ratings = df[ df["Computer Name"] == self.item_name ]
+
 				new_rating = ( df_ratings['Vote'].sum() )/(len(df_ratings))
-				
+
 				df.to_excel("csv_files/discussions.xlsx", index=False)
 				# Update overall review for this computer
 				df_items = pd.read_excel( "csv_files/items.xlsx" )
@@ -236,8 +238,6 @@ class discussion_page(tk.Frame):
 				else:
 					df_items.loc[df_items['Name'] == self.item_name, 'overall review'] = new_rating
 					df_items.to_excel("csv_files/items.xlsx", index=False)
-
-				tk.messagebox.showinfo("Success","New comment posted")
 				# refresh the text entered
 				self.Combo1List1 = ["1", "2", "3", "4", "5"]
 				self.Combo1 = tk.ttk.Combobox(self.top, state="readonly",values=self.Combo1List1, font=("Helvetica",11))
@@ -279,7 +279,7 @@ class discussion_page(tk.Frame):
 		
 		for word in my_list:
 			if word.lower() in list(df_taboo['Taboo Words']):
-    			# Change it to *****
+    			#Change it to *****
 				number_of_star = len(word)
 
 				my_string = my_string.replace(word, "*"*number_of_star )

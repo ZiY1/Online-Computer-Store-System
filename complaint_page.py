@@ -100,11 +100,11 @@ class complaint_page(tk.Frame):
 
 	def command_view_report(self):
 		self.top.destroy()
-		report_table.report_table(self.name, self.id, self.username, "casted")
+		report_table.report_table('complaint_page', self.name, self.id, self.username, "casted")
 
 	def command_view_report_recieved(self):
 		self.top.destroy()
-		report_table.report_table(self.name, self.id, self.username, "recieved")
+		report_table.report_table('complaint_page', self.name, self.id, self.username, "recieved")
 
 	def command_view_complaint(self):
 		self.top.destroy()

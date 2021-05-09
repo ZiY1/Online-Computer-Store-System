@@ -14,8 +14,9 @@ import datetime
 import discussion_page
 import generalized_item
 import setting_account
+import clerk_post_discussion
 
-# TODO: line 113
+
 class discussion_table(tk.Frame):
 
 	# Pass username as None if in guest page
@@ -129,8 +130,12 @@ class discussion_table(tk.Frame):
 			self.LabelType = tk.ttk.Label(self.MyFrame, text=row[1] + ": " + row[3], style="LabelType.TLabel")
 			self.LabelType.grid(sticky="W", row=6+counter, column=0, padx=0, pady=5)
 
-			self.LabelVote = tk.ttk.Label(self.MyFrame, text=self.rate_text(row[5]),  foreground="#DAA520", style="LabelTime.TLabel")
-			self.LabelVote.grid(sticky="W", row=7+counter, column=0, padx=0, pady=5)
+			if str(row[5]) != 'nan':
+				self.LabelVote = tk.ttk.Label(self.MyFrame, text=self.rate_text(str(row[5])),  foreground="#DAA520", style="LabelTime.TLabel")
+				self.LabelVote.grid(sticky="W", row=7+counter, column=0, padx=0, pady=5)
+			else:
+				self.LabelEmail = tk.ttk.Label(self.MyFrame, text='Email: ' + row[2], style="LabelType.TLabel")
+				self.LabelEmail.grid(sticky="W", row=7+counter, column=0, padx=0, pady=5)
 
 			self.LabelTime = tk.ttk.Label(self.MyFrame, text="Reviewed on " + row[8], style="LabelTime.TLabel")
 			self.LabelTime.grid(sticky="W", row=8+counter, column=0, padx=0, pady=10)
@@ -144,19 +149,21 @@ class discussion_table(tk.Frame):
 
 			counter = counter+10
 
+
+
 	def command_back(self):
 		if self.coming_from_discuss == "discussion_page":
-			self.top.destroy()
-			#TODO: finish the args
-			'''
+			self.top.destroy()		
 			discussion_page.discussion_page(
 			        coming_from = self.coming_from, 
 					item_name = self.item_name, customer_name = self.Customer_Name, 
                     customer_Id = self.Customer_Id, customer_username = self.Customer_username)
+			
 			'''
 			generalized_item.generalized_item(coming_from = self.coming_from, 
 			item_name = self.item_name, customer_name = self.Customer_Name, 
             customer_Id = self.Customer_Id, customer_username = self.Customer_username) 
+            '''
 
 		elif self.coming_from_discuss == "setting_account":
 			self.top.destroy()
@@ -167,18 +174,22 @@ class discussion_table(tk.Frame):
 			self.top.destroy()
 			generalized_item.generalized_item(coming_from = self.coming_from, 
 			item_name = self.item_name, customer_name = self.Customer_Name, 
-            customer_Id = self.Customer_Id, customer_username = self.Customer_username) 
+            customer_Id = self.Customer_Id, customer_username = self.Customer_username)
+
+		else: #self.coming_from_discuss == "clerk_post_discussion":
+			self.top.destroy()
+			clerk_post_discussion.clerk_post_discussion(self.Customer_Name, self.Customer_username) #
 
 	def rate_text(self, rate):
-		if str(rate) == "1":
+		if str(rate) == "1.0":
 			return "★☆☆☆☆"
-		elif str(rate) == "2":
+		elif str(rate) == "2.0":
 			return "★★☆☆☆"
-		elif str(rate) == "3":
+		elif str(rate) == "3.0":
 			return "★★★☆☆"
-		elif str(rate) == "4":
+		elif str(rate) == "4.0":
 			return "★★★★☆"
-		else:
+		elif str(rate) == "5.0":
 			return "★★★★★"
 
 	def wrap(self, string, lenght=55):
