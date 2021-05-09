@@ -68,7 +68,7 @@ class clerk_post_discussion(tk.Frame):
 
 		# Row 1 view computer names
 		self.style.configure("Label1.TLabel",anchor="w", font=("Helvetica",15), background = "light blue")
-		self.LabelComputerNames = tk.ttk.Label(self.top, text="Computer Types:", style='Label1.TLabel')
+		self.LabelComputerNames = tk.ttk.Label(self.top, text="Computer Names:", style='Label1.TLabel')
 		self.LabelComputerNames.place(relx=0.16, rely=0.22, relwidth=0.4, relheight=0.051)
 
 		df_items = pd.read_excel("csv_files/items.xlsx")
@@ -186,7 +186,7 @@ class clerk_post_discussion(tk.Frame):
 	def command_confirm(self):
 		# Get computer name
 		item_name = self.Combo2.get()
-		rating = str('')
+		rating = str('empty')
 
 		# Headline
 		self.Headline, self.flag_taboo_headline = self.replace_bad_words(self.Text1.get())

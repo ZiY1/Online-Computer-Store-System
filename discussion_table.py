@@ -130,7 +130,7 @@ class discussion_table(tk.Frame):
 			self.LabelType = tk.ttk.Label(self.MyFrame, text=row[1] + ": " + row[3], style="LabelType.TLabel")
 			self.LabelType.grid(sticky="W", row=6+counter, column=0, padx=0, pady=5)
 
-			if str(row[5]) != 'nan':
+			if str(row[5]) != 'empty':
 				self.LabelVote = tk.ttk.Label(self.MyFrame, text=self.rate_text(str(row[5])),  foreground="#DAA520", style="LabelTime.TLabel")
 				self.LabelVote.grid(sticky="W", row=7+counter, column=0, padx=0, pady=5)
 			else:
@@ -181,15 +181,16 @@ class discussion_table(tk.Frame):
 			clerk_post_discussion.clerk_post_discussion(self.Customer_Name, self.Customer_username) #
 
 	def rate_text(self, rate):
-		if str(rate) == "1.0":
+    		
+		if str(float(rate)) == "1.0":
 			return "★☆☆☆☆"
-		elif str(rate) == "2.0":
+		elif str(float(rate)) == "2.0":
 			return "★★☆☆☆"
-		elif str(rate) == "3.0":
+		elif str(float(rate)) == "3.0":
 			return "★★★☆☆"
-		elif str(rate) == "4.0":
+		elif str(float(rate)) == "4.0":
 			return "★★★★☆"
-		elif str(rate) == "5.0":
+		elif str(float(rate)) == "5.0":
 			return "★★★★★"
 
 	def wrap(self, string, lenght=55):
