@@ -13,6 +13,7 @@ import manager_edit_taboo
 import clerk_choose_bidding
 import clerk_post_discussion
 import report_table
+import privileged_view_account
 
 class clerk_management_page(tk.Frame):
 
@@ -70,6 +71,10 @@ class clerk_management_page(tk.Frame):
 		self.ReceivedReport = tk.ttk.Button(self.top, text="View Received Report", command=self.view_received_report, style="AllCommand.TButton")
 		self.ReceivedReport.place(relx=0.6, rely=0.5, relwidth=0.23, relheight=0.065)
 
+		# Row 4:
+		self.ViewAccount = tk.ttk.Button(self.top, text="View My Account Info", command=self.view_account, style="AllCommand.TButton")
+		self.ViewAccount.place(relx=0.16, rely=0.65, relwidth=0.23, relheight=0.065)
+
 
 
 
@@ -103,6 +108,10 @@ class clerk_management_page(tk.Frame):
 	def view_received_report(self):
 		self.top.destroy()
 		report_table.report_table('clerk_management_page', self.name, self.id, self.username, "received")
+
+	def view_account(self):
+		self.top.destroy()
+		privileged_view_account.privileged_view_account('clerk', self.name, self.username)
 
 	def log_out(self):
 		self.top.destroy()

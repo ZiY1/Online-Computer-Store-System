@@ -7,6 +7,7 @@ import privileged_user_login as pul
 import privileged_edit_complaint
 import delivery_company_bidding
 import delivery_company_provide_tracking
+import privileged_view_account
 
 class delivery_company_management_page(tk.Frame):
 
@@ -49,6 +50,9 @@ class delivery_company_management_page(tk.Frame):
 		self.ProvideTracking = tk.ttk.Button(self.top, text="Provide Tracking Info", command=self.provide_tracking, style="AllCommand.TButton")
 		self.ProvideTracking.place(relx=0.16, rely=0.35, relwidth=0.23, relheight=0.065)
 
+		self.ViewAccount = tk.ttk.Button(self.top, text="View My Account Info", command=self.view_account, style="AllCommand.TButton")
+		self.ViewAccount.place(relx=0.6, rely=0.35, relwidth=0.23, relheight=0.065)
+
 
 
 
@@ -70,6 +74,10 @@ class delivery_company_management_page(tk.Frame):
 	def provide_tracking(self):
 		self.top.destroy()
 		delivery_company_provide_tracking.delivery_company_provide_tracking(self.name, self.username)
+
+	def view_account(self):
+		self.top.destroy()
+		privileged_view_account.privileged_view_account('delivery', self.name, self.username)
 
 	def log_out(self):
 		self.top.destroy()

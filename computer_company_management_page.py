@@ -5,6 +5,7 @@ import tkinter.ttk as ttk
 # python scripts 
 import privileged_user_login as pul
 import privileged_edit_complaint
+import privileged_view_account
 
 class computer_company_management_page(tk.Frame):
 
@@ -36,9 +37,13 @@ class computer_company_management_page(tk.Frame):
 		self.LabelTitle2.place(relx=0.8, rely=0.0003, relwidth=0.38, relheight=0.06)
 
 		self.style.configure("AllCommand.TButton", font=("Helvetica", 14))
+
 		# Row 1: 
 		self.DealWithComplaint = tk.ttk.Button(self.top, text="Deal With Complaints", command=self.deal_with_complaint, style="AllCommand.TButton")
 		self.DealWithComplaint.place(relx=0.16, rely=0.2, relwidth=0.23, relheight=0.065)
+
+		self.ViewAccount = tk.ttk.Button(self.top, text="View My Account Info", command=self.view_account, style="AllCommand.TButton")
+		self.ViewAccount.place(relx=0.6, rely=0.2, relwidth=0.23, relheight=0.065)
 
 
 
@@ -52,6 +57,10 @@ class computer_company_management_page(tk.Frame):
 		type_privileged_user = 'computer_company'
 		self.top.destroy()
 		privileged_edit_complaint.edit_complaint_page(type_privileged_user, self.name, self.username)
+
+	def view_account(self):
+		self.top.destroy()
+		privileged_view_account.privileged_view_account('computer_company', self.name, self.username)
 
 
 	def log_out(self):
