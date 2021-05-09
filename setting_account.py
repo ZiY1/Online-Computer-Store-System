@@ -61,7 +61,7 @@ class setting_account(tk.Frame):
                             )
                             
         self.Command_Purchase_History = tk.ttk.Button(  self.top, 
-                                        text = "Check my purchase history",
+                                        text = "Check My Purchase History",
                                         command = self.Command_Purchase_History, 
                                         style = "Command_Purchase_History.TButton"  
                                       )
@@ -76,7 +76,7 @@ class setting_account(tk.Frame):
                                foreground = "black"    
                             )
         self.Command_Credit_Card_Info = tk.ttk.Button(  self.top, 
-                            text = "Provide/Update my credit card",  
+                            text = "Provide/Update My Credit Card",  
                                            command = self.Command_Credit_Card_Info, 
                                            style = "Command_Credit_Card_Info.TButton"
                                         )
@@ -91,7 +91,7 @@ class setting_account(tk.Frame):
                                foreground = "black" 
                             )
         self.Command_Track_Package = tk.ttk.Button( self.top, 
-                                     text = "Track my current package", 
+                                     text = "Track My Current Package", 
                                      command = self.Command_Track_Package,
                                      style = "Command_Track_Package.TButton"
                                    )
@@ -107,7 +107,7 @@ class setting_account(tk.Frame):
                                foreground = "black" 
                             )
         self.Button_Search_info = tk.ttk.Button( self.top, 
-                                     text = "Search info", 
+                                     text = "Search Info", 
                                      command = self.Command_Search_info,
                                      style = "Command_Search_info.TButton"
                                    )
@@ -128,7 +128,7 @@ class setting_account(tk.Frame):
                             )
                             
         self.Button_account_info = tk.ttk.Button(  self.top, 
-                                        text = "View my account information",
+                                        text = "View My Account Information",
                                         command = self.command_account_info, 
                                         style = "Command_Account_info.TButton"  
                                       )
@@ -143,7 +143,7 @@ class setting_account(tk.Frame):
                                foreground = "black"    
                             )
         self.Command_Place_Complaint = tk.ttk.Button(  self.top, 
-                            text = "Place a complaint",  
+                            text = "Complaint and Report",  
                                            command = self.Command_Place_Complaint, 
                                            style = "Command_Place_Complaint.TButton"
                                         )
@@ -159,7 +159,7 @@ class setting_account(tk.Frame):
                                foreground = "black" 
                             )
         self.Command_Check_Review = tk.ttk.Button( self.top, 
-                                     text = "Check all my reviews", 
+                                     text = "Check All My Reviews", 
                                      command = self.Command_Check_Review,
                                      style = "Command_Check_Review.TButton"
                                    )
