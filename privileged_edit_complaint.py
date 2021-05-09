@@ -323,6 +323,8 @@ class edit_complaint_page(tk.Frame):
 			self.Text = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
 			self.Text.place(relx=0.049, rely=0.8, relwidth=0.9, relheight=0.09)
 			self.Text.configure(state="disabled")
+
+			tk.messagebox.showinfo("Success", "The complaint is stayed and " + self.complained_party_email + " gets one warning")
 		else:
 			tk.messagebox.showerror("Error", "Manager Justification cannot be empty")
 
@@ -352,6 +354,8 @@ class edit_complaint_page(tk.Frame):
 			self.Text = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
 			self.Text.place(relx=0.049, rely=0.8, relwidth=0.9, relheight=0.09)
 			self.Text.configure(state="disabled")
+
+			tk.messagebox.showinfo("Success", "The complaint is reversed and " + self.complainant + " gets one warning")
 		else:
 			tk.messagebox.showerror("Error", "Manager Justification cannot be empty")
 
@@ -382,6 +386,8 @@ class edit_complaint_page(tk.Frame):
 			self.Text = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
 			self.Text.place(relx=0.049, rely=0.8, relwidth=0.9, relheight=0.09)
 			self.Text.configure(state="disabled")
+
+			tk.messagebox.showinfo("Success", "Response submitted")
 		else:
 			tk.messagebox.showerror("Error", "Complained Party Response cannot be empty")
 

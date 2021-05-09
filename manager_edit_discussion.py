@@ -286,7 +286,7 @@ class edit_discussion_page(tk.Frame):
 			self.refresh()
 
 			# Reported username get penalty
-			self.update_warning(self.ReportedUserName)
+			self.update_warning(self.TypeUser, self.ReportedUserName)
 
 			# Disable button untile the next selection
 			self.ButtonViolated.configure(state="disabled")
@@ -295,6 +295,9 @@ class edit_discussion_page(tk.Frame):
 			self.Text = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
 			self.Text.place(relx=0.049, rely=0.8, relwidth=0.9, relheight=0.09)
 			self.Text.configure(state="disabled")
+
+			tk.messagebox.showinfo("Success", "The report is stayed and " + self.ReportedUserName + " gets one warning")
+
 		else:
 			tk.messagebox.showerror("Error", "Manager Justification cannot be empty")
 
@@ -317,7 +320,24 @@ class edit_discussion_page(tk.Frame):
 			self.refresh()
 
 			# Reporter get penalty
-			self.update_warning(self.Reporter)
+
+			# First figure out the type user of repoter
+			df_customers = pd.read_excel("csv_files/registered_customers.xlsx")
+			df_privileged_users = pd.read_excel("csv_files/privileged_users.xlsx")
+			df_clerks = df_privileged_users[df_privileged_users['Type_user'] == 'clerk']
+			flag_is_customer = False
+			flag_is_clerk = False
+			if self.Reporter in list(df_customers['Username']):
+				flag_is_customer = True
+			elif self.Reporter in list(df_clerks['Username']):
+				flag_is_clerk = True
+
+			if flag_is_customer and flag_is_clerk:
+				tk.messagebox.showerror("Error", "Failed to update the warning because " + self.Reporter + " appears in both registered_customers and privileged_users file")
+			elif flag_is_customer:
+				self.update_warning('customer', self.Reporter)
+			elif flag_is_clerk:
+				self.update_warning('clerk', self.Reporter)
 
 			# Disable button untile the next selection
 			self.ButtonViolated.configure(state="disabled")
@@ -326,6 +346,8 @@ class edit_discussion_page(tk.Frame):
 			self.Text = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
 			self.Text.place(relx=0.049, rely=0.8, relwidth=0.9, relheight=0.09)
 			self.Text.configure(state="disabled")
+
+			tk.messagebox.showinfo("Success", "The report is reversed and " + self.Reporter + " gets one warning")
 		else:
 			tk.messagebox.showerror("Error", "Manager Justification cannot be empty")
 
@@ -383,32 +405,61 @@ class edit_discussion_page(tk.Frame):
 		for row in df_rows:
 			self.tree.insert("", "end", value=row)
 
-	def update_warning(self, username):
-		df = pd.read_excel("csv_files/registered_customers.xlsx")
-		df_active = df[df['Status'] == "active"]
-		if username.lower() in list(df_active['Username']):
-			df_user_row = df[df['Username'] == username]
-			df_row_list = df_user_row.to_numpy().tolist()
-			type_user = "customer"
-			name = df_row_list[0][1]
-			password = df_row_list[0][3]
+	def update_warning(self, type_user, username):
+		if type_user == "customer":
+			df = pd.read_excel("csv_files/registered_customers.xlsx")
+			df_cus_active = df[df['Status'] == "active"]
+			if username.lower() in list(df_cus_active['Username']):
+				flag_username_exist = True
+				df_user_row = df[df['Username'] == username]
+				df_row_list = df_user_row.to_numpy().tolist()
+				name = df_row_list[0][4]
+				password = df_row_list[0][3]
+				current_warning = int(df_user_row['Warnings'].iloc[-1])
 
-			CurrentWarning = int(df_user_row['Warnings'].iloc[-1])
-			# Update the warning if taboo word found
-			if CurrentWarning < 3:
-				CurrentWarning = CurrentWarning + 1
-				df.loc[df['Username'] == username, 'Warnings'] = CurrentWarning
-				df.to_excel("csv_files/registered_customers.xlsx", index=False)
+				chance_login = 1
+				deny_notify = 1
+			else:
+				flag_username_exist = False
+				tk.messagebox.showerror("Erorr", "Username not found, this may occurred when the username is already suspended, failed to update the warning")
+
+		else:
+			df = pd.read_excel("csv_files/privileged_users.xlsx")
+			df2 = df[df['Type_user'] == type_user]
+			df_privileged_active = df2[df2['Status'] == "active"]
+			if username.lower() in list(df_privileged_active['Username']):
+				flag_username_exist = True
+				df_user_row = df[df['Username'] == username]
+				df_row_list = df_user_row.to_numpy().tolist()
+				name = df_row_list[0][1]
+				password = df_row_list[0][3]
+				current_warning = int(df_user_row['Warnings'].iloc[-1])
+
+				chance_login = 1
+				deny_notify = 0
+			else:
+				flag_username_exist = False
+				tk.messagebox.showerror("Erorr", "Username not found, this may occurred when the username is already suspended, failed to update the warning")
+
+		if flag_username_exist:
+			# Update the warning (+1)
+			if current_warning < 3:
+				current_warning = current_warning + 1
+				if type_user == "customer":
+					df.loc[df['Username'] == username, 'Warnings'] = current_warning
+					df.to_excel("csv_files/registered_customers.xlsx", index=False)
+				else:
+					df['Warnings'] = np.where((df['Username'] == username) & (df['Type_user'] == type_user), current_warning, df.Warnings)
+					df.to_excel("csv_files/privileged_users.xlsx", index=False)
+
 			# Auto suspend if Warning == 3
-			if CurrentWarning >= 3:
+			if current_warning >= 3:
 				df_suspend = pd.read_excel("csv_files/suspend_users.xlsx")
 				df_suspend_type = df_suspend[df_suspend['Type_user'] == type_user]
-				ChanceLogin = 1
-				DenyNotify = 1
-				SuspendReason = "3 standing warnings"
+				suspend_reason = "3 standing warnings"
 				if len(df_suspend) == 0:
 					Id = 0
-					tempo = pd.DataFrame([[str(Id), type_user, username.lower(), password, name, CurrentWarning, SuspendReason, ChanceLogin, DenyNotify]], 
+					tempo = pd.DataFrame([[str(Id), type_user, username.lower(), password, name, current_warning, suspend_reason, chance_login, deny_notify]], 
 						columns=['ID', 'Type_user', 'Username', 'Password', 'Name','Current_warnings', 'Suspend_reason', 'Chance_login', 'Customer_deny_notify'])
 					df_suspend = df_suspend.append(tempo)
 
@@ -416,16 +467,64 @@ class edit_discussion_page(tk.Frame):
 					if not username.lower() in list(df_suspend_type['Username']):
 						Id = int(df_suspend['ID'].iloc[-1])
 						Id = Id+1
-						tempo = pd.DataFrame([[str(Id), type_user, username.lower(), password, name, CurrentWarning, SuspendReason, ChanceLogin, DenyNotify]], 
+						tempo = pd.DataFrame([[str(Id), type_user, username.lower(), password, name, current_warning, suspend_reason, chance_login, deny_notify]], 
 							columns=['ID', 'Type_user', 'Username', 'Password', 'Name', 'Current_warnings','Suspend_reason', 'Chance_login', 'Customer_deny_notify'])
 						df_suspend = df_suspend.append(tempo)
+
 				# update suspend_user file and customers file
 				df_suspend.to_excel("csv_files/suspend_users.xlsx", index=False)
-				df_cus = pd.read_excel("csv_files/registered_customers.xlsx")
-				df_cus.loc[df_cus['Username'] == username, 'Status'] = 'suspended'
-				df_cus.to_excel("csv_files/registered_customers.xlsx", index=False)
+				if type_user == "customer":
+					df_cus = pd.read_excel("csv_files/registered_customers.xlsx")
+					df_cus.loc[df_cus['Username'] == username, 'Status'] = 'suspended'
+					df_cus.to_excel("csv_files/registered_customers.xlsx", index=False)
+				else:
+					df_privileged = pd.read_excel("csv_files/privileged_users.xlsx")
+					df_privileged['Status'] = np.where((df_privileged['Username'] == username) & (df_privileged['Type_user'] == type_user), 'suspended', df_privileged.Status)
+					#df_privileged.loc[df_privileged['Username'] == username, 'Status'] = 'suspended'
+					df_privileged.to_excel("csv_files/privileged_users.xlsx", index=False)
 
-		else:
-			tk.messagebox.showerror("Erorr", "Customer username not found, this may occurred when the customer is already suspended, failed to update the warning")
+		# df = pd.read_excel("csv_files/registered_customers.xlsx")
+		# df_active = df[df['Status'] == "active"]
+		# if username.lower() in list(df_active['Username']):
+		# 	df_user_row = df[df['Username'] == username]
+		# 	df_row_list = df_user_row.to_numpy().tolist()
+		# 	type_user = "customer"
+		# 	name = df_row_list[0][1]
+		# 	password = df_row_list[0][3]
+
+		# 	CurrentWarning = int(df_user_row['Warnings'].iloc[-1])
+		# 	# Update the warning if taboo word found
+		# 	if CurrentWarning < 3:
+		# 		CurrentWarning = CurrentWarning + 1
+		# 		df.loc[df['Username'] == username, 'Warnings'] = CurrentWarning
+		# 		df.to_excel("csv_files/registered_customers.xlsx", index=False)
+		# 	# Auto suspend if Warning == 3
+		# 	if CurrentWarning >= 3:
+		# 		df_suspend = pd.read_excel("csv_files/suspend_users.xlsx")
+		# 		df_suspend_type = df_suspend[df_suspend['Type_user'] == type_user]
+		# 		ChanceLogin = 1
+		# 		DenyNotify = 1
+		# 		SuspendReason = "3 standing warnings"
+		# 		if len(df_suspend) == 0:
+		# 			Id = 0
+		# 			tempo = pd.DataFrame([[str(Id), type_user, username.lower(), password, name, CurrentWarning, SuspendReason, ChanceLogin, DenyNotify]], 
+		# 				columns=['ID', 'Type_user', 'Username', 'Password', 'Name','Current_warnings', 'Suspend_reason', 'Chance_login', 'Customer_deny_notify'])
+		# 			df_suspend = df_suspend.append(tempo)
+
+		# 		else:
+		# 			if not username.lower() in list(df_suspend_type['Username']):
+		# 				Id = int(df_suspend['ID'].iloc[-1])
+		# 				Id = Id+1
+		# 				tempo = pd.DataFrame([[str(Id), type_user, username.lower(), password, name, CurrentWarning, SuspendReason, ChanceLogin, DenyNotify]], 
+		# 					columns=['ID', 'Type_user', 'Username', 'Password', 'Name', 'Current_warnings','Suspend_reason', 'Chance_login', 'Customer_deny_notify'])
+		# 				df_suspend = df_suspend.append(tempo)
+		# 		# update suspend_user file and customers file
+		# 		df_suspend.to_excel("csv_files/suspend_users.xlsx", index=False)
+		# 		df_cus = pd.read_excel("csv_files/registered_customers.xlsx")
+		# 		df_cus.loc[df_cus['Username'] == username, 'Status'] = 'suspended'
+		# 		df_cus.to_excel("csv_files/registered_customers.xlsx", index=False)
+
+		# else:
+		# 	tk.messagebox.showerror("Erorr", "Customer username not found, this may occurred when the customer is already suspended, failed to update the warning")
 
 

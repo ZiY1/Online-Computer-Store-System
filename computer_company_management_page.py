@@ -49,7 +49,7 @@ class computer_company_management_page(tk.Frame):
 
 
 	def deal_with_complaint(self):
-		type_privileged_user = 'computer company'
+		type_privileged_user = 'computer_company'
 		self.top.destroy()
 		privileged_edit_complaint.edit_complaint_page(type_privileged_user, self.name, self.username)
 

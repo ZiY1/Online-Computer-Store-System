@@ -1,12 +1,18 @@
 import tkinter as tk  
 import tkinter.ttk as ttk 
 
+import pandas as pd 
+import numpy as np 
+import re
+import datetime
 
 # python scripts 
 import privileged_user_login as pul
 import privileged_edit_complaint
 import manager_edit_taboo
 import clerk_choose_bidding
+import clerk_post_discussion
+import report_table
 
 class clerk_management_page(tk.Frame):
 
@@ -15,6 +21,10 @@ class clerk_management_page(tk.Frame):
 
 		self.name = name
 		self.username = username
+
+		df_privileged_users = pd.read_excel('csv_files/privileged_users.xlsx')
+		df_clerk = df_privileged_users[(df_privileged_users['Type_user'] == 'clerk') & (df_privileged_users['Username'] == username)]
+		self.id = df_clerk['ID'].iloc[-1]
 
 		self.master.title("Store Clerk Management Page")
 		self.master.geometry("989x776")
@@ -50,6 +60,17 @@ class clerk_management_page(tk.Frame):
 		self.ChooseBidding = tk.ttk.Button(self.top, text="Choose Bidding Winner", command=self.choose_bidding, style="AllCommand.TButton")
 		self.ChooseBidding.place(relx=0.16, rely=0.35, relwidth=0.23, relheight=0.065)
 
+		self.PostDiscussion = tk.ttk.Button(self.top, text="Post Discussion", command=self.post_discussion, style="AllCommand.TButton")
+		self.PostDiscussion.place(relx=0.6, rely=0.35, relwidth=0.23, relheight=0.065)
+
+		# Row 3:
+		self.PostedReport = tk.ttk.Button(self.top, text="View Posted Report", command=self.view_posted_report, style="AllCommand.TButton")
+		self.PostedReport.place(relx=0.16, rely=0.5, relwidth=0.23, relheight=0.065)
+
+		self.ReceivedReport = tk.ttk.Button(self.top, text="View Received Report", command=self.view_received_report, style="AllCommand.TButton")
+		self.ReceivedReport.place(relx=0.6, rely=0.5, relwidth=0.23, relheight=0.065)
+
+
 
 
 
@@ -70,6 +91,18 @@ class clerk_management_page(tk.Frame):
 	def choose_bidding(self):
 		self.top.destroy()
 		clerk_choose_bidding.clerk_choose_bidding(self.name, self.username)
+
+	def post_discussion(self):
+		self.top.destroy()
+		clerk_post_discussion.clerk_post_discussion(self.name, self.username)
+
+	def view_posted_report(self):
+		self.top.destroy()
+		report_table.report_table('clerk_management_page', self.name, self.id, self.username, "casted")
+
+	def view_received_report(self):
+		self.top.destroy()
+		report_table.report_table('clerk_management_page', self.name, self.id, self.username, "received")
 
 	def log_out(self):
 		self.top.destroy()
