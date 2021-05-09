@@ -223,7 +223,7 @@ class discussion_page(tk.Frame):
 					self.update_warning(df_customers)
 					tk.messagebox.showwarning("Warning","You just got one warning because the comment you just posted contains taboo word(s)")
 				
-				df_ratings = df[ df["Computer Name"] == self.item_name ]
+				df_ratings = df[ (df["Computer Name"] == self.item_name) & (df["Type User"] == 'customer') ]
 
 				new_rating = ( df_ratings['Vote'].sum() )/(len(df_ratings))
 
