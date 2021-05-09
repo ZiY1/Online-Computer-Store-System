@@ -48,7 +48,7 @@ class add_funds(tk.Frame):
         #------------------------------------------------------------------------------------------
 
         #------------------------Add funds Section------------------------------------------- 
-        self.AddfundsVar = tk.StringVar()
+        self.AddfundsVar = tk.StringVar(value="Format: X.XX")
         self.Addfunds = tk.Entry( self.top, textvariable = self.AddfundsVar ) 
         self.Addfunds.place( relx = 0.370, rely = 0.32, relwidth = 0.3, relheight = 0.080)
 
