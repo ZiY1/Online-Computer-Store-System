@@ -233,7 +233,7 @@ class clerk_post_discussion(tk.Frame):
 				tk.messagebox.showerror("Error", "You can't write any comment because you are suspended")
 			else:
 				tk.messagebox.showinfo("Success","New comment posted")
-				
+
 				# refresh the text entered
 				self.Text1Var = tk.StringVar()
 				self.Text1 = tk.ttk.Entry(self.top, textvariable=self.Text1Var, font=("Helvetica",11))
@@ -320,7 +320,7 @@ class clerk_post_discussion(tk.Frame):
 					df_suspend = df_suspend.append(tempo)
 
 				else:
-					if not username.lower() in list(df_suspend_type['Username']):
+					if not self.username.lower() in list(df_suspend_type['Username']):
 						Id = int(df_suspend['ID'].iloc[-1])
 						Id = Id+1
 						tempo = pd.DataFrame([[str(Id), type_user, self.username.lower(), password, name, current_warning, suspend_reason, chance_login, deny_notify]], 
