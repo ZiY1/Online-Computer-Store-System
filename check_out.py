@@ -341,7 +341,9 @@ class check_out(tk.Frame):
         user_Balance = float( df_user_info["Balance"].iloc[-1] ) 
 
         if float(self.total_sum) > user_Balance: # Not enough money
-            tk.messagebox.showerror( "Error", "You do not have enough funds to complete this order")
+            price_ = "$ {:,.2f}".format(user_Balance)
+            tk.messagebox.showerror( "Error", "You do not have enough funds to complete this order.\n" + 
+                                    f"Your current funds:   {price_}" )
         else: # Complete the transaction and send the order to clerk and delivery companies
             
             #----------------------------Charge the user-------------------------------------
@@ -385,20 +387,12 @@ class check_out(tk.Frame):
             #df_customer_cart
             track_order = df_customer_cart["Tracking Order"].iloc[-1]
             total_sum = float ( df_customer_cart["Item_Price"].sum() )
-            column_length = np.vectorize(len)
 
-            max_Str = column_length(df_customer_cart['Item_Name'].values.astype(str)).max(axis = 0)
             
-            
-            for item in list(df_customer_cart['Item_Name']):
-                if max_Str < len(item):
-                    max_Str = len(item)
-            max_Str += 10
-
             total_sum = "$ {:,.2f}".format(total_sum)
             message4 = f"\t\t\t\tTracking Order: {track_order}\n"
             
-            message5 = "\t\t{1:<{0}}{2}\n".format( max_Str, "Item Name", "Item Price")
+            message5 = "\t\t{0}\t\t\t\t\t\t\t{1}\n".format( "Item Name", "Item Price")
             message6 = ""
             
             for i in range( len(df_customer_cart) ):
@@ -410,11 +404,12 @@ class check_out(tk.Frame):
                 price = "$ {:,.2f}".format(price)
                 
                 name_printed = item + custom
-                
-                message6 += "\t\t{1:<{0}}{2}\n".format( max_Str, name_printed, price)
+                price += f"\t{len(name_printed)}"
+                name_printed = name_printed + "\t\t" if len(name_printed) <= 30 else name_printed 
+                message6 += "\t{0:<60s}\t\t\t{1:<20s}\n".format( name_printed, price )
                 
             
-            message7 = f"\t\t\tSubtotal: {total_sum}"
+            message7 = f"\t\t\t\t\t\t\t\t\t\tSubtotal:  {total_sum}"
             message8 = "\nThanks, Lenovo Team"
             message = message1 + message2 + message3 + message4 + message5 + message6 + message7 + message8 
 
