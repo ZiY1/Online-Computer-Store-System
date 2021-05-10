@@ -232,9 +232,10 @@ class discussion_page(tk.Frame):
 				self.Text3.place(relx=0.49, rely=0.613, relwidth=0.4, relheight=0.2)
 
 				if self.flag_taboo_headline or self.flag_taboo_content:
+
+					tk.messagebox.showwarning("Warning","You just got one warning because the comment you just posted contains taboo word(s)")
 					df_customers = pd.read_excel("csv_files/registered_customers.xlsx")
 					self.update_warning(df_customers)
-					tk.messagebox.showwarning("Warning","You just got one warning because the comment you just posted contains taboo word(s)")
 				
 				df_ratings = df[ (df["Computer Name"] == self.item_name) & (df["Type User"] == 'customer') ]
 
