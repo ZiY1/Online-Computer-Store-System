@@ -181,21 +181,21 @@ class complaint_table(tk.Frame):
 			self.refresh()
 
 
-			self.LabelMyTitle = tk.ttk.Label(self.MyFrame, text="Details of My Conplaint:", style="LabelHeadline.TLabel")
+			self.LabelMyTitle = tk.ttk.Label(self.MyFrame, text="Details of My Complaint:", style="LabelHeadline.TLabel")
 			self.LabelMyTitle.grid(sticky="W", row=0, column=0, padx=0, pady=5)
 
-			self.LabelMyTime = tk.ttk.Label(self.MyFrame, text="Conplained on " + complaint_time, style="LabelTime.TLabel")
+			self.LabelMyTime = tk.ttk.Label(self.MyFrame, text="Complained on " + complaint_time, style="LabelTime.TLabel")
 			self.LabelMyTime.grid(sticky="W", row=1, column=0, padx=0, pady=5)
 
 			self.LabelMyContent = tk.ttk.Label(self.MyFrame, text=complaint_detail ,style="LabelContent.TLabel")
 			self.LabelMyContent.grid(sticky="W", row=2, column=0, padx=0, pady=10)
-			# Case 1: status = "pending", complained party hasn't responsed yet, show my complaint, disable satisfaction
+			# Case 1: status = "pending", complained party hasn't responded yet, show my complaint, disable satisfaction
 			if status == "pending":
 				self.ButtonSatisfied.configure(state="disabled")
 				self.ButtonDissatisfied.configure(state="disabled")
 
-			# Case 1: status = "pending" and satisfaction = "pending" complained party has responsed, 
-			# you need to responed, show my complaint and party response, enable satisfaction
+			# Case 1: status = "pending" and satisfaction = "pending" complained party has responded, 
+			# you need to responded, show my complaint and party response, enable satisfaction
 			elif status == "closed":
 				self.LabelSeg1 = tk.ttk.Label(self.MyFrame, text="-------------------------------------------------------------------------------------------------------------------------------------------------" ,
 									  style="LabelContent.TLabel")
@@ -204,7 +204,7 @@ class complaint_table(tk.Frame):
 				self.LabelPartyTitle = tk.ttk.Label(self.MyFrame, text="Complained Party Response:", style="LabelHeadline.TLabel")
 				self.LabelPartyTitle.grid(sticky="W", row=4, column=0, padx=0, pady=0)
 
-				self.LabelPartyTime = tk.ttk.Label(self.MyFrame, text="Responsed on " + complained_party_response_time, style="LabelTime.TLabel")
+				self.LabelPartyTime = tk.ttk.Label(self.MyFrame, text="Responded on " + complained_party_response_time, style="LabelTime.TLabel")
 				self.LabelPartyTime.grid(sticky="W", row=5, column=0, padx=0, pady=5)
 
 				self.LabelPartyContent = tk.ttk.Label(self.MyFrame, text=complained_party_response, style="LabelContent.TLabel")
@@ -225,7 +225,7 @@ class complaint_table(tk.Frame):
 				self.LabelPartyTitle = tk.ttk.Label(self.MyFrame, text="Complained Party Response:", style="LabelHeadline.TLabel")
 				self.LabelPartyTitle.grid(sticky="W", row=4, column=0, padx=0, pady=0)
 
-				self.LabelPartyTime = tk.ttk.Label(self.MyFrame, text="Responsed on " + complained_party_response_time, style="LabelTime.TLabel")
+				self.LabelPartyTime = tk.ttk.Label(self.MyFrame, text="Responded on " + complained_party_response_time, style="LabelTime.TLabel")
 				self.LabelPartyTime.grid(sticky="W", row=5, column=0, padx=0, pady=5)
 
 				self.LabelPartyContent = tk.ttk.Label(self.MyFrame, text=complained_party_response, style="LabelContent.TLabel")
@@ -281,7 +281,7 @@ class complaint_table(tk.Frame):
 			self.update_treeview()
 			# Refresh the comment body
 			self.refresh()
-			# Disable the button untile the next selection
+			# Disable the button until the next selection
 			self.ButtonSatisfied.configure(state="disabled")
 			self.ButtonDissatisfied.configure(state="disabled")
 
@@ -297,7 +297,7 @@ class complaint_table(tk.Frame):
 			self.update_treeview()
 			# Refresh the comment body
 			self.refresh()
-			# Disable the button untile the next selection
+			# Disable the button until the next selection
 			self.ButtonSatisfied.configure(state="disabled")
 			self.ButtonDissatisfied.configure(state="disabled")
 
@@ -306,8 +306,8 @@ class complaint_table(tk.Frame):
 		self.top.destroy()
 		complaint_page.complaint_page(self.name, self.id, self.username)
 
-	def wrap(self, string, lenght=70):
-		return '\n'.join(textwrap.wrap(string, lenght))
+	def wrap(self, string, length = 70):
+		return '\n'.join(textwrap.wrap(string, length))
 
 	def update_treeview(self):
 		combo1 = self.Combo1.get()

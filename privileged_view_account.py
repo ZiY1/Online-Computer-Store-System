@@ -79,7 +79,7 @@ class privileged_view_account(tk.Frame):
 		self.Text3.place(relx=0.45, rely=0.54, relwidth=0.4, relheight=0.064)
 
 		# Row 4 Warning
-		self.LabelWarning = tk.ttk.Label(self.top, text = 'Waring:', style='LabelSub.TLabel')
+		self.LabelWarning = tk.ttk.Label(self.top, text = 'Warnings:', style='LabelSub.TLabel')
 		self.LabelWarning.place(relx=0.145, rely=0.67, relwidth=0.8, relheight=0.079)
 
 		self.Text4Var = tk.StringVar(value=self.warning)

@@ -71,7 +71,7 @@ class edit_account_page(tk.Frame):
 		self.Label4 = tk.ttk.Label(self.top, text="User Name:", style='Label1.TLabel')
 		self.Label4.place(relx=0.12, rely=0.399, relwidth=0.4, relheight=0.062)
 
-		self.Text4Var = tk.StringVar(value="Pleasr enter email")
+		self.Text4Var = tk.StringVar(value="Please enter email")
 		self.Text4 = tk.ttk.Entry(self.top, textvariable=self.Text4Var, font=("Helvetica",11))
 		self.Text4.place(relx=0.4, rely=0.399, relwidth=0.4, relheight=0.068)
 
