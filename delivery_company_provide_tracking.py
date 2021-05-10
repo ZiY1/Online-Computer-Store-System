@@ -197,6 +197,8 @@ class delivery_company_provide_tracking(tk.Frame):
 				image_tempo = Image.open( f"images/servers/{item_name}.png" )
 			elif item_type == "mainframe":
 				image_tempo = Image.open( f"images/mainframes/{item_name}.png" )
+			elif item_type == "Computer Part":
+				image_tempo = Image.open( f"images/computer_parts/{item_name}.png")
     
 			image_tempo = image_tempo.resize((220,160), Image.ANTIALIAS)
 
