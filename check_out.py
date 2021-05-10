@@ -404,9 +404,9 @@ class check_out(tk.Frame):
                 price = "$ {:,.2f}".format(price)
                 
                 name_printed = item + custom
-                price += f"\t{len(name_printed)}"
+                #price += f"\t{len(name_printed)}"
                 name_printed = name_printed + "\t\t" if len(name_printed) <= 30 else name_printed 
-                message6 += "\t{0:<60s}\t\t\t{1:<20s}\n".format( name_printed, price )
+                message6 += "\t{0:<70s}\t\t\t{1:<20s}\n".format( name_printed, price )
                 
             
             message7 = f"\t\t\t\t\t\t\t\t\t\tSubtotal:  {total_sum}"
