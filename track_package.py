@@ -82,7 +82,7 @@ class track_package(tk.Frame):
 		# Tracking number
 		trackNum1 = trackInfo.partition('}')[-1]
 		trackNum = trackNum1.replace(' ', '')
-		print(trackNum)
+		#print(trackNum)
 
 		# Customer's address
 		df = pd.read_excel("csv_files/registered_customers.xlsx")
@@ -131,17 +131,17 @@ class track_package(tk.Frame):
 				time = round(((response["route"]["time"])/60), 2)		# default unit: seconds
 				self.style.configure( "LabelTitle.TLabel", 
 									anchor = "left", 
-									font = ("Helvetica", 18), 
+									font = ("Helvetica", 18, 'bold'), 
 									background = '#49A')
 				message = "Purchased on: " + str(dates) + "\n"\
 						"Tracking number: " + str(tracking_number) +"\n\n"\
-						"Please allow additional time for loading packages and order processing.\n\n"\
+						"Please allow additional time for loading packages and\norder processing.\n\n"\
 						"Delivery company: " + str(delivery_company) + "\n"\
-						"Distance: " + str(distance) + " miles \nDiving Time: " + str(time) + " minutes"
+						"Distance: " + str(distance) + " miles \nDriving Time: " + str(time) + " minutes"
 				self.LabelTitle = tk.ttk.Label(self.top, 
 						text = message, 
 						style = "LabelTitle.TLabel")
-				self.LabelTitle.place( relx = 0.46, rely = 0.400, relwidth = 0.450, relheight = 0.300)
+				self.LabelTitle.place( relx = 0.46, rely = 0.400, relwidth = 0.5, relheight = 0.450)
 				self.Fetch_Static_Map(api_key, delivery_address, customer_address)
 		except Exception as e:
 			err_message = str(response["info"]["messages"]).replace('[', '').replace(']', '').replace('\'', '')
