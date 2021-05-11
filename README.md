@@ -34,3 +34,7 @@ pip install openpyxl
 ```bash
 pip install credit_card_checker
 ```
+
+```bash
+pip install smartystreets.py
+```
