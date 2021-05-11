@@ -14,6 +14,7 @@ import discussion_table
 import purchase_history_page
 import account_info_page
 import search_info
+import track_package
 
 class setting_account(tk.Frame):
     
@@ -194,8 +195,15 @@ class setting_account(tk.Frame):
 
 
     def Command_Track_Package(self):
-        self.top.destroy() 
-
+          # Verify orders made before
+          df = pd.read_excel("csv_files/orders.xlsx")
+          df = df[df['Username'] == self.customer_username]
+          if len(df) == 0:
+            tk.messagebox.showinfo("Info", "You haven't placed an order")
+          else:
+            self.top.destroy()
+            track_package.track_package(customer_name = self.customer_name, customer_username = self.customer_username, 
+              customer_Id = self.customer_Id)
 
     def command_account_info(self):
         self.top.destroy()
