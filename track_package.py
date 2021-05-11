@@ -4,12 +4,13 @@ import pandas as pd
 import requests
 import json
 import io
+from tkinter.messagebox import *
 from PIL import ImageTk, Image
+from smartystreets import Client
 
 # python script
 import customer_page
 import setting_account
-
 
 class track_package(tk.Frame):
 
@@ -23,9 +24,8 @@ class track_package(tk.Frame):
 		self.customer_name = customer_name
 		self.customer_username = customer_username
 		self.customer_Id = customer_Id
-
+		
 		self.create_widgets()
-		self.Fetch_Data()
 
 	def create_widgets(self):
 		self.top = self.winfo_toplevel()
@@ -33,35 +33,67 @@ class track_package(tk.Frame):
 
      	# ---------------------------------Title----------------------------------------
 
-		self.style.configure(
-                            "LabelTitle.TLabel",
-                            anchor="N",
-                            font=("Helvetica", 23),
-                            background='#49A',
-                            foreground="black"
-                     )
-		self.LabelTitle = tk.ttk.Label(self.top,
-                                      text="Package Status",
-                                      style="LabelTitle.TLabel"
-                                    )
+		self.style.configure("LabelTitle.TLabel", anchor="N", font=("Helvetica", 23), background='#49A', foreground="black")
+		self.LabelTitle = tk.ttk.Label(self.top, text="Package Status", style="LabelTitle.TLabel")
 		self.LabelTitle.place(relx=0.25, rely=0.100, relwidth=0.572, relheight=0.095)
+
+		# ---------------------------------Drop-down menu of tracking orders----------------------------------------
+
+		self.style.configure("Combo.Label", font=("Helvetica", 12), background='#add8e6', foreground = "black")
+		self.label = tk.ttk.Label(self.top, text = "Select a date of purchase and tracking number", style="Combo.Label")
+		self.label.place(relx=0.35, rely=0.21)
+
+		self.comboValues = self.verify_orders()
+		#self.comboValues[0].replace("{","").replace("}","")
+		self.TrackNumCombo = tk.ttk.Combobox(self.top, state="readonly", values=self.comboValues, font=("Helvetica",14))
+		self.TrackNumCombo.bind("<<ComboboxSelected>>", self.combo_clicked)
+		self.TrackNumCombo.place(relx=0.35, rely=0.24, relwidth=0.35, relheight=0.032)
+		self.TrackNumCombo.set("Select a date of purchase and tracking number")
+
 		# ---------------------------Go Back Button---------------------------------------
 
-		self.style.configure("Command_Go_Back.TButton", font=("Helvetica", 16),
-                                background="green",   foreground="black")
-		self.CommandExit = tk.ttk.Button(
-			self.top,
-			text="Go Back",
-			command=self.Command_Go_Back,
-			style="Command_Go_Back.TButton")
-
-		self.CommandExit.place(relx=0.873, rely=0.88,
-		                       relwidth=0.119, relheight=0.065)
+		self.style.configure("Command_Go_Back.TButton", font=("Helvetica", 16), background="green",   foreground="black")
+		self.CommandExit = tk.ttk.Button(self.top, text="Go Back", command=self.Command_Go_Back, style="Command_Go_Back.TButton")
+		self.CommandExit.place(relx=0.873, rely=0.88, relwidth=0.119, relheight=0.065)
 
 		#-----------------------------------------------------------
+
+	def verify_orders(self):
+		# Get a list of unique tracking orders of the user
+		trackinfo = []
+		df = pd.read_excel("csv_files/orders.xlsx")
+		df = df[df['Username'] == self.customer_username]
+		df = df.loc[df['Order_Status'] != 'delivered', ['Date order processed','Tracking Order']]
+		df = df.drop_duplicates()
+		df = df.sort_values(by='Date order processed', ascending=True)
+		trackNum = df.values.tolist()
+		if len(trackNum) == 0:
+			tk.messagebox.showinfo("Error", "All of your orders are delivered. Please check purchase history")
+		else:
+			return trackNum
+
+	def combo_clicked(self, event):
+		trackInfo = self.TrackNumCombo.get()
+		
+		# Date of purchased
+		date1 = trackInfo.partition('}')[0]
+		date = date1.replace('{','').replace('}','')
+		
+		# Tracking number
+		trackNum1 = trackInfo.partition('}')[-1]
+		trackNum = trackNum1.replace(' ', '')
+		print(trackNum)
+
+		# Customer's address
+		df = pd.read_excel("csv_files/registered_customers.xlsx")
+		customer_info = df[df['Username'] == self.customer_username]
+		customer_address = customer_info['Home Address'].iloc[-1]
+
+		self.Fetch_Data(trackNum, customer_address, date)
+
+	# Fetch the static map of the route between two address
 	def Fetch_Static_Map(self, api, delivery, customer):
 		api_url_map = "https://www.mapquestapi.com/staticmap/v5/map"
-
 		params = {'key': api,
 				'start': delivery,
 				'end': customer}
@@ -73,29 +105,20 @@ class track_package(tk.Frame):
 				self.tracking_map = ImageTk.PhotoImage(Image.open(s_map))
 				self.map_image = tk.Label( image = self.tracking_map)
 				self.map_image.image = self.tracking_map
-				self.map_image.place( x = 150, y = 180)
-			else:
-				print("Static_map: " + str(status_code))
-				# Will need to change to a pop-up window
+				self.map_image.place( x = 150, y = 195)
 		except Exception as e:
-			print(e)
-			# Will need to change to a pop-up window
+			tk.messagebox.showerror("Error: ", e)
 
-	def Fetch_Data(self):
+	# MAPQUEST api: fetch route
+	def Fetch_Data(self, tracking_number, customer_address, dates):
 		api_url_direction = "http://www.mapquestapi.com/directions/v2/route"
 		api_key = "sI6vhp36vLAPPlC3hKEWgAI1aj2efRAC"
 
-		delivery_name = "FedEx" # Clerk needs to assign a delivery company
-
-		# Get customer's address
-		df = pd.read_excel("csv_files/registered_customers.xlsx")
-		customer_info = df[df['Username'] == self.customer_username]
-		customer_address = customer_info['Address'].iloc[-1]
-
-		# Get delivery company's address
-		df = pd.read_excel('csv_files/privileged_users.xlsx')
-		delivery_info = df[df['Name'] == delivery_name]
-		delivery_address = delivery_info['Address'].iloc[-1]
+		# Get delivery company's current address
+		df = pd.read_excel('csv_files/tracking_orders.xlsx')
+		delivery = df[df['Tracking Order Number'] == tracking_number] #Change based on tracking #
+		delivery_address = delivery['Current_Location'].iloc[-1]
+		delivery_company = delivery['Delivery Company Assigned Name'].iloc[-1]
 
 		params = {'key': api_key,
 				'from': delivery_address,
@@ -103,24 +126,41 @@ class track_package(tk.Frame):
 		try: 
 			r = requests.get(api_url_direction, params=params)
 			if r.status_code == 200:
-				response = r.json()  
+				response = r.json()
 				distance = round((response["route"]["distance"]),2)		# default unit: miles
 				time = round(((response["route"]["time"])/60), 2)		# default unit: seconds
 				self.style.configure( "LabelTitle.TLabel", 
 									anchor = "left", 
 									font = ("Helvetica", 18), 
 									background = '#49A')
+				message = "Purchased on: " + str(dates) + "\n"\
+						"Tracking number: " + str(tracking_number) +"\n\n"\
+						"Please allow additional time for loading packages and order processing.\n\n"\
+						"Delivery company: " + str(delivery_company) + "\n"\
+						"Distance: " + str(distance) + " miles \nDiving Time: " + str(time) + " minutes"
 				self.LabelTitle = tk.ttk.Label(self.top, 
-						text = "Order Number: \n\nDistance: " + str(distance) + "miles \nTime: " + str(time) + " minutes", 
+						text = message, 
 						style = "LabelTitle.TLabel")
-				self.LabelTitle.place( relx = 0.55, rely = 0.400, relwidth = 0.300, relheight = 0.300)
+				self.LabelTitle.place( relx = 0.46, rely = 0.400, relwidth = 0.450, relheight = 0.300)
 				self.Fetch_Static_Map(api_key, delivery_address, customer_address)
-			else:
-				print("Fetch_Data: " + str(status_code))
-				# Will need to change to a pop-up window
 		except Exception as e:
-			print("Fetch_Data: Please check your internet connection.")
-			# Will need to change to a pop-up window
+			err_message = str(response["info"]["messages"]).replace('[', '').replace(']', '').replace('\'', '')
+			tk.messagebox.showerror("Error", err_message)
+
+	# Validate address - pass in address
+	# This method only validates USA addresses
+	# smartystreets api
+	def validate_addr(self, address):
+		AUTH_ID = "895de920-0f01-34e3-db12-a2b039ce11b7"
+		AUTH_TOKEN = "2DMF7uiZczEX2wIhMF0o"
+		client = Client(AUTH_ID, AUTH_TOKEN)
+		try:
+			addresss = client.street_address(address)
+			if addresss.confirmed == True:
+				return addresss.confirmed
+		except Exception as e:
+			return False
+			#k.messagebox.showerror("Error", "Please re-enter a valid USA address")
 
 
 	def Command_Go_Back(self):
