@@ -44,6 +44,10 @@ class clerk_choose_bidding(tk.Frame):
 		self.Label1.place(relx=0.35, rely=0.09, relwidth=0.13, relheight=0.026)
 
 		# Ongoing means the status is 'processing', Closed means the status is 'assigned'
+		self.style.configure("LabelSub.TLabel",anchor="w", font=("Helvetica",10), background = "light blue")
+		self.LabelSub = tk.ttk.Label(self.top, text="select the bidding status", style='LabelSub.TLabel')
+		self.LabelSub.place(relx=0.54, rely=0.068, relwidth=0.18, relheight=0.026)
+
 		self.Combo1List1 = ["Ongoing Bidding", "Closed Bidding"]
 		self.Combo1 = tk.ttk.Combobox(self.top, state="readonly",values=self.Combo1List1, font=("Helvetica",11))
 		self.Combo1.bind("<<ComboboxSelected>>", self.get_combo1)
@@ -577,134 +581,5 @@ class clerk_choose_bidding(tk.Frame):
 				#df_privileged.loc[df_privileged['Username'] == username, 'Status'] = 'suspended'
 				df_privileged.to_excel("csv_files/privileged_users.xlsx", index=False)
 
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	def wrap(self, string, lenght=55):
 		return '\n'.join(textwrap.wrap(string, lenght))
-
-			
-
-		# # Refresh text
-		# self.TextJusti = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
-		# self.TextJusti.place(relx=0.72, rely=0.8, relwidth=0.2, relheight=0.08)
-
-
-	# def check_bidding(self):
-	# 	# Check if delivery company has bidded already
-	# 	df_bidding = pd.read_excel( "csv_files/biddings.xlsx" )
-	# 	df_my_bidding = df_bidding[df_bidding['Delivery Company Email'] == self.username]
-	# 	if self.tracking_order in list(df_my_bidding['Bidding Tracking Order']):
-	# 		self.ButtonBid.configure(state="disabled")
-
-	# 		self.TextVar = tk.StringVar(value="Format: X.XX")
-	# 		self.Text = tk.ttk.Entry(self.top, textvariable=self.TextVar, font=("Helvetica",14))
-	# 		self.Text.place(relx=0.389, rely=0.83, relwidth=0.15, relheight=0.038)
-	# 		self.Text.configure(state="disabled")
-
-	# 		self.LabelInfo = tk.ttk.Label(self.top, text="You've already made the bid on this order", style='LabelTime.TLabel')
-	# 		self.LabelInfo.place(relx=0.365, rely=0.78, relwidth=0.4, relheight=0.04)
-	# 	else:
-	# 		self.ButtonBid.configure(state="normal")
-	# 		self.Text.configure(state="normal")
-	# 		self.LabelInfo = tk.ttk.Label(self.top, text="", style='LabelTime.TLabel')
-	# 		self.LabelInfo.place(relx=0.195, rely=0.78, relwidth=0.8, relheight=0.04)

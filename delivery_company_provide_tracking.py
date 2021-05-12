@@ -44,6 +44,10 @@ class delivery_company_provide_tracking(tk.Frame):
 		self.Label1.place(relx=0.35, rely=0.09, relwidth=0.13, relheight=0.026)
 
 		# Waiting For Shpping means 'assigned', shipping means 'shipping', delivered means 'delivered' in tracking orders file(Delivery_status)
+		self.style.configure("LabelSub.TLabel",anchor="w", font=("Helvetica",10), background = "light blue")
+		self.LabelSub = tk.ttk.Label(self.top, text="select the shipping status", style='LabelSub.TLabel')
+		self.LabelSub.place(relx=0.54, rely=0.068, relwidth=0.18, relheight=0.026)
+
 		self.Combo1List1 = ["Waiting For Shipping Orders","Shipping Orders", "Delivered Orders"]
 		self.Combo1 = tk.ttk.Combobox(self.top, state="readonly",values=self.Combo1List1, font=("Helvetica",11))
 		self.Combo1.bind("<<ComboboxSelected>>", self.get_combo1)
