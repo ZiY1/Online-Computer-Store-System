@@ -217,12 +217,9 @@ class provide_credit_card(tk.Frame):
         #----------------Check if Address is valid-------------------------------------
         shipping_address = str( shipping_address)
         
-        valid_shipping_address = self.validate_address( shipping_address)        
-
-        if valid_shipping_address: # it is a valid usa address
+        if shipping_address != "": 
             valid_address = True
-
-        else: # it is not a valid address
+        else: 
             valid_address = False
             tk.messagebox.showerror( "Error", "Not a Valid Address")
         
@@ -333,13 +330,4 @@ class provide_credit_card(tk.Frame):
                 tk.messagebox.showinfo("Success", 
                                     "Your credit card has been removed from your store account" )
 
-    def validate_address(self, address):
-                AUTH_ID = "895de920-0f01-34e3-db12-a2b039ce11b7"
-                AUTH_Token = "2DMF7uiZczEX2wIhMF0o"
-                client = Client(AUTH_ID, AUTH_Token)
-                try:
-                    address_ = client.street_address(address)
-                    if address_.confirmed == True:
-                        return address_.confirmed
-                except Exception as e:
-                    return False
+    

@@ -63,12 +63,13 @@ class track_package(tk.Frame):
 		trackinfo = []
 		df = pd.read_excel("csv_files/orders.xlsx")
 		df = df[df['Username'] == self.customer_username]
-		df = df.loc[df['Order_Status'] != 'delivered', ['Date order processed','Tracking Order']]
+		df = df.loc[df['Order_Status'] == 'assigned', ['Date order processed','Tracking Order']]
 		df = df.drop_duplicates()
 		df = df.sort_values(by='Date order processed', ascending=True)
 		trackNum = df.values.tolist()
 		if len(trackNum) == 0:
-			tk.messagebox.showinfo("Error", "All of your orders are delivered. Please check purchase history")
+			tk.messagebox.showinfo("Error", "All of your orders are delivered or have not been assigned yet.\n" + 
+					"Please check purchase history")
 		else:
 			return trackNum
 
@@ -117,9 +118,13 @@ class track_package(tk.Frame):
 		# Get delivery company's current address
 		df = pd.read_excel('csv_files/tracking_orders.xlsx')
 		delivery = df[df['Tracking Order Number'] == tracking_number] #Change based on tracking #
-		delivery_address = delivery['Current_Location'].iloc[-1]
-		delivery_company = delivery['Delivery Company Assigned Name'].iloc[-1]
-
+		
+		delivery_address = "empty"
+		delivery_company = "empty"
+		if len( delivery) != 0:
+			delivery_address = delivery['Current_Location'].iloc[-1]
+			delivery_company = delivery['Delivery Company Assigned Name'].iloc[-1]
+		
 		params = {'key': api_key,
 				'from': delivery_address,
 				'to': customer_address}
