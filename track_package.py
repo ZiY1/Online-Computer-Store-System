@@ -44,7 +44,6 @@ class track_package(tk.Frame):
 		self.label.place(relx=0.35, rely=0.21)
 
 		self.comboValues = self.verify_orders()
-		#self.comboValues[0].replace("{","").replace("}","")
 		self.TrackNumCombo = tk.ttk.Combobox(self.top, state="readonly", values=self.comboValues, font=("Helvetica",14))
 		self.TrackNumCombo.bind("<<ComboboxSelected>>", self.combo_clicked)
 		self.TrackNumCombo.place(relx=0.35, rely=0.24, relwidth=0.35, relheight=0.032)
@@ -57,21 +56,22 @@ class track_package(tk.Frame):
 		self.CommandExit.place(relx=0.873, rely=0.88, relwidth=0.119, relheight=0.065)
 
 		#-----------------------------------------------------------
-
+	
+	# Get a list of unique tracking orders of the user
 	def verify_orders(self):
-		# Get a list of unique tracking orders of the user
-		trackinfo = []
 		df = pd.read_excel("csv_files/orders.xlsx")
 		df = df[df['Username'] == self.customer_username]
-		df = df.loc[df['Order_Status'] != 'delivered', ['Date order processed','Tracking Order']]
+		df = df.loc[df['Order_Status'] == 'assigned']
+		df = df[['Date order processed', 'Tracking Order']]
 		df = df.drop_duplicates()
-		df = df.sort_values(by='Date order processed', ascending=True)
 		trackNum = df.values.tolist()
 		if len(trackNum) == 0:
-			tk.messagebox.showinfo("Error", "All of your orders are delivered. Please check purchase history")
+			tk.messagebox.showinfo("Info", "Please check purchase history for this order status")
+			return
 		else:
 			return trackNum
-
+		
+	# Display tracking information if event is fired
 	def combo_clicked(self, event):
 		trackInfo = self.TrackNumCombo.get()
 		
@@ -82,15 +82,27 @@ class track_package(tk.Frame):
 		# Tracking number
 		trackNum1 = trackInfo.partition('}')[-1]
 		trackNum = trackNum1.replace(' ', '')
-		#print(trackNum)
+		
+		# Verify tracking status and information
+		newdf = pd.read_excel("csv_files/tracking_orders.xlsx")
+		newdf = newdf[newdf['Tracking Order Number'] == trackNum]
+		newdf = newdf.loc[newdf['Delivery_status'] == 'shipping']
+		if len(newdf) == 0:
+			tk.messagebox.showinfo("Info", "Waiting for delivery company confirmation."\
+				" Please check purchase history for more information.")
+			return
+		else:
+			delivery_address = newdf['Current_Location'].iloc[-1]
+			delivery_company = newdf['Delivery Company Assigned Name'].iloc[-1]
 
 		# Customer's address
 		df = pd.read_excel("csv_files/registered_customers.xlsx")
 		customer_info = df[df['Username'] == self.customer_username]
 		customer_address = customer_info['Home Address'].iloc[-1]
 
-		self.Fetch_Data(trackNum, customer_address, date)
-
+		self.Fetch_Data(trackNum, customer_address, delivery_address, delivery_company, date)
+		
+	
 	# Fetch the static map of the route between two address
 	def Fetch_Static_Map(self, api, delivery, customer):
 		api_url_map = "https://www.mapquestapi.com/staticmap/v5/map"
@@ -110,15 +122,9 @@ class track_package(tk.Frame):
 			tk.messagebox.showerror("Error: ", e)
 
 	# MAPQUEST api: fetch route
-	def Fetch_Data(self, tracking_number, customer_address, dates):
+	def Fetch_Data(self, tracking_number, customer_address, delivery_address, delivery_company, dates):
 		api_url_direction = "http://www.mapquestapi.com/directions/v2/route"
 		api_key = "sI6vhp36vLAPPlC3hKEWgAI1aj2efRAC"
-
-		# Get delivery company's current address
-		df = pd.read_excel('csv_files/tracking_orders.xlsx')
-		delivery = df[df['Tracking Order Number'] == tracking_number] #Change based on tracking #
-		delivery_address = delivery['Current_Location'].iloc[-1]
-		delivery_company_email = delivery['Delivery Company Assigned Email'].iloc[-1]
 
 		params = {'key': api_key,
 				'from': delivery_address,
@@ -131,17 +137,17 @@ class track_package(tk.Frame):
 				time = round(((response["route"]["time"])/60), 2)		# default unit: seconds
 				self.style.configure( "LabelTitle.TLabel", 
 									anchor = "left", 
-									font = ("Helvetica", 18), 
+									font = ("Helvetica", 18, "bold"), 
 									background = '#49A')
 				message = "Purchased on: " + str(dates) + "\n"\
 						"Tracking number: " + str(tracking_number) +"\n\n"\
-						"Please allow additional time for loading packages and order processing.\n\n"\
-						"Delivery company: " + str(delivery_company_email) + "\n"\
-						"Distance: " + str(distance) + " miles \nDiving Time: " + str(time) + " minutes"
+						"Please allow additional time for loading packages and\norder processing.\n\n"\
+						"Delivery company: " + str(delivery_company) + "\n"\
+						"Distance: " + str(distance) + " miles \nDriving Time: " + str(time) + " minutes"
 				self.LabelTitle = tk.ttk.Label(self.top, 
 						text = message, 
 						style = "LabelTitle.TLabel")
-				self.LabelTitle.place( relx = 0.46, rely = 0.400, relwidth = 0.450, relheight = 0.300)
+				self.LabelTitle.place( relx = 0.46, rely = 0.400, relwidth = 0.5, relheight = 0.450)
 				self.Fetch_Static_Map(api_key, delivery_address, customer_address)
 		except Exception as e:
 			err_message = str(response["info"]["messages"]).replace('[', '').replace(']', '').replace('\'', '')

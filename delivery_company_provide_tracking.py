@@ -44,9 +44,11 @@ class delivery_company_provide_tracking(tk.Frame):
 		self.Label1.place(relx=0.35, rely=0.09, relwidth=0.13, relheight=0.026)
 
 		# Waiting For Shpping means 'assigned', shipping means 'shipping', delivered means 'delivered' in tracking orders file(Delivery_status)
+		
 		self.style.configure("LabelSub.TLabel",anchor="w", font=("Helvetica",10), background = "light blue")
 		self.LabelSub = tk.ttk.Label(self.top, text="select the shipping status", style='LabelSub.TLabel')
 		self.LabelSub.place(relx=0.54, rely=0.068, relwidth=0.18, relheight=0.026)
+		
 
 		self.Combo1List1 = ["Waiting For Shipping Orders","Shipping Orders", "Delivered Orders"]
 		self.Combo1 = tk.ttk.Combobox(self.top, state="readonly",values=self.Combo1List1, font=("Helvetica",11))
@@ -253,7 +255,7 @@ class delivery_company_provide_tracking(tk.Frame):
 		self.ButtonStart = tk.ttk.Button(self.top, text="Started Shipping", command=self.start, style="Button2.TButton")
 		self.ButtonStart.place(relx=0.51, rely=0.655, relwidth=0.15, relheight=0.042)
 
-		self.LocationVar1 = tk.StringVar(value="Pleasr enter the initial package location")
+		self.LocationVar1 = tk.StringVar(value="Please enter the initial package location")
 		self.TextLocation1 =  tk.Entry(self.top, textvariable = self.LocationVar1 ) 
 		self.TextLocation1.place( relx=0.7, rely=0.658, relwidth=0.2, relheight=0.035 )
 
@@ -261,7 +263,7 @@ class delivery_company_provide_tracking(tk.Frame):
 		self.ButtonShipping = tk.ttk.Button(self.top, text="Update Delivery Location", command=self.shipping, style="Button2.TButton")
 		self.ButtonShipping.place(relx=0.51, rely=0.715, relwidth=0.15, relheight=0.042)
 
-		self.LocationVar2 = tk.StringVar(value="Pleasr enter the current package location")
+		self.LocationVar2 = tk.StringVar(value="Please enter the current package location")
 		self.TextLocation2 =  tk.Entry(self.top, textvariable = self.LocationVar2 ) 
 		self.TextLocation2.place( relx=0.7, rely=0.718, relwidth=0.2, relheight=0.035 )
 
@@ -426,6 +428,30 @@ class delivery_company_provide_tracking(tk.Frame):
 			df_tracking.to_excel("csv_files/tracking_orders.xlsx", index=False)
 			df_order.to_excel("csv_files/orders.xlsx", index=False)
 			tk.messagebox.showinfo("Success","Update tracking information success")
+
+			#-------------------------------------Send the email that package have arrived-------------------------------------------
+			now = datetime.datetime.now()
+			date_send = now.strftime("%m/%d/%Y, %H:%M:%S")
+			df_user_order = df_order [ df_order['Tracking Order'] == self.tracking_order]
+			username_ = df_user_order['Username'].iloc[-1]
+			df_customers = pd.read_excel("csv_files/registered_customers.xlsx")
+			df_customer_info = df_customers[df_customers['Username'] == username_ ]
+			self.Customer_Name = df_customer_info['Name'].iloc[-1]
+			self.Customer_username = df_customer_info['Username'].iloc[-1]
+			message1 = f"Dear {self.Customer_Name},\n\n"
+			message2 = f"Your Package has arrived for the following order: {self.tracking_order}. If you have any complaints regarding\nyour order please let us know.\n"
+			message3 = f"\n\nThanks, {self.name}"
+			
+			message = message1 + message2 + message3
+			df_emails = pd.read_excel( "csv_files/emails.xlsx")
+			Id = len(df_emails)
+			tempo = pd.DataFrame( [[Id, self.Customer_username, "Delivery Team", date_send,"Package arrived", message,"unread"]],
+                        columns = ['ID', 'for_username', 'From', 'Date_received', 'Subject', 'Message', 'Status'])
+						
+			df_emails = df_emails.append(tempo)
+			df_emails.to_excel("csv_files/emails.xlsx", index = False)
+            
+			#------------------------------------------------------------------------------------------------------------------------
 
 			self.update_treeview()
 			self.refresh()
