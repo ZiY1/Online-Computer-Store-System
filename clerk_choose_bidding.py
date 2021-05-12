@@ -15,14 +15,14 @@ import clerk_management_page
 
 class clerk_choose_bidding(tk.Frame):
 
-	def __init__(self, name, username, master=None): 
+	def __init__(self, name, username, master=None): #
 		tk.Frame.__init__(self, master)
 
 		self.name = name
 		self.username = username
 
 		self.master.title("Clerk Choose Bidding Page")
-		self.master.geometry("1590x955")
+		self.master.geometry("1350x855")
 		self.master.configure( background = "light blue" )
 
 		self.create_widgets()
@@ -55,7 +55,7 @@ class clerk_choose_bidding(tk.Frame):
 
 		# Clerk Justification
 		self.LabelClerkJusti = tk.ttk.Label(self.top, text="Clerk Justification:", style='Label1.TLabel')
-		self.LabelClerkJusti.place(relx=0.606, rely=0.8, relwidth=0.13, relheight=0.026)
+		self.LabelClerkJusti.place(relx=0.59, rely=0.8, relwidth=0.13, relheight=0.026)
 
 		self.TextJusti = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
 		self.TextJusti.place(relx=0.72, rely=0.8, relwidth=0.2, relheight=0.08)
@@ -63,7 +63,7 @@ class clerk_choose_bidding(tk.Frame):
 		# Back Button
 		self.style.configure("ButtonAll.TButton", font=("Helvetica", 14))
 		self.ButtonBack = tk.ttk.Button(self.top, text="Back", command=self.back, style="ButtonAll.TButton")
-		self.ButtonBack.place(relx=0.863, rely=0.92, relwidth=0.06, relheight=0.045)
+		self.ButtonBack.place(relx=0.863, rely=0.93, relwidth=0.06, relheight=0.045)
 
 		# Create left and right frame, create treeview
 		self.update_treeview()
@@ -226,10 +226,10 @@ class clerk_choose_bidding(tk.Frame):
 
 			self.images.append(None)
 			self.images[i] = ImageTk.PhotoImage( image_tempo )
-			tk.ttk.Label( self.MyFrame, image = self.images[i], style="Label_imag.TLabel").grid(sticky="W", row=4+counter, column=1, padx=0, pady = 25, rowspan=3)
-			counter = counter + 3
+			tk.ttk.Label( self.MyFrame, image = self.images[i], style="Label_imag.TLabel").grid(sticky="W", row=7+counter, column=0, padx=0, pady = 5)
+			counter = counter + 4
 
-		tk.ttk.Label(self.MyFrame, text="Subtotal: " + "$ {:,.2f}".format(self.subtotal) ,style="LabelHeadline.TLabel").grid(sticky="W", row=5+len(self.order_ids)*3, column=0, padx=0, pady=20)
+		tk.ttk.Label(self.MyFrame, text="Subtotal: " + "$ {:,.2f}".format(self.subtotal) ,style="LabelHeadline.TLabel").grid(sticky="W", row=6+len(self.order_ids)*3, column=0, padx=0, pady=30)
 
 
 	def create_right_frame_content(self, status):
@@ -333,7 +333,7 @@ class clerk_choose_bidding(tk.Frame):
 						'Item_Price', 'Home address', 'Delivery_Company_Assigned']]
 
 		self.tree_frame = tk.Frame(self.top)
-		self.tree_frame.place(relx=0.25, rely=0.15, relwidth=0.5, relheight=0.2)
+		self.tree_frame.place(relx=0.2315, rely=0.15, relwidth=0.55, relheight=0.2)
 		self.tree_scroll = tk.Scrollbar(self.tree_frame)
 		self.tree_scroll.pack(side=tk.RIGHT, fill=tk.Y)
 
@@ -581,133 +581,14 @@ class clerk_choose_bidding(tk.Frame):
 				df_privileged.to_excel("csv_files/privileged_users.xlsx", index=False)
 
 
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	def wrap(self, string, lenght=55):
 		return '\n'.join(textwrap.wrap(string, lenght))
 
-			
-
-		# # Refresh text
-		# self.TextJusti = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
-		# self.TextJusti.place(relx=0.72, rely=0.8, relwidth=0.2, relheight=0.08)
 
 
-	# def check_bidding(self):
-	# 	# Check if delivery company has bidded already
-	# 	df_bidding = pd.read_excel( "csv_files/biddings.xlsx" )
-	# 	df_my_bidding = df_bidding[df_bidding['Delivery Company Email'] == self.username]
-	# 	if self.tracking_order in list(df_my_bidding['Bidding Tracking Order']):
-	# 		self.ButtonBid.configure(state="disabled")
+# #---------------------Main----------
+# if __name__ == "__main__":
+#     top = tk.Tk()
+#     clerk_choose_bidding(top).mainloop()    
 
-	# 		self.TextVar = tk.StringVar(value="Format: X.XX")
-	# 		self.Text = tk.ttk.Entry(self.top, textvariable=self.TextVar, font=("Helvetica",14))
-	# 		self.Text.place(relx=0.389, rely=0.83, relwidth=0.15, relheight=0.038)
-	# 		self.Text.configure(state="disabled")
 
-	# 		self.LabelInfo = tk.ttk.Label(self.top, text="You've already made the bid on this order", style='LabelTime.TLabel')
-	# 		self.LabelInfo.place(relx=0.365, rely=0.78, relwidth=0.4, relheight=0.04)
-	# 	else:
-	# 		self.ButtonBid.configure(state="normal")
-	# 		self.Text.configure(state="normal")
-	# 		self.LabelInfo = tk.ttk.Label(self.top, text="", style='LabelTime.TLabel')
-	# 		self.LabelInfo.place(relx=0.195, rely=0.78, relwidth=0.8, relheight=0.04)
