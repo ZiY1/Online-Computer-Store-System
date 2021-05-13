@@ -20,11 +20,11 @@ Some of the priviledged users login information are provided below. However, all
 
 | Type_user    | Username            | {assword |
 | --------     | ------------------- | --------
-| Super user   | admin@lenovo.com    | unique id for each recipe  |
-| clerk        | ada_wong@lenovo.com | author that created the recipe |
-| delivery     | ups@lenovo.com      | image of the recipe |
-| delivery     | on_track@lenovo.com | name of the recipe |
-| computer     | sony@lenovo.com     | ingredients of the recipe |
+| Super user   | admin@lenovo.com    | 123 |
+| clerk        | ada_wong@lenovo.com | p |
+| delivery     | ups@lenovo.com      | p |
+| delivery     | on_track@lenovo.com | p |
+| computer     | sony@lenovo.com     | p |
 
 ## Copyright Disclaimer
 We do not have any affiliations with Lenovo Corporation or anything related with the images used in the development of this small project.
