@@ -94,13 +94,14 @@ class track_package(tk.Frame):
 		else:
 			delivery_address = newdf['Current_Location'].iloc[-1]
 			delivery_company = newdf['Delivery Company Assigned Name'].iloc[-1]
+			delivery_email = newdf['Delivery Company Assigned Email'].iloc[-1]
 
 		# Customer's address
 		df = pd.read_excel("csv_files/registered_customers.xlsx")
 		customer_info = df[df['Username'] == self.customer_username]
 		customer_address = customer_info['Home Address'].iloc[-1]
 
-		self.Fetch_Data(trackNum, customer_address, delivery_address, delivery_company, date)
+		self.Fetch_Data(trackNum, customer_address, delivery_address, delivery_company, delivery_email, date)
 		
 	
 	# Fetch the static map of the route between two address
@@ -122,7 +123,7 @@ class track_package(tk.Frame):
 			tk.messagebox.showerror("Error: ", e)
 
 	# MAPQUEST api: fetch route
-	def Fetch_Data(self, tracking_number, customer_address, delivery_address, delivery_company, dates):
+	def Fetch_Data(self, tracking_number, customer_address, delivery_address, delivery_company, delivery_email, dates):
 		api_url_direction = "http://www.mapquestapi.com/directions/v2/route"
 		api_key = "sI6vhp36vLAPPlC3hKEWgAI1aj2efRAC"
 
@@ -137,17 +138,18 @@ class track_package(tk.Frame):
 				time = round(((response["route"]["time"])/60), 2)		# default unit: seconds
 				self.style.configure( "LabelTitle.TLabel", 
 									anchor = "left", 
-									font = ("Helvetica", 18, "bold"), 
+									font = ("Helvetica", 18), 
 									background = '#49A')
 				message = "Purchased on: " + str(dates) + "\n"\
 						"Tracking number: " + str(tracking_number) +"\n\n"\
-						"Please allow additional time for loading packages and\norder processing.\n\n"\
+						"Please allow additional time for loading packages and order processing.\n\n"\
 						"Delivery company: " + str(delivery_company) + "\n"\
-						"Distance: " + str(distance) + " miles \nDriving Time: " + str(time) + " minutes"
+						"Delivery company Email: " + str(delivery_email) + "\n\n"\
+						"Distance: " + str(distance) + " miles \nDiving Time: " + str(time) + " minutes"
 				self.LabelTitle = tk.ttk.Label(self.top, 
 						text = message, 
 						style = "LabelTitle.TLabel")
-				self.LabelTitle.place( relx = 0.46, rely = 0.400, relwidth = 0.5, relheight = 0.450)
+				self.LabelTitle.place( relx = 0.46, rely = 0.400, relwidth = 0.450, relheight = 0.300)
 				self.Fetch_Static_Map(api_key, delivery_address, customer_address)
 		except Exception as e:
 			err_message = str(response["info"]["messages"]).replace('[', '').replace(']', '').replace('\'', '')
