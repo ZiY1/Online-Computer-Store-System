@@ -18,7 +18,7 @@ This application is developped by Billy Davila, Ziyi Huang, Ai Hua Li and	Toma S
 ## Copyright Disclaimer
 We do not have any affiliations with Lenovo Corporation or anything related with the images used in the development of this small project.
 
-# Installation 
+## Installation 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the following modules/libraries
 
 ```bash
