@@ -15,10 +15,26 @@ The browser can registered to become a registered customer. The registered custo
 
 This application is developped by Billy Davila, Ziyi Huang, Ai Hua Li and	Toma Suciu our Software Engineering class.
 
+## Privileged Users Accounts
+Some of the priviledged users login information are provided below. However, all privileged users accounts login informations are located in the csv_files/privileged_users when you cloned the github repository. 
+
+| Type_user    | Username            | {assword |
+| --------     | ------------------- | --------
+| Super user   | admin@lenovo.com    | unique id for each recipe  |
+| clerk        | ada_wong@lenovo.com | author that created the recipe |
+| delivery     | ups@lenovo.com      | image of the recipe |
+| delivery     | on_track@lenovo.com | name of the recipe |
+| computer     | sony@lenovo.com     | ingredients of the recipe |
+
 ## Copyright Disclaimer
 We do not have any affiliations with Lenovo Corporation or anything related with the images used in the development of this small project.
 
 ## Installation 
+**Clone the repository**
+```bash
+https://github.com/billydavila/Online-Computer-Store-System.git
+```
+**Install necessary libraries**
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the following modules/libraries
 
 ```bash
