@@ -35,6 +35,7 @@ We do not have any affiliations with Lenovo Corporation or anything related with
 https://github.com/billydavila/Online-Computer-Store-System.git
 ```
 **Install necessary libraries**
+
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the following modules/libraries
 
 ```bash
