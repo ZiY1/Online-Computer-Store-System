@@ -16,7 +16,7 @@ The browser can registered to become a registered customer. The registered custo
 This application is developped by Billy Davila, Ziyi Huang, Ai Hua Li and	Toma Suciu for our Software Engineering class.
 
 ## Privileged Users Accounts
-Some of the priviledged users login information are provided below. However, all privileged users accounts login informations are located in the csv_files/privileged_users when you cloned the github repository. 
+Some of the priviledged users login information are provided below. However, all privileged users accounts login informations are located in the *csv_files/privileged_users* when you cloned the github repository. 
 
 | Type_user    | Username            | Password |
 | --------     | ------------------- | --------
