@@ -15,11 +15,11 @@ import clerk_management_page
 
 class clerk_choose_bidding(tk.Frame):
 
-	def __init__(self,  master=None): #name, username,
+	def __init__(self,  name, username, master=None): #name, username,
 		tk.Frame.__init__(self, master)
 
-		self.name = 'Ada Wong'#name
-		self.username = 'ada_wong@lenovo.com'#username
+		self.name = name
+		self.username = username
 
 		self.master.title("Clerk Choose Bidding Page")
 		self.master.geometry("1330x855")
@@ -586,9 +586,9 @@ class clerk_choose_bidding(tk.Frame):
 
 
 
-#---------------------Main----------
-if __name__ == "__main__":
-    top = tk.Tk()
-    clerk_choose_bidding(top).mainloop()    
+# #---------------------Main----------
+# if __name__ == "__main__":
+#     top = tk.Tk()
+#     clerk_choose_bidding(top).mainloop()    
 
 
