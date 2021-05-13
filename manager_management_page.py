@@ -65,7 +65,7 @@ class manager_management_page(tk.Frame):
 		self.EditAccount.place(relx=0.296, rely=0.1, relwidth=0.49, relheight=0.065)
 
 		# Row 2: View taboo list and Edit taboo list
-		self.ViewTaboo = tk.ttk.Button(self.Frame1, text="View Taboo Word List", command=lambda: vat.view_account_table('taboo_list', "989x876"), style="AllCommand.TButton")
+		self.ViewTaboo = tk.ttk.Button(self.Frame1, text="View Taboo Word List", command=lambda: vat.view_account_table('taboo_list', "989x876", self.admin_username), style="AllCommand.TButton")
 		self.ViewTaboo.place(relx=0.296, rely=0.2, relwidth=0.49, relheight=0.065)
 
 		self.EditTaboo = tk.ttk.Button(self.Frame2, text="Edit Taboo Word List", command=self.edit_taboo, style="AllCommand.TButton")
@@ -79,6 +79,9 @@ class manager_management_page(tk.Frame):
 		self.EditDiscussion.place(relx=0.296, rely=0.3, relwidth=0.49, relheight=0.065)
 
 		# Row 4
+		self.ViewItem = tk.ttk.Button(self.Frame1, text="View All Items", command=lambda: vat.view_account_table('all_items', "989x876", self.admin_username), style="AllCommand.TButton")
+		self.ViewItem.place(relx=0.296, rely=0.4, relwidth=0.49, relheight=0.065)
+
 		self.EditComplaint = tk.ttk.Button(self.Frame2, text="Edit Complaints", command=self.edit_complaint, style="AllCommand.TButton")
 		self.EditComplaint.place(relx=0.296, rely=0.4, relwidth=0.49, relheight=0.065)
 
@@ -102,7 +105,6 @@ class manager_management_page(tk.Frame):
 	def view_sus_bidding(self):
 		self.top.destroy()
 		mvsb.manager_view_suspicious_bidding(self.admin_name, self.admin_username)
-
 
 	def edit_account(self):
 		self.top.destroy()

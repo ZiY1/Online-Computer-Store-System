@@ -87,7 +87,7 @@ class view_account_page(tk.Frame):
 
 
 	def command_view_users(self, type_user):
-		vat.view_account_table(type_user, "463x425")
+		vat.view_account_table(type_user, "463x425", self.admin_username)
 
 	def command_edit(self):
 		self.top.destroy()

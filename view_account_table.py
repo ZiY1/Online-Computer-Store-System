@@ -14,11 +14,12 @@ import manager_view_account as mva
 
 class view_account_table(tk.Frame):
 
-	def __init__(self, type_user, my_geometry, master=None): 
+	def __init__(self, type_user, my_geometry, username, master=None): 
 		tk.Frame.__init__(self, master)
 
 		self.type_user = type_user
 		self.my_geometry = my_geometry
+		self.username = username
 
 		self.master.title("View Account Page")
 		self.master.geometry(self.my_geometry)
@@ -43,9 +44,18 @@ class view_account_table(tk.Frame):
 		elif self.type_user == 'suggested_systems':
 			df = pd.read_excel( "csv_files/suggested_systems.xlsx" )
 			self.users_table(df)
-		else:
+		elif self.type_user == 'taboo_list':
 			df = pd.read_excel( "csv_files/taboo_list.xlsx" )
 			self.users_table(df)
+		elif self.type_user == 'all_items':
+			df = pd.read_excel( "csv_files/items.xlsx" )
+			df_droped = df.drop(['Features', 'CPU cores', 'Graphic Card', 'Screen Resolution'], axis=1)
+			self.users_table(df_droped)
+		elif self.type_user == 'my_items':
+			df = pd.read_excel( "csv_files/items.xlsx" )
+			df_droped = df.drop(['Features', 'CPU cores', 'Graphic Card', 'Screen Resolution'], axis=1)
+			df_droped_me = df_droped[df_droped['Computer Company'] == self.username]
+			self.users_table(df_droped_me)
 
 	def users_table(self, df):
 

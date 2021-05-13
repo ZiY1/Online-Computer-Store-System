@@ -106,7 +106,7 @@ class edit_system_page(tk.Frame):
 		mmp.manager_management_page(self.admin_name, self.admin_username)
 
 	def command_view_list(self, type_csv):
-		vat.view_account_table(type_csv, "463x425")
+		vat.view_account_table(type_csv, "463x425", self.admin_username)
 
 	# For guest page and customer page 
 	def manager_system_inputs(self):

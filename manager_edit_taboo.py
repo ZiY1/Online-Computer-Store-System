@@ -83,7 +83,7 @@ class edit_taboo_page(tk.Frame):
 		self.CommandCancel.place(relx=0.57, rely=0.8, relwidth=0.19, relheight=0.09)
 
 	def command_view_list(self, type_user):
-		vat.view_account_table(type_user, "463x425")
+		vat.view_account_table(type_user, "463x425", self.username)
 
 	def get_combo1(self, event):
 		if self.Combo1.get() == 'Delete':

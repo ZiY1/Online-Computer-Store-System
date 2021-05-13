@@ -6,6 +6,7 @@ import tkinter.ttk as ttk
 import privileged_user_login as pul
 import privileged_edit_complaint
 import privileged_view_account
+import view_account_table as vat
 
 class computer_company_management_page(tk.Frame):
 
@@ -45,7 +46,9 @@ class computer_company_management_page(tk.Frame):
 		self.ViewAccount = tk.ttk.Button(self.top, text="View My Account Info", command=self.view_account, style="AllCommand.TButton")
 		self.ViewAccount.place(relx=0.6, rely=0.2, relwidth=0.23, relheight=0.065)
 
-
+		# Row 2:
+		self.ViewMyItem = tk.ttk.Button(self.top, text="View All My Items", command=lambda: vat.view_account_table('my_items', "989x776", self.username), style="AllCommand.TButton")
+		self.ViewMyItem.place(relx=0.16, rely=0.35, relwidth=0.23, relheight=0.065)
 
 
 		# Log out button
