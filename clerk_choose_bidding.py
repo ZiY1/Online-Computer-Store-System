@@ -15,14 +15,14 @@ import clerk_management_page
 
 class clerk_choose_bidding(tk.Frame):
 
-	def __init__(self, name, username, master=None): #
+	def __init__(self,  master=None): #name, username,
 		tk.Frame.__init__(self, master)
 
-		self.name = name
-		self.username = username
+		self.name = 'Ada Wong'#name
+		self.username = 'ada_wong@lenovo.com'#username
 
 		self.master.title("Clerk Choose Bidding Page")
-		self.master.geometry("1350x855")
+		self.master.geometry("1330x855")
 		self.master.configure( background = "light blue" )
 
 		self.create_widgets()
@@ -41,12 +41,12 @@ class clerk_choose_bidding(tk.Frame):
 		# Row 1
 		self.style.configure("Label1.TLabel",anchor="w", font=("Helvetica",14), background = "light blue")
 		self.Label1 = tk.ttk.Label(self.top, text="View:", style='Label1.TLabel')
-		self.Label1.place(relx=0.35, rely=0.09, relwidth=0.13, relheight=0.026)
+		self.Label1.place(relx=0.35, rely=0.09, relwidth=0.13, relheight=0.03)
 
 		# Ongoing means the status is 'processing', Closed means the status is 'assigned'
 		self.style.configure("LabelSub.TLabel",anchor="w", font=("Helvetica",10), background = "light blue")
 		self.LabelSub = tk.ttk.Label(self.top, text="select the bidding status", style='LabelSub.TLabel')
-		self.LabelSub.place(relx=0.54, rely=0.068, relwidth=0.18, relheight=0.026)
+		self.LabelSub.place(relx=0.54, rely=0.066, relwidth=0.18, relheight=0.026)
 		self.Combo1List1 = ["Ongoing Bidding", "Closed Bidding"]
 		self.Combo1 = tk.ttk.Combobox(self.top, state="readonly",values=self.Combo1List1, font=("Helvetica",11))
 		self.Combo1.bind("<<ComboboxSelected>>", self.get_combo1)
@@ -55,7 +55,7 @@ class clerk_choose_bidding(tk.Frame):
 
 		# Clerk Justification
 		self.LabelClerkJusti = tk.ttk.Label(self.top, text="Clerk Justification:", style='Label1.TLabel')
-		self.LabelClerkJusti.place(relx=0.59, rely=0.8, relwidth=0.13, relheight=0.026)
+		self.LabelClerkJusti.place(relx=0.59, rely=0.8, relwidth=0.13, relheight=0.03)
 
 		self.TextJusti = tk.Text(self.top, font=("Helvetica",11), wrap=tk.WORD)
 		self.TextJusti.place(relx=0.72, rely=0.8, relwidth=0.2, relheight=0.08)
@@ -586,9 +586,9 @@ class clerk_choose_bidding(tk.Frame):
 
 
 
-# #---------------------Main----------
-# if __name__ == "__main__":
-#     top = tk.Tk()
-#     clerk_choose_bidding(top).mainloop()    
+#---------------------Main----------
+if __name__ == "__main__":
+    top = tk.Tk()
+    clerk_choose_bidding(top).mainloop()    
 
 
