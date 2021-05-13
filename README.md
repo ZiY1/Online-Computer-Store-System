@@ -18,7 +18,7 @@ This application is developped by Billy Davila, Ziyi Huang, Ai Hua Li and	Toma S
 ## Privileged Users Accounts
 Some of the priviledged users login information are provided below. However, all privileged users accounts login informations are located in the csv_files/privileged_users when you cloned the github repository. 
 
-| Type_user    | Username            | {assword |
+| Type_user    | Username            | Password |
 | --------     | ------------------- | --------
 | Super user   | admin@lenovo.com    | 123 |
 | clerk        | ada_wong@lenovo.com | p |
