@@ -26,9 +26,6 @@ Some of the priviledged users login information are provided below. However, all
 | delivery     | on_track@lenovo.com | p |
 | computer     | sony@lenovo.com     | p |
 
-## Copyright Disclaimer
-We do not have any affiliations with Lenovo Corporation or anything related with the images used in the development of this small project.
-
 ## Installation 
 **Clone the repository**
 ```bash
@@ -69,3 +66,5 @@ pip install credit_card_checker
 ```bash
 pip install smartystreets.py
 ```
+## Copyright Disclaimer
+We do not have any affiliations with Lenovo Corporation or anything related with the images used in the development of this small project.
