@@ -445,7 +445,7 @@ class delivery_company_provide_tracking(tk.Frame):
 			message = message1 + message2 + message3
 			df_emails = pd.read_excel( "csv_files/emails.xlsx")
 			Id = len(df_emails)
-			tempo = pd.DataFrame( [[Id, self.Customer_username, "Delivery Team", date_send,"Package arrived", message,"unread"]],
+			tempo = pd.DataFrame( [[Id, self.Customer_username, self.username, date_send,"Package arrived", message,"unread"]],
                         columns = ['ID', 'for_username', 'From', 'Date_received', 'Subject', 'Message', 'Status'])
 						
 			df_emails = df_emails.append(tempo)
