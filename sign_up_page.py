@@ -69,7 +69,7 @@ class sign_up_page(tk.Frame):
 		
 
         # Password 
-        self.PasswordVar = tk.StringVar()
+        self.PasswordVar = tk.StringVar(value="Please include at least a letter")
         self.TextPassword = tk.Entry( self.top, textvariable = self.PasswordVar) 
         self.TextPassword.place( relx = 0.350, rely = 0.670, relwidth = 0.5550, relheight = 0.080)
 
@@ -129,10 +129,10 @@ class sign_up_page(tk.Frame):
     #-------------------------------------------------------------------------
 
     #---------------------check if the password is valid(no empty)-----------------------
-        if Password != "":
+        if Password != "" and Password.islower():
             flag_password_valid = True
         else:
-            tk.messagebox.showerror( "Error", "invalid password" )
+            tk.messagebox.showerror( "Error", "invalid password, password must contains at least a letter" )
             flag_password_valid = False
 
     #-----------------------------------------------------------------------
@@ -205,4 +205,8 @@ class sign_up_page(tk.Frame):
 
     def command_back(self):
         self.top.destroy()
-        home.HomePage()        
+        home.HomePage()   
+
+
+
+

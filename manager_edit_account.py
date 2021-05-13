@@ -79,7 +79,7 @@ class edit_account_page(tk.Frame):
 		self.Label5 = tk.ttk.Label(self.top, text="Password:", style='Label1.TLabel')
 		self.Label5.place(relx=0.12, rely=0.491, relwidth=0.4, relheight=0.062)
 
-		self.Text5Var = tk.StringVar()
+		self.Text5Var = tk.StringVar(value="Please include at least a letter")
 		self.Text5 = tk.ttk.Entry(self.top, textvariable=self.Text5Var, font=("Helvetica",11))
 		self.Text5.place(relx=0.4, rely=0.491, relwidth=0.4, relheight=0.068)
 
@@ -185,10 +185,10 @@ class edit_account_page(tk.Frame):
     	#-------------------------------------------------------------------------
 
     	#---------------------check if the password is valid(no empty)-----------------------
-		if Password != "":
+		if Password != "" and Password.islower():
 			flag_password_valid = True
 		else:
-			tk.messagebox.showerror( "Error", "invalid password" )
+			tk.messagebox.showerror( "Error", "invalid password, password must contains at least a letter" )
 			flag_password_valid = False
 
     	#-----------------------------------------------------------------------
@@ -325,7 +325,7 @@ class edit_account_page(tk.Frame):
 		self.Text4 = tk.ttk.Entry(self.top, textvariable=self.Text4Var, font=("Helvetica",11))
 		self.Text4.place(relx=0.4, rely=0.399, relwidth=0.4, relheight=0.068)
 
-		self.Text5Var = tk.StringVar()
+		self.Text5Var = tk.StringVar(value="Please include at least a letter")
 		self.Text5 = tk.ttk.Entry(self.top, textvariable=self.Text5Var, font=("Helvetica",11))
 		self.Text5.place(relx=0.4, rely=0.491, relwidth=0.4, relheight=0.068)
 
@@ -341,7 +341,7 @@ class edit_account_page(tk.Frame):
 		self.Text4 = tk.ttk.Entry(self.top, textvariable=self.Text4Var, font=("Helvetica",11))
 		self.Text4.place(relx=0.4, rely=0.399, relwidth=0.4, relheight=0.068)
 
-		self.Text5Var = tk.StringVar()
+		self.Text5Var = tk.StringVar(value="Please include at least a letter")
 		self.Text5 = tk.ttk.Entry(self.top, textvariable=self.Text5Var, font=("Helvetica",11), state="disable")
 		self.Text5.place(relx=0.4, rely=0.491, relwidth=0.4, relheight=0.068)
 
