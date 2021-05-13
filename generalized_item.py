@@ -57,6 +57,8 @@ class generalized_item(tk.Frame):
         self.item_star = df_item_info['overall review'].iloc[-1]
         self.item_CPU = df_item_info['CPU cores'].iloc[-1]
         self.item_GPU = df_item_info['Graphic Card'].iloc[-1]
+
+        self.item_computer_company = df_item_info['Computer Company'].iloc[-1]
         #---------------------------------------------------------------------------
 
         
@@ -476,79 +478,87 @@ class generalized_item(tk.Frame):
 
 
     def add_to_shopping_cart(self):
-        
-        if self.item_type == "Laptop".title() or self.item_type == "workstation".title() or self.item_type == "Desktop".title():
-            select_computer_parts.select_computer_parts( my_geometry = "550x450",
-            coming_from = self.coming_from_page,
-            item_arch = self.item_architecture,
-            item_name = self.item_name, item_price = self.item_price, 
-            item_type = self.item_type, item_CPU = self.item_CPU, 
-            item_GPU = self.item_GPU, item_purpose = self.item_purpose,
-            customer_name = self.Customer_Name, customer_Id = self.Customer_Id, 
-            customer_username = self.Customer_username)
-            
-            generalized_item(coming_from = self.coming_from_page, item_name = self.item_name, 
-                    customer_name = self.Customer_Name, 
-                    customer_Id = self.Customer_Id, customer_username = self.Customer_username)
-        else:    
-            df_orders = pd.read_excel("csv_files/orders.xlsx")
+        #self.item_computer_company = ""
+        df_suspended_accounts = pd.read_excel( "csv_files/suspend_users.xlsx" )
+        df_suspended_companies = df_suspended_accounts[ df_suspended_accounts['Type_user'] == 'computer_company']
+        df_suspended_companies_names = list( df_suspended_companies['Username'] )
 
-            item_name = self.item_name
-            item_price = self.item_price
-            
-            # Order_Id | Username | Item_Name | Customized | Item_Price |Tracking Order | Date order processed 
-            # | Delivery_Company_Assigned | Home address | Order_Status
-
-            df_user_shopping_cart = df_orders[ (df_orders["Username"] == self.Customer_username) & (df_orders['Order_Status'] == "in cart") ]
-
-            if len(df_user_shopping_cart) == 0: # we do not have any items in the user shopping cart
-            
-                #----------------Generate a new random tracking order---------------------------------------
-                random_number = str( random.random() +1 ).split(".")[1]
-                letters = string.ascii_lowercase 
-                random_str = ''.join(random.choice(letters) for i in range(6))
-                tracking_order = ''.join(random.choice( random_str + random_number) for i in range(26) )
-                tracking_order += str(self.Customer_Id)
-                #--------------------------------------------------------------------------------------
-            else: # we have items in the user shopping cart 
-                # no need of generating a new tracking order
-                tracking_order = df_user_shopping_cart['Tracking Order'].iloc[-1]
+        if self.item_computer_company in df_suspended_companies_names:
+            tk.messagebox.showerror("Error", "The item you are selecting is no longer available\n" + 
+                                     "since the computer company in charge of that item is no longer part of the system." )
+        else:
+            if self.item_type == "Laptop".title() or self.item_type == "workstation".title() or self.item_type == "Desktop".title():
+                select_computer_parts.select_computer_parts( my_geometry = "550x450",
+                coming_from = self.coming_from_page,
+                item_arch = self.item_architecture,
+                item_name = self.item_name, item_price = self.item_price, 
+                item_type = self.item_type, item_CPU = self.item_CPU, 
+                item_GPU = self.item_GPU, item_purpose = self.item_purpose,
+                customer_name = self.Customer_Name, customer_Id = self.Customer_Id, 
+                customer_username = self.Customer_username)
                 
-            order_id = len(df_orders)
-            tempo = pd.DataFrame( [[ order_id, self.Customer_username, item_name, "Default" ,item_price, tracking_order, "empty", "empty", "empty","in cart" ]],
-                            columns = ["Order_Id", "Username", "Item_Name", "Customized" ,"Item_Price", "Tracking Order", "Date order processed", "Delivery_Company_Assigned", "Home address", "Order_Status"])
+                generalized_item(coming_from = self.coming_from_page, item_name = self.item_name, 
+                        customer_name = self.Customer_Name, 
+                        customer_Id = self.Customer_Id, customer_username = self.Customer_username)
+            else:    
+                df_orders = pd.read_excel("csv_files/orders.xlsx")
 
-            df_orders = df_orders.append(tempo)
-            df_orders.to_excel( "csv_files/orders.xlsx", index = False)
+                item_name = self.item_name
+                item_price = self.item_price
+                
+                # Order_Id | Username | Item_Name | Customized | Item_Price |Tracking Order | Date order processed 
+                # | Delivery_Company_Assigned | Home address | Order_Status
+
+                df_user_shopping_cart = df_orders[ (df_orders["Username"] == self.Customer_username) & (df_orders['Order_Status'] == "in cart") ]
+
+                if len(df_user_shopping_cart) == 0: # we do not have any items in the user shopping cart
+                
+                    #----------------Generate a new random tracking order---------------------------------------
+                    random_number = str( random.random() +1 ).split(".")[1]
+                    letters = string.ascii_lowercase 
+                    random_str = ''.join(random.choice(letters) for i in range(6))
+                    tracking_order = ''.join(random.choice( random_str + random_number) for i in range(26) )
+                    tracking_order += str(self.Customer_Id)
+                    #--------------------------------------------------------------------------------------
+                else: # we have items in the user shopping cart 
+                    # no need of generating a new tracking order
+                    tracking_order = df_user_shopping_cart['Tracking Order'].iloc[-1]
+                    
+                order_id = len(df_orders)
+                tempo = pd.DataFrame( [[ order_id, self.Customer_username, item_name, "Default" ,item_price, tracking_order, "empty", "empty", "empty","in cart" ]],
+                                columns = ["Order_Id", "Username", "Item_Name", "Customized" ,"Item_Price", "Tracking Order", "Date order processed", "Delivery_Company_Assigned", "Home address", "Order_Status"])
+
+                df_orders = df_orders.append(tempo)
+                df_orders.to_excel( "csv_files/orders.xlsx", index = False)
 
 
 
-        #-----------------Check out Section----------------------
-            image_tempo = Image.open( f"images/checkout.png" )
-            image_tempo = image_tempo.resize(  (70,35), Image.ANTIALIAS )
-            self.checkout_pic = ImageTk.PhotoImage(  image_tempo )
+            #-----------------Check out Section----------------------
+                image_tempo = Image.open( f"images/checkout.png" )
+                image_tempo = image_tempo.resize(  (70,35), Image.ANTIALIAS )
+                self.checkout_pic = ImageTk.PhotoImage(  image_tempo )
+                
+                df_orders = pd.read_excel("csv_files/orders.xlsx")
+
+                df_user_shopping_cart = df_orders[ (df_orders["Username"] == self.Customer_username) & (df_orders['Order_Status'] == "in cart") ]
+
+                items_in_cart = len(df_user_shopping_cart)
+                if items_in_cart == 0: 
+
+                    checkout_button = tk.Button(self.top, 
+                        command = self.command_checkout,
+                        text = "", image = self.checkout_pic,
+                        compound = "bottom")
+                    checkout_button.place(relx = 0.77, rely= 0.05, relwidth= 0.07, relheight=0.1)
+                else:
+                    checkout_button = tk.Button(self.top, 
+                        command = self.command_checkout,
+                        text = f"{items_in_cart} items", image = self.checkout_pic,
+                        compound = "bottom")
+                    checkout_button.place(relx = 0.77, rely= 0.05, relwidth= 0.07, relheight=0.1)
             
-            df_orders = pd.read_excel("csv_files/orders.xlsx")
-
-            df_user_shopping_cart = df_orders[ (df_orders["Username"] == self.Customer_username) & (df_orders['Order_Status'] == "in cart") ]
-
-            items_in_cart = len(df_user_shopping_cart)
-            if items_in_cart == 0: 
-
-                checkout_button = tk.Button(self.top, 
-                    command = self.command_checkout,
-                    text = "", image = self.checkout_pic,
-                    compound = "bottom")
-                checkout_button.place(relx = 0.77, rely= 0.05, relwidth= 0.07, relheight=0.1)
-            else:
-                checkout_button = tk.Button(self.top, 
-                    command = self.command_checkout,
-                    text = f"{items_in_cart} items", image = self.checkout_pic,
-                    compound = "bottom")
-                checkout_button.place(relx = 0.77, rely= 0.05, relwidth= 0.07, relheight=0.1)
-        
-        #----------------------------------------------------------
-            
+            #----------------------------------------------------------
+                
 
 
 
