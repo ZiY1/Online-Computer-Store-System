@@ -11,20 +11,20 @@ There are 6 types of users in our system: browsers, registered customers, store 
 * Store managers are able to recommend 3 computer systems for browsers and customers, edit taboo list, view suspicious biddings, deal with unsatisfied complaints/reports and issue warnings.
 
 A brief summary of how the system works:
-The browser can registered to become a registered customer. The registered customer can place an order after credit card information and balance is added. Delivery companies then could bid for the order package. Once the clerk assigned a delivery company, the delivery company could deliver and update the status package. After the registered received the order, he/she can submit item review and rating. If the registered customer was dissatified with the item or shipment, he /she can file a complaint. The complaint party will try to resolve issues with the registered customer. The registered customer can report an inappropriate review. Lastly the manager will handle any unsatisified complaints and reports. For a variety of reasons, managers can issue warnings and ban a registered customer, store clerk, delivery company and computer company if 3 warnings are reached. 
+The browser can registered to become a registered customer. The registered customer can place an order after credit card information and balance is added. Delivery companies then could bid for the order package. Once the clerk assigned a delivery company, the delivery company could deliver and update the status package. After the registered received the order, he/she can submit item review and rating. If the registered customer was dissatified with the item or shipment, he/she can file a complaint. The complaint party will try to resolve issues with the registered customer. The registered customer can report an inappropriate review. Lastly the manager will handle any unsatisified complaints and reports. For a variety of reasons, managers can issue warnings and suspend a registered customer, store clerk, delivery company and computer company. If the number of warnings reached 3 warnings, all users except store manager are suspended automatically. 
 
 This application is developped by Billy Davila, Ziyi Huang, Ai Hua Li and	Toma Suciu for our Software Engineering class.
 
 ## Privileged Users Accounts
 Some of the priviledged users login information are provided below. However, all privileged users accounts login informations are located in the *csv_files/privileged_users* when you cloned the github repository. 
 
-| Type_user    | Username            | Password |
-| --------     | ------------------- | --------
-| Super user   | admin@lenovo.com    | 123 |
-| clerk        | ada_wong@lenovo.com | p |
-| delivery     | ups@lenovo.com      | p |
-| delivery     | on_track@lenovo.com | p |
-| computer     | sony@lenovo.com     | p |
+| Type_user              | Username            | Password |
+| --------               | ------------------- | --------
+| Manager (Super user)   | admin@lenovo.com    | 123 |
+| clerk                  | ada_wong@lenovo.com | p |
+| delivery               | ups@lenovo.com      | p |
+| delivery               | on_track@lenovo.com | p |
+| computer               | sony@lenovo.com     | p |
 
 ## Installation 
 **Clone the repository**
