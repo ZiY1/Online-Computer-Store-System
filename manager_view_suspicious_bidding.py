@@ -22,7 +22,7 @@ class manager_view_suspicious_bidding(tk.Frame):
 		self.username = username
 
 		self.master.title("View Suspicious Bidding Page")
-		self.master.geometry("1590x955")
+		self.master.geometry("1330x855")
 		self.master.configure( background = "light blue" )
 
 		self.create_widgets()
@@ -41,7 +41,7 @@ class manager_view_suspicious_bidding(tk.Frame):
 		# Row 1
 		self.style.configure("Label1.TLabel",anchor="w", font=("Helvetica",14), background = "light blue")
 		self.Label1 = tk.ttk.Label(self.top, text="View:", style='Label1.TLabel')
-		self.Label1.place(relx=0.35, rely=0.09, relwidth=0.13, relheight=0.026)
+		self.Label1.place(relx=0.35, rely=0.09, relwidth=0.13, relheight=0.03)
 
 		# Ongoing means the status is 'processing', Closed means the status is 'assigned'
 		self.Combo1List1 = ["All Suspicious Bidding"]
@@ -54,7 +54,7 @@ class manager_view_suspicious_bidding(tk.Frame):
 		# Back Button
 		self.style.configure("ButtonAll.TButton", font=("Helvetica", 14))
 		self.ButtonBack = tk.ttk.Button(self.top, text="Back", command=self.back, style="ButtonAll.TButton")
-		self.ButtonBack.place(relx=0.863, rely=0.92, relwidth=0.06, relheight=0.045)
+		self.ButtonBack.place(relx=0.863, rely=0.93, relwidth=0.06, relheight=0.045)
 
 		# Create left and right frame, create treeview
 		self.update_treeview()
@@ -206,10 +206,10 @@ class manager_view_suspicious_bidding(tk.Frame):
 
 			self.images.append(None)
 			self.images[i] = ImageTk.PhotoImage( image_tempo )
-			tk.ttk.Label( self.MyFrame, image = self.images[i], style="Label_imag.TLabel").grid(sticky="W", row=4+counter, column=1, padx=0, pady = 25, rowspan=3)
-			counter = counter + 3
+			tk.ttk.Label( self.MyFrame, image = self.images[i], style="Label_imag.TLabel").grid(sticky="W", row=7+counter, column=0, padx=0, pady = 5)
+			counter = counter + 4
 
-		tk.ttk.Label(self.MyFrame, text="Subtotal: " + "$ {:,.2f}".format(self.subtotal) ,style="LabelHeadline.TLabel").grid(sticky="W", row=5+len(self.order_ids)*3, column=0, padx=0, pady=20)
+		tk.ttk.Label(self.MyFrame, text="Subtotal: " + "$ {:,.2f}".format(self.subtotal) ,style="LabelHeadline.TLabel").grid(sticky="W", row=5+len(self.order_ids)*4, column=0, padx=0, pady=20)
 
 
 	def create_right_frame_content(self):
@@ -312,7 +312,7 @@ class manager_view_suspicious_bidding(tk.Frame):
 						'Item_Price', 'Home address', 'Delivery_Company_Assigned']]
 
 		self.tree_frame = tk.Frame(self.top)
-		self.tree_frame.place(relx=0.25, rely=0.15, relwidth=0.5, relheight=0.2)
+		self.tree_frame.place(relx=0.2315, rely=0.15, relwidth=0.55, relheight=0.2)
 		self.tree_scroll = tk.Scrollbar(self.tree_frame)
 		self.tree_scroll.pack(side=tk.RIGHT, fill=tk.Y)
 

@@ -28,7 +28,7 @@ class edit_complaint_page(tk.Frame):
 		self.username = username
 
 		self.master.title("Edit Complaints Page")
-		self.master.geometry("890x955")
+		self.master.geometry("890x855")
 		self.master.configure( background = "light blue" )
 
 		if self.type_privileged_user == "manager":

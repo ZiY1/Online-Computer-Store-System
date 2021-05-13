@@ -20,7 +20,7 @@ class edit_discussion_page(tk.Frame):
 		self.admin_username = username
 
 		self.master.title("Edit Discussion Report Page")
-		self.master.geometry("663x955")
+		self.master.geometry("663x855")
 		self.master.configure( background = "light blue" )
 
 		self.create_widgets()

@@ -20,7 +20,7 @@ class delivery_company_bidding(tk.Frame):
 		self.username = username
 
 		self.master.title("Delivery Company Bidding Page")
-		self.master.geometry("890x955")
+		self.master.geometry("890x855")
 		self.master.configure( background = "light blue" )
 
 		self.create_widgets()
@@ -43,7 +43,7 @@ class delivery_company_bidding(tk.Frame):
 		# Ongoing means the status is 'processing', Closed means the status is 'assigned' or 'delivered'
 		self.style.configure("LabelSub.TLabel",anchor="w", font=("Helvetica",10), background = "light blue")
 		self.LabelSub = tk.ttk.Label(self.top, text="select the order status", style='LabelSub.TLabel')
-		self.LabelSub.place(relx=0.53, rely=0.068, relwidth=0.18, relheight=0.024)
+		self.LabelSub.place(relx=0.53, rely=0.066, relwidth=0.18, relheight=0.024)
 		self.Combo1List1 = ["Processing Order","Ongoing Bidding", "Closed Bidding"]
 		self.Combo1 = tk.ttk.Combobox(self.top, state="readonly",values=self.Combo1List1, font=("Helvetica",11))
 		self.Combo1.bind("<<ComboboxSelected>>", self.get_combo1)

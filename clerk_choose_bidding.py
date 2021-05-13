@@ -229,7 +229,7 @@ class clerk_choose_bidding(tk.Frame):
 			tk.ttk.Label( self.MyFrame, image = self.images[i], style="Label_imag.TLabel").grid(sticky="W", row=7+counter, column=0, padx=0, pady = 5)
 			counter = counter + 4
 
-		tk.ttk.Label(self.MyFrame, text="Subtotal: " + "$ {:,.2f}".format(self.subtotal) ,style="LabelHeadline.TLabel").grid(sticky="W", row=6+len(self.order_ids)*3, column=0, padx=0, pady=30)
+		tk.ttk.Label(self.MyFrame, text="Subtotal: " + "$ {:,.2f}".format(self.subtotal) ,style="LabelHeadline.TLabel").grid(sticky="W", row=5+len(self.order_ids)*4, column=0, padx=0, pady=30)
 
 
 	def create_right_frame_content(self, status):
