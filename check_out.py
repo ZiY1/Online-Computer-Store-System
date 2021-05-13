@@ -165,6 +165,7 @@ class check_out(tk.Frame):
             item_price = "$ {:,.2f}".format(item_price)
             item_type = df_items[df_items['Name'] == item_name ]['Type'].iloc[-1]
             item_customized = df_user_shopping_cart['Customized'].iloc[i]
+            item_order_id = df_user_shopping_cart['Order_Id'].iloc[i]
             
             custom = "\n(Customized)" if item_customized == "Customized" else ""
             
@@ -176,7 +177,8 @@ class check_out(tk.Frame):
             self.remove_buttons.append(None)
             self.remove_buttons[i] = tk.Button( self.second_frame, text = "remove", 
             image = self.images_delete[i], 
-            command = lambda name = item_name: self.remove_from_cart(name), compound = "left")
+            command = lambda name = item_name, id_delete = item_order_id : self.remove_from_cart(name, id_delete), 
+            compound = "left")
 
             self.remove_buttons[i].grid( row = 7 + i, column = 3 )
 
@@ -289,17 +291,20 @@ class check_out(tk.Frame):
 
 
 
-    def remove_from_cart(self,item_name):
+    def remove_from_cart(self,item_name, id_delete):
         df_orders = pd.read_excel( "csv_files/orders.xlsx" )
         df_items = pd.read_excel( "csv_files/items.xlsx" )
+        
         df_user_shopping_cart = df_orders[ (df_orders["Username"] == self.Customer_username) 
-        & (df_orders['Order_Status'] == "in cart") & (df_orders["Item_Name"] == item_name )]
+        & (df_orders['Order_Status'] == "in cart") & (df_orders["Item_Name"] == item_name ) 
+        & ( df_orders['Order_Id']  == id_delete ) ]
 
         df_user_shopping_cart.loc[:, ("Order_Status")].iloc[0] = "cancelled"
         
         df_orders[ (df_orders['Username'] == self.Customer_username) &
          (df_orders['Order_Status'] == 'in cart') & 
-         (df_orders['Item_Name'] == item_name) ] = df_user_shopping_cart
+         (df_orders['Item_Name'] == item_name)  & 
+         (df_orders['Order_Id'] == id_delete)] = df_user_shopping_cart
 
         df_orders.to_excel( "csv_files/orders.xlsx", index = False)
 
