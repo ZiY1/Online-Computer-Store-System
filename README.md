@@ -21,7 +21,7 @@ pip install tkinter
 ```
 
 ```bash
-pip install PIL
+pip install IMAGE
 ```
 
 ```bash
